@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+
+<html charset="utf-8">
+    <head>
+        <style type="text/css"> 
+        body {
+            margin: 2px 5px;
+        }
+        </style>
+        <script>
+            function handleEvent(oEvent){
+                var search_box = document.getElementById('short');
+                    
+                if(oEvent.keyCode == 13)
+                {
+                    chrome.tabs.create({'url': 'http://ppt.cc/' + search_box.value});
+                }
+            }
+        </script>
+    </head>
+    
+    <body>
+        <input type="search" id="short" placeholder="輸入您的網址" autofocus OnKeyPress="handleEvent(event);">
+    </body>
+</html>
