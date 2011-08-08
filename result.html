@@ -40,7 +40,7 @@
             }
             targetUrl = getQueryString('url'); 
             
-            var serverId = targetUrl.slice(targetUrl.search('s=')+2);
+            var serverId = targetUrl.slice(targetUrl.search('s=') + 2);
         
             var req;
             req = new XMLHttpRequest();

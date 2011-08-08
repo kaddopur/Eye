@@ -12,8 +12,11 @@
                 var search_box = document.getElementById('short');
                     
                 if (oEvent.keyCode == 13) {
-                    if (search_box.value.search('http://mh.99770.cc/manhua/') != -1) { // 99770 看漫畫服務
-                        //chrome.tabs.create({'url': 'http://mh.99770.cc/manhua/4142/80386.htm?s=4'});
+                    if (search_box.value.search('http://mh.99770.cc/manhua/') != -1 ||
+                        search_box.value.search('http://dm.99manga.com/') != -1 ||     
+                        search_box.value.search('http://www.99comic.com/') != -1 || 
+                        search_box.value.search('http://1mh.com/') != -1 || 
+                        search_box.value.search('http://www.cococomic.com/') != -1 ) {  
                         chrome.tabs.create({'url': 'result.html?url=' + search_box.value});
                     } else { // 短網址服務
                         chrome.tabs.create({'url': 'http://ppt.cc/' + search_box.value});
