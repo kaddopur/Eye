@@ -16,6 +16,28 @@
 
         </style>
         <script>
+            function incCounter( isClear ){
+                var targetUrl = 'http://eyeofxiangmin.appspot.com';
+                if (isClear == true) {
+                    targetUrl += '/clear';
+                } else {
+                    targetUrl += '/add';
+                }
+                
+                var req;
+                req = new XMLHttpRequest();
+                req.open("GET", targetUrl, false);
+                req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                        
+                var encoded = "";
+                req.send(encoded);
+                        
+                var response = req.responseText;
+                
+            }
+            incCounter(false);
+        
+        
             var ServerList=new Array(12);
             ServerList[0]="http://58.215.241.39:99/dm01/";
             ServerList[1]="http://61.164.109.141:99/dm02/";
