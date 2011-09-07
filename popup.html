@@ -18,9 +18,7 @@
 						search_box.value.search('http://www.99mh.com/') != -1 ||
                         search_box.value.search('http://1mh.com/') != -1 || 
                         search_box.value.search('http://www.cococomic.com/') != -1 ) {  
-                        chrome.tabs.create({'url': 'result.html?url=' + search_box.value}, function (tab) {
-                            document.write('qlwjehrqlkwjehrlqkjwehrlqkwjerh');
-                        });
+                        chrome.tabs.create({'url': 'result.html?url=' + search_box.value});
                     } else { // 短網址服務
                         chrome.tabs.create({'url': 'http://ppt.cc/' + search_box.value});
                     }
