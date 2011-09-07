@@ -1,31 +1,44 @@
 <html>
 <head>
 <script>
-  var lastTabId = 0;
-  var myUrl ="";
+    var lastTabId = 0;
+    var myUrl ="";
 
-  chrome.tabs.onSelectionChanged.addListener(function(tabId) {
-    lastTabId = tabId;
-    chrome.pageAction.show(lastTabId);
-  });
+    chrome.tabs.onSelectionChanged.addListener(function(tabId) {
+        lastTabId = tabId;
+        chrome.pageAction.show(lastTabId);
+        chrome.tabs.get(tabId, function(tab) {
+            if (tab.url.search('http://mh.99770.cc/manhua/') == -1 &&
+                tab.url.search('http://dm.99manga.com/manga/') == -1 &&     
+                tab.url.search('http://www.99comic.com/manhua/') == -1 &&
+                tab.url.search('http://www.99mh.com/manhua/') == -1 &&
+                tab.url.search('http://1mh.com/manhua/') == -1 && 
+                tab.url.search('http://www.cococomic.com/manhua/') == -1 ) {  
+                chrome.pageAction.hide(lastTabId);
+            }
+        });
+    });
+    
+    chrome.tabs.getSelected(null, function(tab) {
+        lastTabId = tab.id;
+        chrome.pageAction.show(lastTabId);
+        if (tab.url.search('http://mh.99770.cc/manhua/') == -1 &&
+            tab.url.search('http://dm.99manga.com/manga/') == -1 &&     
+            tab.url.search('http://www.99comic.com/manhua/') == -1 &&
+            tab.url.search('http://www.99mh.com/manhua/') == -1 &&
+            tab.url.search('http://1mh.com/manhua/') == -1 && 
+            tab.url.search('http://www.cococomic.com/manhua/') == -1 ) {  
+            chrome.pageAction.hide(lastTabId);
+        }
+    });
 
-  chrome.tabs.getSelected(null, function(tab) {
-    lastTabId = tab.id;
-    chrome.pageAction.show(lastTabId);
-  });
-  
+
+ 
 	
-  // Called when the user clicks on the page action.
-  chrome.pageAction.onClicked.addListener(function(tab) {
-  	if (tab.url.search('http://mh.99770.cc/manhua/') != -1 ||
-		tab.url.search('http://dm.99manga.com/manga/') != -1 ||     
-		tab.url.search('http://www.99comic.com/manhua/') != -1 ||
-		tab.url.search('http://www.99mh.com/manhua/') != -1 ||
-    	tab.url.search('http://1mh.com/manhua/') != -1 || 
-    	tab.url.search('http://www.cococomic.com/manhua/') != -1 ) {  
-   	  chrome.tabs.create({'url': 'result.html?url=' + tab.url});
-   	}
-  });
+    // Called when the user clicks on the page action.
+    chrome.pageAction.onClicked.addListener(function(tab) {
+         chrome.tabs.create({'url': 'result.html?url=' + tab.url});
+    });
   
 </script>
 </head>
