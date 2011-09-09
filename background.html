@@ -28,7 +28,8 @@
 	
     // Called when the user clicks on the page action.
     chrome.pageAction.onClicked.addListener(function(tab) {
-         chrome.tabs.create({'url': 'result.html?url=' + tab.url});
+    	chrome.tabs.update(tab.id, {'url': 'result.html?url=' + tab.url})
+		//chrome.tabs.create({'url': 'result.html?url=' + tab.url});
     });
   
 </script>
