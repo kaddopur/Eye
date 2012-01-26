@@ -1,13 +1,17 @@
 <html>
 <head>
+<!-- ver 1.4.2 -->
 <script>
     function showIcon(tab) {
     	if ((tab.url.search('http://mh.99770.cc/manhua/') != -1 ||
         	 tab.url.search('http://dm.99manga.com/manga/') != -1 ||     
+             tab.url.search('http://dm.99manga.com/manhua/') != -1 ||
+             tab.url.search('http://dm.99manga.com/comic/') != -1 || 
         	 tab.url.search('http://www.99comic.com/manhua/') != -1 ||
              tab.url.search('http://www.99mh.com/manhua/') != -1 ||
              tab.url.search('http://1mh.com/manhua/') != -1 ||
-             tab.url.search('http://www.cococomic.com/manhua/') != -1) &&
+             tab.url.search('http://www.cococomic.com/manhua/') != -1 ||
+             tab.url.search('http://99mh.com/manhua/') != -1) &&
              tab.url.search('result.html') == -1) {  
              chrome.pageAction.show(tab.id);
         } else {
