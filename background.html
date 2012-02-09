@@ -3,9 +3,9 @@
   <!-- ver 1.4.7 -->
   <script>
     function showIcon(tab) {
-      if (keepGoing(tab.url) != -1 &&
-        tab.url != '' &&
-        tab.url.search('result.html') == -1) {
+      if (tab.url != '' &&
+          tab.url.search('result.html') == -1 &&
+          keepGoing(tab.url) != -1) {
         chrome.tabs.update(tab.id, {'url': 'result.html?url=' + tab.url});
       } else {
         chrome.pageAction.hide(tab.id);
@@ -26,10 +26,10 @@
     }
 
     chrome.tabs.onSelectionChanged.addListener(function(tabId) {
-      chrome.tabs.get(tabId, showIcon);
+      //chrome.tabs.get(tabId, showIcon);
     });
     
-    chrome.tabs.getSelected(null, showIcon);
+    //chrome.tabs.getSelected(null, showIcon);
     
     chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
       showIcon(tab);

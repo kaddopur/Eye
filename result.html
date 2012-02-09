@@ -3,8 +3,7 @@
 <html charset="utf-8">
   <head>
     <!-- ver 1.4.7 -->
-    <title>漫畫全覽</title>
-    
+    <title>讀取中…</title>
     <style type="text/css"> 
       body {
         background: #000;
@@ -14,6 +13,14 @@
       .container {
         text-align: center;
         margin: 0 auto;
+      }
+      
+      .page{
+        margin: 0 0 15px;
+      }
+      
+      .pagecontent{
+        border: 2px solid #555;
       }
       
       #progressbar {
@@ -95,21 +102,24 @@
       req.send(encoded);
               
       var response = req.responseText;
+      rx = /<title>(.*)( \d{4}).*<\/title>/;
+      m = rx.exec(response);
+      var title = m[1];
+      document.title = title;
+      
       response = response.slice(response.search('PicListUrl'));
       response = response.slice(response.search('\"') + 1);
       response = response.slice(0, response.search('\"'));
       
       var picUrls = response.split('|');
       var complete = 0;
-      var picDivs = [];
-      for(var i=0; i<picUrls.length; i++) {
-        picDivs[i] = '<div class="page"><img src="'+ ServerList[serverId-1] + picUrls[i] + '" onload="progress();" id="pic'+i+'"></div>';
-        //console.log(picDivs[i]);
-      }
+       
       document.write('<div id="progressbar"></div>');
       document.write('<span id="indicator"><span id="ok">0</span>/'+picUrls.length+'</span>');
       document.write('<div class=container>');
-      document.write(picDivs);
+      for(var i=0; i<picUrls.length; i++) {
+        document.write('<div class="page"><img class="pagecontent"src="'+ ServerList[serverId-1] + picUrls[i] + '" onload="progress();"></div>');
+      }
       document.write('</div>');
         
       function progress(){
