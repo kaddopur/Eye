@@ -1,43 +1,44 @@
 <html>
 <head>
-<!-- ver 1.4.2 -->
-<script>
+  <!-- ver 1.4.2 -->
+  <script>
     function showIcon(tab) {
-    	if ((tab.url.search('http://mh.99770.cc/manhua/') != -1 ||
-        	 tab.url.search('http://dm.99manga.com/manga/') != -1 ||     
-             tab.url.search('http://dm.99manga.com/manhua/') != -1 ||
-             tab.url.search('http://dm.99manga.com/comic/') != -1 || 
-        	 tab.url.search('http://www.99comic.com/manhua/') != -1 ||
-             tab.url.search('http://www.99mh.com/manhua/') != -1 ||
-             tab.url.search('http://1mh.com/manhua/') != -1 ||
-             tab.url.search('http://www.cococomic.com/manhua/') != -1 ||
-             tab.url.search('http://99mh.com/manhua/') != -1) &&
-             tab.url.search('result.html') == -1) {  
-             chrome.pageAction.show(tab.id);
-        } else {
-        	chrome.pageAction.hide(tab.id);
-        }
+      if ((tab.url.search('http://mh.99770.cc/manhua/') != -1 ||
+        tab.url.search('http://dm.99manga.com/manga/') != -1 ||     
+        tab.url.search('http://dm.99manga.com/manhua/') != -1 ||
+        tab.url.search('http://dm.99manga.com/comic/') != -1 || 
+        tab.url.search('http://www.99comic.com/manhua/') != -1 ||
+        tab.url.search('http://www.99mh.com/manhua/') != -1 ||
+        tab.url.search('http://1mh.com/manhua/') != -1 ||
+        tab.url.search('http://www.cococomic.com/manhua/') != -1 ||
+        tab.url.search('http://99mh.com/manhua/') != -1) &&
+        tab.url.search('result.html') == -1) {  
+        chrome.tabs.update(tab.id, {'url': 'result.html?url=' + tab.url});
+      } else {
+        chrome.pageAction.hide(tab.id);
+      }
     }    
 
     chrome.tabs.onSelectionChanged.addListener(function(tabId) {
-        chrome.tabs.get(tabId, showIcon);
+      chrome.tabs.get(tabId, showIcon);
     });
     
     chrome.tabs.getSelected(null, showIcon);
     
     chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-    	showIcon(tab);
+      showIcon(tab);
     });
  
-	
+  
     // Called when the user clicks on the page action.
     chrome.pageAction.onClicked.addListener(function(tab) {
-    	chrome.tabs.update(tab.id, {'url': 'result.html?url=' + tab.url})
-		//chrome.tabs.create({'url': 'result.html?url=' + tab.url});
+      
+    //chrome.tabs.create({'url': 'result.html?url=' + tab.url});;
     });
-  
-</script>
+    
+  </script>
 </head>
+
 <body>
 <canvas id="canvas" width="19" height="19"></canvas>
 </body>
