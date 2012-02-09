@@ -1,95 +1,124 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 
 <html charset="utf-8">
-    <head>
-        <title>º©µe¥þÄý</title>
-        <style type="text/css"> 
-        body {
-            background: #000;
-            background: -webkit-gradient(linear, left top, right top, from(#eee), to(#eee));
-        }
-        
-        .container {
-            text-align: center;
-            margin: 0 auto;
-        }
-
-        </style>
-        <script>
-            function incCounter( isClear ){
-                var targetUrl = 'http://eyeofxiangmin.appspot.com';
-                if (isClear == true) {
-                    targetUrl += '/clear';
-                } else {
-                    targetUrl += '/add';
-                }
-                
-                var req;
-                req = new XMLHttpRequest();
-                req.open("GET", targetUrl, false);
-                req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                        
-                var encoded = "";
-                req.send(encoded);
-                        
-                var response = req.responseText;
-                
-            }
-            incCounter(false);
-        
-        
-            var ServerList=new Array(12);
-            ServerList[0]="http://58.215.241.39:99/dm01/";
-            ServerList[1]="http://61.164.109.141:99/dm02/";
-            ServerList[2]="http://58.215.241.39:99/dm03/";
-            ServerList[3]="http://61.164.109.141:99/dm04/";
-            ServerList[4]="http://61.164.109.162:99/dm05/";
-            ServerList[5]="http://61.164.109.162:99/dm06/";
-            ServerList[6]="http://61.164.109.162:99/dm07/";
-            ServerList[7]="http://58.215.241.39:99/dm08/";
-            ServerList[8]="http://61.164.109.162:99/dm09/";
-            ServerList[9]="http://58.215.241.39:99/dm10/";
-            ServerList[10]="http://61.164.109.141:99/dm11/";
-            ServerList[11]="http://58.215.241.39:99/dm12/";
-            
-            function getQueryString( paramName ){ 
-            ¡@¡@paramName = paramName .replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]").toLowerCase(); 
-            ¡@¡@var reg = "[\\?&]"+paramName +"=([^&#]*)"; 
-            ¡@¡@var regex = new RegExp( reg ); 
-            ¡@¡@var regResults = regex.exec( window.location.href.toLowerCase() ); 
-            ¡@¡@if( regResults == null ) return ""; 
-            ¡@¡@else return regResults [1]; 
-            }
-            targetUrl = getQueryString('url'); 
-            
-            var serverId = targetUrl.slice(targetUrl.search('s=') + 2);
-        
-            var req;
-            req = new XMLHttpRequest();
-            req.open("GET", targetUrl, false);
-            req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                    
-            var encoded = "";
-            req.send(encoded);
-                    
-            var response = req.responseText;
-            response = response.slice(response.search('PicListUrl'));
-            response = response.slice(response.search('\"') + 1);
-            response = response.slice(0, response.search('\"'));
-            
-            var picUrls = response.split('|');
-            
-            for(var i=0; i<picUrls.length; i++) {
-                picUrls[i] = '<div class="page"><img src="'+ ServerList[serverId-1] + picUrls[i] + '"></p></div>';
-            }
-            document.write('<div class=container>');
-            document.write(picUrls);
-            document.write('</div>');
-            
-        </script>
-    </head>
+  <head>
+    <title>æ¼«ç•«å…¨è¦½</title>
     
-    <body>
+    <style type="text/css"> 
+      body {
+        background: #000;
+        background: -webkit-gradient(linear, left top, right top, from(#eee), to(#eee));
+      }
+      
+      .container {
+        text-align: center;
+        margin: 0 auto;
+      }
+      
+      #progressbar {
+        position: absolute;
+        width: 200px;
+        height: 16px;
+      }
+      
+      #indicator {
+        position: absolute;
+        left: 215px;
+        font-family: 'Ropa Sans', sans-serif;
+        font-size: large;
+      }
+    </style>
+    <link href='http://fonts.googleapis.com/css?family=Ropa+Sans' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/ui-lightness/jquery-ui-1.8.17.custom.css">
+    
+    <script src="js/jquery-1.7.1.min.js"></script>
+    <script src="js/jquery-ui-1.8.17.custom.min.js"></script>
+    
+    <script>
+      function incCounter( isClear ){
+        var targetUrl = 'http://eyeofxiangmin.appspot.com';
+        if (isClear == true) {
+          targetUrl += '/clear';
+        } else {
+          targetUrl += '/add';
+        }
         
-    </body>
+        var req;
+        req = new XMLHttpRequest();
+        req.open("GET", targetUrl, false);
+        req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                
+        var encoded = "";
+        req.send(encoded);
+                
+        var response = req.responseText;
+          
+      }
+      incCounter(false);
+  
+  
+      var ServerList=new Array(12);
+      ServerList[0]="http://58.215.241.39:99/dm01";
+      ServerList[1]="http://61.164.109.141:99/dm02";
+      ServerList[2]="http://58.215.241.39:99/dm03";
+      ServerList[3]="http://61.164.109.141:99/dm04";
+      ServerList[4]="http://61.164.109.162:99/dm05";
+      ServerList[5]="http://61.164.109.162:99/dm06";
+      ServerList[6]="http://61.164.109.162:99/dm07";
+      ServerList[7]="http://58.215.241.39:99/dm08";
+      ServerList[8]="http://61.164.109.162:99/dm09";
+      ServerList[9]="http://58.215.241.39:99/dm10";
+      ServerList[10]="http://61.164.109.141:99/dm11";
+      ServerList[11]="http://58.215.241.39:99/dm12";
+      
+      function getQueryString( paramName ){ 
+        paramName = paramName .replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]").toLowerCase(); 
+        var reg = "[\\?&]"+paramName +"=([^&#]*)"; 
+        var regex = new RegExp( reg ); 
+        var regResults = regex.exec( window.location.href.toLowerCase() ); 
+        if( regResults == null ) return ""; 
+        else return regResults [1]; 
+      }
+      targetUrl = getQueryString('url'); 
+      
+      var serverId = targetUrl.slice(targetUrl.search('s=') + 2);
+  
+      var req;
+      req = new XMLHttpRequest();
+      req.open("GET", targetUrl, false);
+      req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+              
+      var encoded = "";
+      req.send(encoded);
+              
+      var response = req.responseText;
+      response = response.slice(response.search('PicListUrl'));
+      response = response.slice(response.search('\"') + 1);
+      response = response.slice(0, response.search('\"'));
+      
+      var picUrls = response.split('|');
+      var complete = 0;
+      for(var i=0; i<picUrls.length; i++) {
+        picUrls[i] = '<div class="page"><img src="'+ ServerList[serverId-1] + picUrls[i] + '" onload="progress();"></p></div>';
+      }
+      document.write('<div id="progressbar"></div>');
+      document.write('<span id="indicator"><span id="ok">0</span>/'+picUrls.length+'</span>');
+      document.write('<div class=container>');
+      document.write(picUrls);
+      document.write('</div>');
+        
+      function progress(){
+        complete += 1;
+        $( "#progressbar" ).progressbar({
+          value: complete / picUrls.length * 100
+        });
+        
+        $( "#ok" ).text(complete);
+      }
+    </script>
+  </head>
+  
+  <body>
+    <div id="progressbar" class="pbar">
+  </body>
 </html>
