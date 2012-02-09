@@ -2,13 +2,11 @@
 <head>
   <!-- ver 1.4.7 -->
   <script>
-    function showIcon(tab) {
+    function render(tab) {
       if (tab.url != '' &&
           tab.url.search('result.html') == -1 &&
           keepGoing(tab.url) != -1) {
         chrome.tabs.update(tab.id, {'url': 'result.html?url=' + tab.url});
-      } else {
-        chrome.pageAction.hide(tab.id);
       }
     }
     
@@ -32,7 +30,7 @@
     //chrome.tabs.getSelected(null, showIcon);
     
     chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-      showIcon(tab);
+      render(tab);
     });
     
   </script>
