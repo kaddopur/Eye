@@ -16,16 +16,18 @@
       }
       
       #progressbar {
-        position: absolute;
+        position: fixed;
         width: 200px;
         height: 16px;
+        -webkit-transition: opacity 3s linear;
       }
       
       #indicator {
-        position: absolute;
+        position: fixed;
         left: 215px;
         font-family: 'Ropa Sans', sans-serif;
         font-size: large;
+        -webkit-transition: opacity 3s linear;
       }
     </style>
     <link href='http://fonts.googleapis.com/css?family=Ropa+Sans' rel='stylesheet' type='text/css'>
@@ -98,13 +100,15 @@
       
       var picUrls = response.split('|');
       var complete = 0;
+      var picDivs = [];
       for(var i=0; i<picUrls.length; i++) {
-        picUrls[i] = '<div class="page"><img src="'+ ServerList[serverId-1] + picUrls[i] + '" onload="progress();"></p></div>';
+        picDivs[i] = '<div class="page"><img src="'+ ServerList[serverId-1] + picUrls[i] + '" onload="progress();" id="pic'+i+'"></div>';
+        console.log(picDivs[i]);
       }
       document.write('<div id="progressbar"></div>');
       document.write('<span id="indicator"><span id="ok">0</span>/'+picUrls.length+'</span>');
       document.write('<div class=container>');
-      document.write(picUrls);
+      document.write(picDivs);
       document.write('</div>');
         
       function progress(){
@@ -115,6 +119,13 @@
         
         $( "#ok" ).text(complete);
       }
+      
+      $( "#progressbar" ).progressbar({
+        complete: function(event, ui) { 
+          $( "#progressbar" ).css('opacity', 0);
+          $( "#indicator" ).css('opacity', 0);
+        }
+      });
     </script>
   </head>
   
