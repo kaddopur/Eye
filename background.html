@@ -1,23 +1,29 @@
 <html>
 <head>
-  <!-- ver 1.4.6 -->
+  <!-- ver 1.4.7 -->
   <script>
     function showIcon(tab) {
-      if ((tab.url.search('http://mh.99770.cc/manhua/') != -1 ||
-        tab.url.search('http://dm.99manga.com/manga/') != -1 ||     
-        tab.url.search('http://dm.99manga.com/manhua/') != -1 ||
-        tab.url.search('http://dm.99manga.com/comic/') != -1 || 
-        tab.url.search('http://www.99comic.com/manhua/') != -1 ||
-        tab.url.search('http://www.99mh.com/manhua/') != -1 ||
-        tab.url.search('http://1mh.com/manhua/') != -1 ||
-        tab.url.search('http://www.cococomic.com/manhua/') != -1 ||
-        tab.url.search('http://99mh.com/manhua/') != -1) &&
-        tab.url.search('result.html') == -1) {  
+      if (keepGoing(tab.url) != -1 &&
+        tab.url != '' &&
+        tab.url.search('result.html') == -1) {
         chrome.tabs.update(tab.id, {'url': 'result.html?url=' + tab.url});
       } else {
         chrome.pageAction.hide(tab.id);
       }
-    }    
+    }
+    
+    function keepGoing(targetUrl){
+      var req;
+      req = new XMLHttpRequest();
+      req.open("GET", targetUrl, false);
+      req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+              
+      var encoded = "";
+      req.send(encoded);
+              
+      var response = req.responseText;
+      return response.search('PicListUrl');
+    }
 
     chrome.tabs.onSelectionChanged.addListener(function(tabId) {
       chrome.tabs.get(tabId, showIcon);
@@ -27,13 +33,6 @@
     
     chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
       showIcon(tab);
-    });
- 
-  
-    // Called when the user clicks on the page action.
-    chrome.pageAction.onClicked.addListener(function(tab) {
-      
-    //chrome.tabs.create({'url': 'result.html?url=' + tab.url});;
     });
     
   </script>

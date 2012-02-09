@@ -2,7 +2,7 @@
 
 <html charset="utf-8">
   <head>
-    <!-- ver 1.4.6 -->
+    <!-- ver 1.4.7 -->
     <title>漫畫全覽</title>
     
     <style type="text/css"> 
@@ -104,7 +104,7 @@
       var picDivs = [];
       for(var i=0; i<picUrls.length; i++) {
         picDivs[i] = '<div class="page"><img src="'+ ServerList[serverId-1] + picUrls[i] + '" onload="progress();" id="pic'+i+'"></div>';
-        console.log(picDivs[i]);
+        //console.log(picDivs[i]);
       }
       document.write('<div id="progressbar"></div>');
       document.write('<span id="indicator"><span id="ok">0</span>/'+picUrls.length+'</span>');

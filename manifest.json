@@ -1,6 +1,6 @@
 ﻿{
   "name":"鄉民之眼",
-  "version":"1.4.6",
+  "version":"1.4.7",
   "permissions":[
     "tabs",
     "http://*/*",
