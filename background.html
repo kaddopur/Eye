@@ -4,7 +4,7 @@
   <script>
     function render(tab) {
       if (correctDomain(tab.url) &&
-          keepGoing(tab.url) != -1) {
+          keepGoing(tab.url)) {
         chrome.tabs.update(tab.id, {'url': 'result.html?url=' + tab.url});
       }
     }
