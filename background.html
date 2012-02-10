@@ -3,14 +3,36 @@
   <!-- ver 1.4.9 -->
   <script>
     function render(tab) {
-      if (tab.url != '' &&
-          tab.url.search('result.html') == -1 &&
+      if (correctDomain(tab.url) &&
           keepGoing(tab.url) != -1) {
         chrome.tabs.update(tab.id, {'url': 'result.html?url=' + tab.url});
       }
     }
     
-    function keepGoing(targetUrl){
+    function correctDomain(targetUrl) {
+      var flagBasic = false;
+      var flagDomain = false;
+      
+      if(targetUrl != '' &&
+         targetUrl.search('result.html') == -1){
+        flagBasic = true;
+      }
+      
+      var domainList = ["http://1mh.com/",
+                        "http://dm.99manga.com/",
+                        "http://mh.99770.cc/",
+                        "http://www.99comic.com/",
+                        "http://www.cococomic.com/",
+                        "http://www.99mh.com/"];
+                        
+      for(var i=0; i<domainList.length; i++){
+        flagDomain = flagDomain || targetUrl.search(domainList[i]) != -1;
+      }
+      
+      return flagBasic && flagDomain;
+    }
+    
+    function keepGoing(targetUrl) {
       var req;
       req = new XMLHttpRequest();
       req.open("GET", targetUrl, false);
@@ -20,7 +42,8 @@
       req.send(encoded);
               
       var response = req.responseText;
-      return response.search('PicListUrl');
+      
+      return response.search('PicListUrl') != -1;
     }
 
     chrome.tabs.onSelectionChanged.addListener(function(tabId) {
