@@ -55,20 +55,12 @@
       
     });
     
-    var hey = 1;
     function checkNewest(){
       $.get("http://mh.99770.cc/comicupdate/", function(data){
         rx = /href="(.*)" target="_blank" class="lkgn">(.*)<\/a><font color=red><b>(.*)<\/b><\/font>(.*)<span/g;
         m = rx.exec(data);
         newestLine = m[2]+' '+m[3]+' '+m[4];
         lineList = data.match(rx);
-        
-        
-        if(hey == 1){
-          localStorage.setItem("newest", "我的恶娇女友 12 集(卷)");
-          hey += 1;
-        }
-        
         
         if(newestLine != localStorage.getItem("newest")){
           for(var i=0; i<lineList.length; i++){
@@ -117,7 +109,7 @@
       setInterval(function() {
         checkNewest();
         interval = 0;
-      }, 5000);
+      }, 300000);
     }
     
     function in_array(stringToSearch, arrayToSearch) {
