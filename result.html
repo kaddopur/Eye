@@ -38,17 +38,26 @@
         -webkit-transition: opacity 3s linear;
       }
       
-      #subscribe{
-        position: fixed;
-        right: 5px;
-        max-width: 
+      #subscribe {
+        float: right;
+
       }
       
-      #unsubscribe{
+      #unsubscribe {
+        float: right;
+        margin-top: 10px;
+      }
+      
+      #button {
         position: fixed;
-        top: 50px;
+        width: 36px;
         right: 5px;
-        max-width: 
+        opacity: 0.2;
+        -webkit-transition: opacity 0.5s linear;
+      }
+      
+      #button:hover {
+        opacity: 1;
       }
     </style>
     <link href='http://fonts.googleapis.com/css?family=Ropa+Sans' rel='stylesheet' type='text/css'>
@@ -243,8 +252,10 @@
       <span id="ok">0</span>/<span id="total"></span>
     </span>
     
-    <img id="subscribe" src="sub_gray.png">
-    <img id="unsubscribe" src="unsub_gray.png">
+    <div id="button">
+      <img id="subscribe" src="sub_gray.png">
+      <img id="unsubscribe" src="unsub_gray.png">
+    </div>
     
     <div class="container">
     </div>
