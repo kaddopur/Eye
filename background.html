@@ -1,6 +1,6 @@
 <html>
 <head>
-  <!-- ver 1.5 -->
+  <!-- ver 1.6.1 -->
   <script src="js/jquery-1.7.1.min.js"></script>
   <script src="js/jquery-ui-1.8.17.custom.min.js"></script>
   <script src="js/jquery.cookie.js"></script>
@@ -87,7 +87,7 @@
               var directURL = "http://mh.99770.cc" + rx.exec(data)[1];
               
               notification.onclick = function(){
-                console.log(directURL);
+                //console.log(directURL);
                 chrome.tabs.create({
                   'url': directURL
                 });
@@ -98,7 +98,7 @@
           } 
           localStorage.setItem("newest", newestLine);
         } else {
-          console.log(localStorage.getItem("newest") + new Date());
+          //console.log(localStorage.getItem("newest") + new Date());
         }
       });
     }
