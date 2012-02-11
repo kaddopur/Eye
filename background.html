@@ -1,11 +1,21 @@
 <html>
 <head>
   <!-- ver 1.5 -->
+  <script src="js/jquery-1.7.1.min.js"></script>
+  <script src="js/jquery-ui-1.8.17.custom.min.js"></script>
+  <script src="js/jquery.cookie.js"></script>
+  
   <script>
     function render(tab) {
-      if (correctDomain(tab.url) &&
-          keepGoing(tab.url)) {
-        chrome.tabs.update(tab.id, {'url': 'result.html?url=' + tab.url});
+      $.get(tab.url, function(data){
+        if(data.search('PicListUrl') != -1 &&
+           correctDomain(tab.url)){
+          chrome.tabs.update(tab.id, {'url': 'result.html?url=' + tab.url});
+        }
+      });
+      
+      if(correctDomain(tab.url)){
+        checkNewest();
       }
     }
     
@@ -33,20 +43,6 @@
       
       return flagBasic && flagDomain;
     }
-    
-    function keepGoing(targetUrl) {
-      var req;
-      req = new XMLHttpRequest();
-      req.open("GET", targetUrl, false);
-      req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-              
-      var encoded = "";
-      req.send(encoded);
-              
-      var response = req.responseText;
-      
-      return response.search('PicListUrl') != -1;
-    }
 
     chrome.tabs.onSelectionChanged.addListener(function(tabId) {
       //chrome.tabs.get(tabId, showIcon);
@@ -56,7 +52,69 @@
     
     chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
       render(tab);
+      
     });
+    
+    var hey = 1;
+    function checkNewest(){
+      $.get("http://mh.99770.cc/comicupdate/", function(data){
+        rx = /href="(.*)" target="_blank" class="lkgn">(.*)<\/a><font color=red><b>(.*)<\/b><\/font>(.*)<span/g;
+        m = rx.exec(data);
+        newestLine = m[2]+' '+m[3]+' '+m[4];
+        lineList = data.match(rx);
+        
+        
+        if(hey == 1){
+          localStorage.setItem("newest", "我的恶娇女友 12 集(卷)");
+          hey += 1;
+        }
+        
+        
+        if(newestLine != localStorage.getItem("newest")){
+          for(var i=0; i<lineList.length; i++){
+            rx = /href="(.*)" target="_blank" class="lkgn">(.*)<\/a><font color=red><b>(.*)<\/b><\/font>(.*)<span/;
+            m = rx.exec(lineList[i]);
+            thisLine = m[2]+' '+m[3]+' '+m[4];
+            
+            // it's cool below
+            if(thisLine == localStorage.getItem("newest")){ break; }
+            
+            var notification = window.webkitNotifications.createNotification(
+              'icon48.png',          // The image.
+              thisLine,              // The title.
+              '已更新，點擊觀看'     // The body.
+            );
+            
+            // create direct URL
+            $.get("http://mh.99770.cc" + m[1], function(data){
+              var rx = /<li><a href=(\S*) target=_blank>/;
+              var directURL = "http://mh.99770.cc" + rx.exec(data)[1];
+              
+              notification.onclick = function(){
+                console.log(directURL);
+                chrome.tabs.create({
+                  'url': directURL
+                });
+                this.cancel();
+              };
+              notification.show();
+            });
+          } 
+          localStorage.setItem("newest", newestLine);
+        } else {
+          console.log(localStorage.getItem("newest") + new Date());
+        }
+      });
+    }
+    
+    if (window.webkitNotifications) {
+      var interval = 0; // The display interval, in minutes.
+
+      setInterval(function() {
+        checkNewest();
+        interval = 0;
+      }, 2000);
+    }
     
   </script>
 </head>

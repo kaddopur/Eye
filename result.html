@@ -37,6 +37,19 @@
         font-size: large;
         -webkit-transition: opacity 3s linear;
       }
+      
+      #subscribe{
+        position: fixed;
+        right: 5px;
+        max-width: 
+      }
+      
+      #unsubscribe{
+        position: fixed;
+        top: 50px;
+        right: 5px;
+        max-width: 
+      }
     </style>
     <link href='http://fonts.googleapis.com/css?family=Ropa+Sans' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/ui-lightness/jquery-ui-1.8.17.custom.css">
@@ -45,41 +58,11 @@
     <script src="js/jquery-ui-1.8.17.custom.min.js"></script>
     
     <script>
-      function incCounter( isClear ){
-        var targetUrl = 'http://eyeofxiangmin.appspot.com';
-        if (isClear == true) {
-          targetUrl += '/clear';
-        } else {
-          targetUrl += '/add';
-        }
-        
-        var req;
-        req = new XMLHttpRequest();
-        req.open("GET", targetUrl, false);
-        req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                
-        var encoded = "";
-        req.send(encoded);
-                
-        var response = req.responseText;
-          
-      }
-      incCounter(false);
-  
-  
-      var ServerList=new Array(12);
-      ServerList[0]="http://58.215.241.39:99/dm01";
-      ServerList[1]="http://61.164.109.141:99/dm02";
-      ServerList[2]="http://58.215.241.39:99/dm03";
-      ServerList[3]="http://61.164.109.141:99/dm04";
-      ServerList[4]="http://61.164.109.162:99/dm05";
-      ServerList[5]="http://61.164.109.162:99/dm06";
-      ServerList[6]="http://61.164.109.162:99/dm07";
-      ServerList[7]="http://58.215.241.39:99/dm08";
-      ServerList[8]="http://61.164.109.162:99/dm09";
-      ServerList[9]="http://58.215.241.39:99/dm10";
-      ServerList[10]="http://61.164.109.141:99/dm11";
-      ServerList[11]="http://58.215.241.39:99/dm12";
+      var targetURL; 
+      var serverID;
+      var picURLs;
+      var completePicNum;
+      var serverList = new Array(12);
       
       function getQueryString( paramName ){ 
         paramName = paramName .replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]").toLowerCase(); 
@@ -89,58 +72,171 @@
         if( regResults == null ) return ""; 
         else return regResults [1]; 
       }
-      targetUrl = getQueryString('url'); 
       
-      var serverId = targetUrl.slice(targetUrl.search('s=') + 2);
-  
-      var req;
-      req = new XMLHttpRequest();
-      req.open("GET", targetUrl, false);
-      req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-              
-      var encoded = "";
-      req.send(encoded);
-              
-      var response = req.responseText;
-      rx = /<title>(.*)( \d{4}).*<\/title>/;
-      m = rx.exec(response);
-      var title = m[1];
-      document.title = title;
-      
-      response = response.slice(response.search('PicListUrl'));
-      response = response.slice(response.search('\"') + 1);
-      response = response.slice(0, response.search('\"'));
-      
-      var picUrls = response.split('|');
-      var complete = 0;
-       
-      document.write('<div id="progressbar"></div>');
-      document.write('<span id="indicator"><span id="ok">0</span>/'+picUrls.length+'</span>');
-      document.write('<div class=container>');
-      for(var i=0; i<picUrls.length; i++) {
-        document.write('<div class="page"><img class="pagecontent"src="'+ ServerList[serverId-1] + picUrls[i] + '" onload="progress();"></div>');
-      }
-      document.write('</div>');
+      function findPicURLs(data){
+        // set title
+        rx = /<title>(.*)( \d{4}).*<\/title>/;
+        m = rx.exec(data);
+        $("title").text(m[1]);
         
-      function progress(){
-        complete += 1;
-        $( "#progressbar" ).progressbar({
-          value: complete / picUrls.length * 100
+        // set picURLs
+        rx = /PicListUrl = "(.*)";/;
+        m = rx.exec(data);
+        picURLs = m[1].split('|');
+        
+        // set total
+        $("#total").text(picURLs.length);
+      }
+
+      function initialize(){
+        // Initialize variable
+        targetURL = getQueryString('url');
+        serverID = targetURL.slice(targetURL.search('s=') + 2);
+        picURLs = "";
+        completePicNum = 0;
+        
+        // Initialize serverList
+        serverList = new Array(12)
+        serverList[0] = "http://58.215.241.39:99/dm01";
+        serverList[1] = "http://61.164.109.141:99/dm02";
+        serverList[2] = "http://58.215.241.39:99/dm03";
+        serverList[3] = "http://61.164.109.141:99/dm04";
+        serverList[4] = "http://61.164.109.162:99/dm05";
+        serverList[5] = "http://61.164.109.162:99/dm06";
+        serverList[6] = "http://61.164.109.162:99/dm07";
+        serverList[7] = "http://58.215.241.39:99/dm08";
+        serverList[8] = "http://61.164.109.162:99/dm09";
+        serverList[9] = "http://58.215.241.39:99/dm10";
+        serverList[10] = "http://61.164.109.141:99/dm11";
+        serverList[11] = "http://58.215.241.39:99/dm12";
+        
+        // Increase counter
+        $.get("http://eyeofxiangmin.appspot.com/add");
+      }
+      
+      function loadPics(){
+        for(var i=0; i<picURLs.length; i++) {
+          $(".container").append('<div class="page"><img class="pagecontent" src="'+ serverList[serverID-1] + picURLs[i] + '"></div>');
+        }
+      }
+      
+      function bindHandlers(){
+        $("img.pagecontent").load(function(){
+          completePicNum += 1;
+          $("#progressbar").progressbar({
+            value: completePicNum / picURLs.length * 100
+          });
+          $("#ok").text(completePicNum);
         });
         
-        $( "#ok" ).text(complete);
+        $("#progressbar").progressbar({
+          complete: function(event, ui) {
+            $("#progressbar" ).css('opacity', 0);
+            $("#indicator").css('opacity', 0);
+          }
+        });
+        
+        $("#subscribe").click(function(){
+          rx = /\D*/;
+          tag = rx.exec($('title').text())[0];
+
+          if(localStorage.subs){
+            subsList = JSON.parse(localStorage.subs);
+          } else {
+            subsList = [tag];
+          }
+          
+          if(!in_array(tag, subsList)){
+            subsList.push(tag);
+            localStorage.subs = JSON.stringify(subsList);
+          }
+          subsNotification(tag);
+          checkState();
+        });
+        
+        $("#unsubscribe").click(function(){
+          if($("#subscribe").attr("src") == "sub.png"){
+            rx = /\D*/;
+            tag = rx.exec($('title').text())[0];
+
+            subsList = JSON.parse(localStorage.subs);
+            for(var i=0; i<subsList.length; i++){
+              if(subsList[i] == tag){
+                var a = subsList.slice(0, i);
+                var b = subsList.slice(i+1, subsList.length);
+                localStorage.subs = JSON.stringify(a.concat(b));
+                break;
+              }
+            }
+            
+            //subsNotification(tag);
+            checkState();
+          }
+        });
       }
       
-      $( "#progressbar" ).progressbar({
-        complete: function(event, ui) { 
-          $( "#progressbar" ).css('opacity', 0);
-          $( "#indicator" ).css('opacity', 0);
+      function checkState(){
+        // Initialize Button
+        rx = /\D*/;
+        tag = rx.exec($('title').text())[0];
+
+        if(localStorage.subs){
+          subsList = JSON.parse(localStorage.subs);
+          if(in_array(tag, subsList)){
+            $("#subscribe").attr("src", "sub.png");
+          } else {
+            $("#subscribe").attr("src", "sub_gray.png");
+          }
         }
+      }
+      
+      function subsNotification(tag){
+
+        var notification = window.webkitNotifications.createNotification(
+          'icon48.png',          // The image.
+          tag,              // The title.
+          '訂閱成功'     // The body.
+        );
+        
+        notification.onclick = function(){
+          this.cancel();
+        };
+        notification.show();
+      }
+      
+      $(document).ready(function(){
+        initialize();
+        $.get(targetURL, function(data){
+          findPicURLs(data);
+          loadPics();
+          bindHandlers();
+          checkState();
+        });
       });
+      
+      function in_array(stringToSearch, arrayToSearch) {
+        for (s = 0; s < arrayToSearch.length; s++) {
+          thisEntry = arrayToSearch[s].toString();
+          if (thisEntry == stringToSearch) {
+            return true;
+          }
+        }
+        return false;
+      }
     </script>
   </head>
   
   <body>
-    <div id="progressbar" class="pbar">
+    <div id="progressbar"></div>
+    
+    <span id="indicator">
+      <span id="ok">0</span>/<span id="total"></span>
+    </span>
+    
+    <img id="subscribe" src="sub_gray.png">
+    <img id="unsubscribe" src="unsub_gray.png">
+    
+    <div class="container">
+    </div>
   </body>
 </html>

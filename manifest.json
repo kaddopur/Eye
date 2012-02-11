@@ -2,6 +2,7 @@
   "name":"鄉民之眼",
   "version":"1.5",
   "permissions":[
+    "notifications",
     "tabs",
     "http://*/*",
     "https://*/*"
