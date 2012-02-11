@@ -148,9 +148,9 @@
           
           if(!in_array(tag, subsList)){
             subsList.push(tag);
-            localStorage.subs = JSON.stringify(subsList);
           }
-          subsNotification(tag);
+          localStorage.subs = JSON.stringify(subsList);
+          subsNotification(tag, true);
           checkState();
         });
         
@@ -169,7 +169,7 @@
               }
             }
             
-            //subsNotification(tag);
+            subsNotification(tag, false);
             checkState();
           }
         });
@@ -190,18 +190,28 @@
         }
       }
       
-      function subsNotification(tag){
-
-        var notification = window.webkitNotifications.createNotification(
-          'icon48.png',          // The image.
-          tag,              // The title.
-          '訂閱成功'     // The body.
-        );
+      function subsNotification(tag, isSub){
+        if(isSub){
+          var notification = window.webkitNotifications.createNotification(
+            'icon48.png',     // The image.
+            tag,              // The title.
+            '訂閱成功'        // The body.
+          );
+        } else {
+          var notification = window.webkitNotifications.createNotification(
+            'icon48.png',     // The image.
+            tag,              // The title.
+            '已取消訂閱'      // The body.
+          );
+        }
         
         notification.onclick = function(){
           this.cancel();
         };
         notification.show();
+        setTimeout(function(){
+          notification.cancel();
+        }, 3000);
       }
       
       $(document).ready(function(){

@@ -75,9 +75,13 @@
             rx = /href="(.*)" target="_blank" class="lkgn">(.*)<\/a><font color=red><b>(.*)<\/b><\/font>(.*)<span/;
             m = rx.exec(lineList[i]);
             thisLine = m[2]+' '+m[3]+' '+m[4];
+            var targetPage = m[2];
             
             // it's cool below
             if(thisLine == localStorage.getItem("newest")){ break; }
+            
+            // continue if it's not in subscription
+            if(!in_array(targetPage, JSON.parse(localStorage.subs))){ continue; } 
             
             var notification = window.webkitNotifications.createNotification(
               'icon48.png',          // The image.
@@ -86,8 +90,8 @@
             );
             
             // create direct URL
-            $.get("http://mh.99770.cc" + m[1], function(data){
-              var rx = /<li><a href=(\S*) target=_blank>/;
+            $.get("http://mh.99770.cc" + targetPage, function(data){
+              var rx = /<li><a href=(.*) target/;
               var directURL = "http://mh.99770.cc" + rx.exec(data)[1];
               
               notification.onclick = function(){
@@ -113,7 +117,17 @@
       setInterval(function() {
         checkNewest();
         interval = 0;
-      }, 2000);
+      }, 5000);
+    }
+    
+    function in_array(stringToSearch, arrayToSearch) {
+      for (s = 0; s < arrayToSearch.length; s++) {
+        thisEntry = arrayToSearch[s].toString();
+        if (thisEntry == stringToSearch) {
+          return true;
+        }
+      }
+      return false;
     }
     
   </script>
