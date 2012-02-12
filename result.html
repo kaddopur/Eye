@@ -72,6 +72,10 @@
       var picURLs;
       var completePicNum;
       var serverList = new Array(12);
+      var comicListID;
+      var comicID;
+      var comicTitle;
+
       
       function getQueryString( paramName ){ 
         paramName = paramName .replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]").toLowerCase(); 
@@ -93,6 +97,10 @@
         m = rx.exec(data);
         picURLs = m[1].split('|');
         
+        // set comicID
+        rx = /var ComicID=(\d*);/;
+        comicID = rx.exec(data)[1];
+        
         // set total
         $("#total").text(picURLs.length);
       }
@@ -103,6 +111,9 @@
         serverID = targetURL.slice(targetURL.search('s=') + 2);
         picURLs = "";
         completePicNum = 0;
+        comicListID = 0;
+        comicID = 0;
+        comicTitle = "";
         
         // Initialize serverList
         serverList = new Array(12)
@@ -146,31 +157,26 @@
         });
         
         $("#subscribe").click(function(){
-          rx = /\D*/;
-          tag = rx.exec($('title').text())[0];
-
           if(localStorage.subs){
             subsList = JSON.parse(localStorage.subs);
           } else {
-            subsList = [tag];
+            subsList = [comicTitle];
           }
           
-          if(!in_array(tag, subsList)){
-            subsList.push(tag);
+          if(!in_array(comicTitle, subsList)){
+            subsList.push(comicTitle);
           }
+          
           localStorage.subs = JSON.stringify(subsList);
-          subsNotification(tag, true);
-          checkState();
+          subsNotification(comicTitle, true);
+          $("#subscribe").attr("src", "sub.png");
         });
         
         $("#unsubscribe").click(function(){
           if($("#subscribe").attr("src") == "sub.png"){
-            rx = /\D*/;
-            tag = rx.exec($('title').text())[0];
-
             subsList = JSON.parse(localStorage.subs);
             for(var i=0; i<subsList.length; i++){
-              if(subsList[i] == tag){
+              if(subsList[i] == comicTitle){
                 var a = subsList.slice(0, i);
                 var b = subsList.slice(i+1, subsList.length);
                 localStorage.subs = JSON.stringify(a.concat(b));
@@ -178,25 +184,27 @@
               }
             }
             
-            subsNotification(tag, false);
-            checkState();
+            subsNotification(comicTitle, false);
+            $("#subscribe").attr("src", "sub_gray.png");
           }
         });
       }
       
       function checkState(){
-        // Initialize Button
-        rx = /\D*/;
-        tag = rx.exec($('title').text())[0];
-
-        if(localStorage.subs){
-          subsList = JSON.parse(localStorage.subs);
-          if(in_array(tag, subsList)){
-            $("#subscribe").attr("src", "sub.png");
-          } else {
-            $("#subscribe").attr("src", "sub_gray.png");
+        $.get("http://mh.99770.cc/comic/"+comicID+"/", function(data){
+          rx = /首页<\/a> >> (\S*)/;
+          comicTitle = rx.exec(data)[1];
+          
+          // Check button color
+          if(localStorage.subs){
+            subsList = JSON.parse(localStorage.subs);
+            if(in_array(comicTitle, subsList)){
+              $("#subscribe").attr("src", "sub.png");
+            } else {
+              $("#subscribe").attr("src", "sub_gray.png");
+            }
           }
-        }
+        }); 
       }
       
       function subsNotification(tag, isSub){

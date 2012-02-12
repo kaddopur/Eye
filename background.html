@@ -55,25 +55,38 @@
       
     });
     
+    //var hey = 1;
     function checkNewest(){
       $.get("http://mh.99770.cc/comicupdate/", function(data){
-        rx = /href="(.*)" target="_blank" class="lkgn">(.*)<\/a><font color=red><b>(.*)<\/b><\/font>(.*)<span/g;
+        rx = /href="(\S*)" target="_blank" class="lkgn">(\S*)<\/a><font color=red><b>(\S*)<\/b><\/font>(\S*)<span/g;
         m = rx.exec(data);
         newestLine = m[2]+' '+m[3]+' '+m[4];
         lineList = data.match(rx);
-        
-        if(newestLine != localStorage.getItem("newest")){
+        /*
+        if(hey == 1){
+          localStorage.newest = "源君物语 19 集(卷)";
+          hey += 1;
+        }
+        */
+        if(newestLine != localStorage.newest){
           for(var i=0; i<lineList.length; i++){
-            rx = /href="(.*)" target="_blank" class="lkgn">(.*)<\/a><font color=red><b>(.*)<\/b><\/font>(.*)<span/;
+            rx = /href="(\S*)" target="_blank" class="lkgn">(\S*)<\/a><font color=red><b>(\S*)<\/b><\/font>(\S*)<span/;
             m = rx.exec(lineList[i]);
             thisLine = m[2]+' '+m[3]+' '+m[4];
-            var targetPage = m[2];
+            comicTitle = m[2];
+            targetPage = m[1];
+            console.log(comicTitle, targetPage);
             
             // it's cool below
-            if(thisLine == localStorage.getItem("newest")){ break; }
+            if(thisLine == localStorage.newest){ break; }
             
             // continue if it's not in subscription
-            if(!in_array(targetPage, JSON.parse(localStorage.subs))){ continue; } 
+            if(!in_array(comicTitle, JSON.parse(localStorage.subs))){ 
+              console.log("not my favorite: " + comicTitle);
+              continue; 
+            } else{
+              console.log("update: " + comicTitle);
+            }            
             
             var notification = window.webkitNotifications.createNotification(
               'icon48.png',          // The image.
@@ -83,11 +96,11 @@
             
             // create direct URL
             $.get("http://mh.99770.cc" + targetPage, function(data){
-              var rx = /<li><a href=(.*) target/;
+              var rx = /<li><a href=(\S*) target/;
               var directURL = "http://mh.99770.cc" + rx.exec(data)[1];
               
               notification.onclick = function(){
-                //console.log(directURL);
+                console.log("directURL: "+directURL);
                 chrome.tabs.create({
                   'url': directURL
                 });
@@ -96,9 +109,9 @@
               notification.show();
             });
           } 
-          localStorage.setItem("newest", newestLine);
+          localStorage.newest = newestLine;
         } else {
-          //console.log(localStorage.getItem("newest") + new Date());
+          console.log(localStorage.newest + ' | ' + new Date());
         }
       });
     }
@@ -109,7 +122,7 @@
       setInterval(function() {
         checkNewest();
         interval = 0;
-      }, 300000);
+      }, 60000);
     }
     
     function in_array(stringToSearch, arrayToSearch) {
