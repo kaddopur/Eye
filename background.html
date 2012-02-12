@@ -13,10 +13,6 @@
           chrome.tabs.update(tab.id, {'url': 'result.html?url=' + tab.url});
         }
       });
-      
-      if(correctDomain(tab.url)){
-        checkNewest();
-      }
     }
     
     function correctDomain(targetUrl) {
@@ -55,19 +51,19 @@
       
     });
     
-    //var hey = 1;
+    var hey = 1;
     function checkNewest(){
       $.get("http://mh.99770.cc/comicupdate/", function(data){
         rx = /href="(\S*)" target="_blank" class="lkgn">(\S*)<\/a><font color=red><b>(\S*)<\/b><\/font>(\S*)<span/g;
         m = rx.exec(data);
         newestLine = m[2]+' '+m[3]+' '+m[4];
         lineList = data.match(rx);
-        /*
+        
         if(hey == 1){
-          localStorage.newest = "源君物语 19 集(卷)";
+          localStorage.newest = "电波教师 8 集(卷)";
           hey += 1;
         }
-        */
+        
         if(newestLine != localStorage.newest){
           for(var i=0; i<lineList.length; i++){
             rx = /href="(\S*)" target="_blank" class="lkgn">(\S*)<\/a><font color=red><b>(\S*)<\/b><\/font>(\S*)<span/;
@@ -83,31 +79,12 @@
             // continue if it's not in subscription
             if(!in_array(comicTitle, JSON.parse(localStorage.subs))){ 
               console.log("not my favorite: " + comicTitle);
-              continue; 
+              //continue; 
             } else{
               console.log("update: " + comicTitle);
             }            
             
-            var notification = window.webkitNotifications.createNotification(
-              'icon48.png',          // The image.
-              thisLine,              // The title.
-              '已更新，點擊觀看'     // The body.
-            );
-            
-            // create direct URL
-            $.get("http://mh.99770.cc" + targetPage, function(data){
-              var rx = /<li><a href=(\S*) target/;
-              var directURL = "http://mh.99770.cc" + rx.exec(data)[1];
-              
-              notification.onclick = function(){
-                console.log("directURL: "+directURL);
-                chrome.tabs.create({
-                  'url': directURL
-                });
-                this.cancel();
-              };
-              notification.show();
-            });
+            makeNotification(thisLine, targetPage);
           } 
           localStorage.newest = newestLine;
         } else {
@@ -116,13 +93,37 @@
       });
     }
     
+    function makeNotification(thisLine, targetPage) {
+      var notification = window.webkitNotifications.createNotification(
+        'icon48.png',          // The image.
+        thisLine,              // The title.
+        '已更新，點擊觀看'     // The body.
+      );  
+      
+      // create direct URL
+      $.get("http://mh.99770.cc" + targetPage, function(data){
+        var rx = /<li><a href=(\S*) target/;
+        var directURL = "http://mh.99770.cc" + rx.exec(data)[1];
+        notification.onclick = function(){
+          console.log("directURL: "+directURL);
+          chrome.tabs.create({
+            'url': directURL,
+            'active': false
+          });
+          this.cancel();
+        };
+      });
+      
+      notification.show();
+    }
+    
     if (window.webkitNotifications) {
       var interval = 0; // The display interval, in minutes.
 
       setInterval(function() {
         checkNewest();
         interval = 0;
-      }, 60000);
+      }, 300000);
     }
     
     function in_array(stringToSearch, arrayToSearch) {
