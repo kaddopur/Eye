@@ -7,12 +7,13 @@
   
   <script>
     function render(tab) {
-      $.get(tab.url, function(data){
-        if(data.search('PicListUrl') != -1 &&
-           correctDomain(tab.url)){
-          chrome.tabs.update(tab.id, {'url': 'result.html?url=' + tab.url});
-        }
-      });
+      if(correctDomain(tab.url)){
+        $.get(tab.url, function(data){
+          if(data.search('PicListUrl') != -1){
+            chrome.tabs.update(tab.id, {'url': 'result.html?url=' + tab.url});
+          }
+        });
+      }
     }
     
     function correctDomain(targetUrl) {
@@ -51,7 +52,7 @@
       
     });
     
-    var hey = 1;
+    //var hey = 1;
     function checkNewest(){
       $.get("http://mh.99770.cc/comicupdate/", function(data){
         rx = /href="(\S*)" target="_blank" class="lkgn">(\S*)<\/a><font color=red><b>(\S*)<\/b><\/font>(\S*)<span/g;
@@ -59,10 +60,12 @@
         newestLine = m[2]+' '+m[3]+' '+m[4];
         lineList = data.match(rx);
         
+        /*
         if(hey == 1){
           localStorage.newest = "电波教师 8 集(卷)";
           hey += 1;
         }
+        */
         
         if(newestLine != localStorage.newest){
           for(var i=0; i<lineList.length; i++){
