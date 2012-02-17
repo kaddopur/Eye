@@ -1,35 +1,90 @@
-<!DOCTYPE html>
-<html>
+﻿<!DOCTYPE html>
+<html charset='utf-8'>
   <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script>
       var episodeList = localStorage.episodeList? JSON.parse(localStorage.episodeList): [];
       
       var loadEpisode = function(){
-        for(var i=0; i<episodeList.length; i++){
-          $('.container').append('<div class="episode">' + episodeList[i].title + '</div>');
+        if(episodeList.length === 0) {
+          chrome.browserAction.setBadgeText({text: ''});
+        } else {
+          chrome.browserAction.setBadgeText({text: '' + episodeList.length});
         }
+            
+        for(var i=0; i<episodeList.length; i++){
+          $('.container').append('<div class="episode"><div class="title">' + episodeList[i].title + '</div><img src="arrow_grey.png" id="go'+i+'"></div></div>');
+          setPicture(i, episodeList[i].url);
+        } 
+      };
+      
+      var setPicture = function(i, targetURL){
+        $.get("http://mh.99770.cc" + targetURL, function(data){
+          var rx = /<li><a href=(\S*) target/;
+          var directURL = "http://mh.99770.cc" + rx.exec(data)[1];
+          var target_id = '#go' + i;
+          
+          $(target_id).attr('src', 'arrow.png');
+          $(target_id).click(function(){
+            chrome.tabs.create({'url': directURL});
+            var a = episodeList.slice(0, i);
+            var b = episodeList.slice(i+1, episodeList.length);
+            localStorage.episodeList = JSON.stringify(a.concat(b));
+            episodeList = JSON.parse(localStorage.episodeList);
+            
+            if(episodeList.length === 0) {
+              chrome.browserAction.setBadgeText({text: ''});
+            } else {
+              chrome.browserAction.setBadgeText({text: '' + episodeList.length});
+            }
+          });
+        });
       };
     
       $(document).ready(function(){
-        loadEpisode();
+        if(episodeList.length === 0) {
+          $('.container').append('<div class="episode"><div class="title">目前沒有新漫畫喔</div><img src="arrow_grey.png"></div></div>');
+          
+        } else {
+          loadEpisode();
+        }
       });
     </script>
     
     <style>
       .container {
-        width: 300px;
+        min-width: 240px;
+        padding: 2px;
       }
       
       .episode {
-        width: 300px;
+        height: 28px;
+      }
+      
+      .title {
+        float: left;
+        width: 210px;
+        height: 24px;
+        padding-top: 3px;
+        font-family: sans-serif;
+        font-size: 16px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      
+      img {
+        float: right;
+        width: 24px;
+        height: 24px;
+        background-image: url(arrow_grey.png);
       }
       
       body {
         overflow: hidden;
         margin: 0px;
         padding: 0px;
-        background: white;
+        background-color: #eee;
       }
     </style>
   </head>
