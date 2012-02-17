@@ -157,11 +157,7 @@
         });
         
         $("#subscribe").click(function(){
-          if(localStorage.subs){
-            subsList = JSON.parse(localStorage.subs);
-          } else {
-            subsList = [comicTitle];
-          }
+          subsList = localStorage.subs? JSON.parse(localStorage.subs): [];
           
           if(!in_array(comicTitle, subsList)){
             subsList.push(comicTitle);
