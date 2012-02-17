@@ -1,19 +1,14 @@
 ﻿<!DOCTYPE html>
 <html charset='utf-8'>
   <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <!-- ver 1.6.5 -->
+    <script src="js/jquery-1.7.1.min.js"></script>
     <script>
       var episodeList = localStorage.episodeList? JSON.parse(localStorage.episodeList): [];
       
-      var loadEpisode = function(){
-        if(episodeList.length === 0) {
-          chrome.browserAction.setBadgeText({text: ''});
-        } else {
-          chrome.browserAction.setBadgeText({text: '' + episodeList.length});
-        }
-            
+      var loadEpisode = function(){    
         for(var i=0; i<episodeList.length; i++){
-          $('.container').append('<div class="episode"><div class="title">' + episodeList[i].title + '</div><img src="arrow_grey.png" id="go'+i+'"></div></div>');
+          $('.container').append('<div class="episode"><div class="title">' + episodeList[i].title + '</div><img src="arrow_gray.png" id="go'+i+'"></div></div>');
           setPicture(i, episodeList[i].url);
         } 
       };
@@ -43,9 +38,10 @@
     
       $(document).ready(function(){
         if(episodeList.length === 0) {
-          $('.container').append('<div class="episode"><div class="title">目前沒有新漫畫喔</div><img src="arrow_grey.png"></div></div>');
-          
+          chrome.browserAction.setBadgeText({text: ''});
+          $('.container').html('<div class="episode"><div class="title">目前沒有新漫畫喔</div><img src="noepi.png"></div></div>');
         } else {
+          chrome.browserAction.setBadgeText({text: '' + episodeList.length});
           loadEpisode();
         }
       });
@@ -59,6 +55,11 @@
       
       .episode {
         height: 28px;
+      }
+      
+      .episode:hover {
+        height: 28px;
+        background-color: #e3e3e3;
       }
       
       .title {
@@ -77,7 +78,7 @@
         float: right;
         width: 24px;
         height: 24px;
-        background-image: url(arrow_grey.png);
+        padding-top: 2px;
       }
       
       body {
