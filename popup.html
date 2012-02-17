@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script>
+      var episodeList = localStorage.episodeList? JSON.parse(localStorage.episodeList): [];
+      
+      var loadEpisode = function(){
+        for(var i=0; i<episodeList.length; i++){
+          $('.container').append('<div class="episode">' + episodeList[i].title + '</div>');
+        }
+      };
+    
+      $(document).ready(function(){
+        loadEpisode();
+      });
+    </script>
+    
+    <style>
+      .container {
+        width: 300px;
+      }
+      
+      .episode {
+        width: 300px;
+      }
+      
+      body {
+        overflow: hidden;
+        margin: 0px;
+        padding: 0px;
+        background: white;
+      }
+    </style>
+  </head>
+  
+  <body>
+    <div class="container">
+    </div>
+  </body>
+</html>
