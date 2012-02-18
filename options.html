@@ -20,8 +20,16 @@
           localStorage.isNotified = options.isNotified.value;
         };
       });
+      
+      var clearAll = function(){
+        if(confirm("確定要清空更新列表中所有漫畫？")){
+          localStorage.episodeList = JSON.stringify([]);
+          chrome.browserAction.setBadgeText({text: ''});
+        }
+      };
     </script>
     
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     <style>
       body {
         background-color: #eee;
@@ -54,6 +62,7 @@
       <div>
         <img src="icon48.png" alt="Toast" style="float: left">
         <span class="headline">選項</span>
+        <button class="btn btn-danger" href="#" onclick="clearAll();" style="position: relative; top: 10px; float: right;"><i class="icon-trash icon-white"></i> 清空更新列表</button>
         <div style="clear: both"></div>
       </div>
       <hr />
@@ -86,9 +95,7 @@
             </select>
             分鐘檢查漫畫有無更新。
           </li>
-        <ul>
-        
-        
+        </ul>
       </form>
     </div>
   </body>

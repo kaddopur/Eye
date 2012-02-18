@@ -39,7 +39,7 @@
       $(document).ready(function(){
         if(episodeList.length === 0) {
           chrome.browserAction.setBadgeText({text: ''});
-          $('.container').html('<div class="episode"><div class="title">目前沒有新漫畫喔</div><img src="noepi.png"></div></div>');
+          $('.container').html('<div class="episode"><div class="title">目前沒有漫畫更新</div><img src="noepi.png"></div></div>');
         } else {
           chrome.browserAction.setBadgeText({text: '' + episodeList.length});
           loadEpisode();
@@ -67,6 +67,7 @@
       .title {
         margin: 0;
         padding: 0;
+        width: 210px;
         float: left;
         line-height: 24px;
         font-family: sans-serif;
