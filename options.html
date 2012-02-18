@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+
+<html charset='utf-8'>
+  <head>
+    <!-- ver 1.6.5 -->
+    <title>鄉民之眼 選項</title>
+    <script src="js/jquery-1.7.1.min.js"></script>
+    <script>
+      window.addEventListener('load', function() {
+        // Initialize the option controls.
+        options.frequency.value = localStorage.frequency? localStorage.frequency: 10;
+        options.isNotified.value = localStorage.isNotified? localStorage.isNotified: "需要";
+
+        // Set the display activation and frequency.
+        options.frequency.onchange = function() {
+          localStorage.frequency = options.frequency.value;
+        };
+        
+        options.isNotified.onchange = function() {
+          localStorage.isNotified = options.isNotified.value;
+        };
+      });
+    </script>
+    
+    <style>
+      body {
+        background-color: #eee;
+      }
+      
+      .container {
+        width: 50%;
+        min-width: 480px;
+        margin: 20px auto 0;
+      }
+      
+      .headline {
+        float: left;
+        font-size: 28px;
+        height: 48px;
+        line-height: 48px;
+        margin-left: 20px;
+        font-weight: bold;
+      }
+      
+      li {
+        margin: 10px;
+      }
+      
+    </style>
+  </head>
+  
+  <body>
+    <div class="container">
+      <div>
+        <img src="icon48.png" alt="Toast" style="float: left">
+        <span class="headline">選項</span>
+        <div style="clear: both"></div>
+      </div>
+      <hr />
+      
+      
+      <form id="options">
+        <ul>
+          <li>
+            在漫畫更新時
+            <select name="isNotified">
+              <option>需要</option>
+              <option>不需要</option>
+            </select>
+            顯示桌面通知。
+          </li>
+          
+          <li>
+            每
+            <select name="frequency">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+              <option>10</option>
+              <option>15</option>
+              <option>20</option>
+              <option>25</option>
+              <option>30</option>
+            </select>
+            分鐘檢查漫畫有無更新。
+          </li>
+        <ul>
+        
+        
+      </form>
+    </div>
+  </body>
+</html>
