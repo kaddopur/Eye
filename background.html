@@ -89,7 +89,9 @@
           }
           // if there is a possibly change
           if(localStorage.isNotified === "需要" || !localStorage.isNotified){
-            makeNotification(updateEpisode);
+            if(updateEpisode.length > 0){
+              makeNotification(updateEpisode);
+            }
           }
           localStorage.newest = newestLine;
           localStorage.episodeList = JSON.stringify(episodeList);
