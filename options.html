@@ -1,67 +1,24 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 
 <html charset='utf-8'>
   <head>
-    <title>¶m¥Á¤§²´ ¿ï¶µ</title>
-    <script src="js/jquery-1.7.1.min.js"></script>
-    <script>
-      window.addEventListener('load', function() {
-        // Initialize the option controls.
-        options.frequency.value = localStorage.frequency? localStorage.frequency: 10;
-        options.isNotified.value = localStorage.isNotified? localStorage.isNotified: "»İ­n";
-
-        // Set the display activation and frequency.
-        options.frequency.onchange = function() {
-          localStorage.frequency = options.frequency.value;
-        };
-        
-        options.isNotified.onchange = function() {
-          localStorage.isNotified = options.isNotified.value;
-        };
-      });
-      
-      var clearAll = function(){
-        if(confirm("½T©w­n²MªÅ§ó·s¦Cªí¤¤©Ò¦³º©µe¡H")){
-          localStorage.episodeList = JSON.stringify([]);
-          chrome.browserAction.setBadgeText({text: ''});
-        }
-      };
-    </script>
+    <title>é„‰æ°‘ä¹‹çœ¼ é¸é …</title>
     
+    <!-- SCRIPT -->
+    <script src="js/jquery-1.7.1.min.js"></script>
+    <script src="js/option.js"></script>
+
+    <!-- STYLE -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <style>
-      body {
-        background-color: #eee;
-      }
-      
-      .container {
-        width: 50%;
-        min-width: 480px;
-        margin: 20px auto 0;
-      }
-      
-      .headline {
-        float: left;
-        font-size: 28px;
-        height: 48px;
-        line-height: 48px;
-        margin-left: 20px;
-        font-weight: bold;
-      }
-      
-      li {
-        margin: 10px;
-      }
-      
-    </style>
+    <link rel="stylesheet" href="css/option.css">
   </head>
   
   <body>
     <div class="container">
       <div>
         <img src="icon48.png" alt="Toast" style="float: left">
-        <span class="headline">¿ï¶µ</span>
-        <button class="btn btn-danger" href="#" onclick="clearAll();" style="position: relative; top: 10px; float: right;"><i class="icon-trash icon-white"></i> ²MªÅ§ó·s¦Cªí</button>
+        <span class="headline">é¸é …</span>
+        <button class="btn btn-danger" href="#" onclick="clearAll();" style="position: relative; top: 10px; float: right;"><i class="icon-trash icon-white"></i> æ¸…ç©ºæ›´æ–°åˆ—è¡¨</button>
         <div style="clear: both"></div>
       </div>
       <hr />
@@ -70,16 +27,16 @@
       <form id="options">
         <ul>
           <li>
-            ¦bº©µe§ó·s®É
+            åœ¨æ¼«ç•«æ›´æ–°æ™‚
             <select name="isNotified">
-              <option>»İ­n</option>
-              <option>¤£»İ­n</option>
+              <option>éœ€è¦</option>
+              <option>ä¸éœ€è¦</option>
             </select>
-            Åã¥Ü®à­±³qª¾¡C
+            é¡¯ç¤ºæ¡Œé¢é€šçŸ¥ã€‚
           </li>
           
           <li>
-            ¨C
+            æ¯
             <select name="frequency">
               <option>1</option>
               <option>2</option>
@@ -92,7 +49,7 @@
               <option>25</option>
               <option>30</option>
             </select>
-            ¤ÀÄÁÀË¬dº©µe¦³µL§ó·s¡C
+            åˆ†é˜æª¢æŸ¥æ¼«ç•«æœ‰ç„¡æ›´æ–°ã€‚
           </li>
         </ul>
       </form>

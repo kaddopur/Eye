@@ -1,0 +1,54 @@
+﻿body {
+  background: #000;
+  background: -webkit-gradient(linear, left top, right top, from(#eee), to(#eee));
+}
+
+.container {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.page{
+  margin: 0 0 15px;
+}
+
+.pagecontent{
+  border: 2px solid #555;
+}
+
+#progressbar {
+  position: fixed;
+  width: 200px;
+  height: 16px;
+  -webkit-transition: opacity 3s linear;
+}
+
+#indicator {
+  position: fixed;
+  left: 215px;
+  font-family: 'Ropa Sans', sans-serif;
+  font-size: large;
+  -webkit-transition: opacity 3s linear;
+}
+
+#subscribe {
+  float: right;
+
+}
+
+#unsubscribe {
+  float: right;
+  margin-top: 10px;
+}
+
+#button {
+  position: fixed;
+  width: 36px;
+  right: 5px;
+  opacity: 0.2;
+  -webkit-transition: opacity 0.5s linear;
+}
+
+#button:hover {
+  opacity: 1;
+}
