@@ -1,21 +1,24 @@
-﻿window.addEventListener('load', function() {
-  // Initialize the option controls.
-  options.frequency.value = localStorage.frequency? localStorage.frequency: 10;
-  options.isNotified.value = localStorage.isNotified? localStorage.isNotified: "需要";
+var refreshData, ﻿clearAll;
 
-  // Set the display activation and frequency.
-  options.frequency.onchange = function() {
-    localStorage.frequency = options.frequency.value;
-  };
-  
-  options.isNotified.onchange = function() {
-    localStorage.isNotified = options.isNotified.value;
-  };
-});
-
-var clearAll = function(){
-  if(confirm("確定要清空更新列表中所有漫畫？")){
+﻿clearAll = function() {
+  if (confirm("確定要清空更新列表中所有漫畫？")) {
     localStorage.episodeList = JSON.stringify([]);
-    chrome.browserAction.setBadgeText({text: ''});
+    return chrome.browserAction.setBadgeText({
+      text: ''
+    });
   }
 };
+
+refreshData = function() {
+  var _ref, _ref2;
+  options.frequency.value = (_ref = localStorage.frequency) != null ? _ref : 10;
+  options.isNotified.value = (_ref2 = localStorage.isNotified) != null ? _ref2 : "需要";
+  options.frequency.onchange = function() {
+    return localStorage.frequency = options.frequency.value;
+  };
+  return options.isNotified.onchange = function() {
+    return localStorage.isNotified = options.isNotified.value;
+  };
+};
+
+window.addEventListener('load', refreshData);

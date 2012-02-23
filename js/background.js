@@ -38,7 +38,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
   
 });
 
-//var hey = 1;
+var hey = 1;
 function checkNewest(){
   $.get("http://mh.99770.cc/comicupdate/", function(data){
     rx = /href="(\S*)" target="_blank" class="lkgn">(\S*)<\/a><font color=red><b>(\S*)<\/b><\/font>(\S*)<span/g;
@@ -46,12 +46,12 @@ function checkNewest(){
     newestLine = m[2]+' '+m[3]+' '+m[4];
     lineList = data.match(rx);
     
-    /*
+    
     if(hey == 1){
       localStorage.newest = "家庭教师 374 集(卷)";
       hey += 1;
     }
-    */
+    
     
     var episodeList = localStorage.episodeList? JSON.parse(localStorage.episodeList): [];
     if(newestLine != localStorage.newest){
@@ -70,7 +70,7 @@ function checkNewest(){
         // continue if it's not in subscription
         if(!in_array(comicTitle, JSON.parse(localStorage.subs))){ 
           console.log("not my favorite: " + comicTitle);
-          continue; 
+          //continue; 
         } else{
           console.log("update: " + comicTitle);
         }            
@@ -114,13 +114,13 @@ function makeNotification(episodes) {
 // checkNewest interval
 setTimeout(function() {
   setLoop();
-}, (localStorage.frequency? localStorage.frequency: 10) * 60000);
+}, (localStorage.frequency? localStorage.frequency: 10) * 1000);
 
 function setLoop(){
   checkNewest();
   setTimeout(function() {
     setLoop();
-  }, (localStorage.frequency? localStorage.frequency: 10) * 60000);
+  }, (localStorage.frequency? localStorage.frequency: 10) * 1000);
 }
 
 
