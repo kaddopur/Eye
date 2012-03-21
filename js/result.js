@@ -49,8 +49,6 @@ function findPicURLs(data) {
 		
 	}
 	currentEpi = rx.exec(data)[2];
-	console.log(menuURL);
-	console.log(currentEpi);
 	$.get(menuURL, function(data) {
 		temp = data.split(currentEpi);
 		half = ["", ""];
@@ -81,10 +79,6 @@ function findPicURLs(data) {
 			prevURL = null;
 		}
 	});
-	
-	console.log("prevURL: "+prevURL);
-	console.log("nextURL: "+nextURL);
-	
 }
 
 function initialize() {
