@@ -6,6 +6,10 @@ var serverList = new Array(12);
 var comicListID;
 var comicID;
 var comicTitle;
+var menuURL;
+var currentEpi;
+var prevURL;
+var nextURL;
 
 function getQueryString(paramName) {
 	paramName = paramName.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]").toLowerCase();
@@ -35,6 +39,40 @@ function findPicURLs(data) {
 
 	// set total
 	$("#total").text(picURLs.length);
+
+	// set menuURL
+	try{
+		rx = /当前漫画：<a href=(.*)>(.*)<\/a>图片出错请/;
+		menuURL = "http://mh.99770.cc" + rx.exec(data)[1];
+		$("#menu").attr("src", "menu.png");
+	}catch(TypeError){
+		
+	}
+	currentEpi = rx.exec(data)[2];
+	console.log(menuURL);
+	console.log(currentEpi);
+	$.get(menuURL, function(data) {
+		half = data.split("title=\"" + currentEpi + "\"");
+		// nextURL
+		try {
+			rx = /<li><a href=(\S*) target=_blank/g;
+			m = half[0].match(rx);
+			rx = /<li><a href=(\S*) target=_blank/;
+			nextURL = "http://mh.99770.cc" + rx.exec(m[m.length - 2])[1];
+			$("#next").attr("src", "next.png");
+		} catch (TypeError) {
+			nextURL = null;
+		}
+
+		// prevURL
+		try {
+			rx = /<li><a href=(\S*) target=_blank/;
+			prevURL = "http://mh.99770.cc" + rx.exec(half[1])[1];
+			$("#prev").attr("src", "prev.png");
+		} catch (TypeError) {
+			prevURL = null;
+		}
+	});
 }
 
 function initialize() {
@@ -46,6 +84,10 @@ function initialize() {
 	comicListID = 0;
 	comicID = 0;
 	comicTitle = "";
+	menuURL = "";
+	currentEpi = "";
+	prevURL = "";
+	nextURL = "";
 
 	// Initialize serverList
 	serverList = new Array(12)
@@ -118,18 +160,30 @@ function bindHandlers() {
 	});
 
 	$("#prev").click(function() {
-		if ($("#prev").attr("src") == "prev_gray.png") {
-			$("#prev").attr("src", "prev.png");
-		} else {
-			$("#prev").attr("src", "prev_gray.png");
+		if (prevURL) {
+			chrome.tabs.getCurrent(function(tab) {
+				chrome.tabs.update(tab.id, {
+					'url' : prevURL
+				});
+			});
 		}
 	});
 
+	$("#menu").click(function() {
+		chrome.tabs.getCurrent(function(tab) {
+			chrome.tabs.update(tab.id, {
+				'url' : menuURL
+			});
+		});
+	});
+
 	$("#next").click(function() {
-		if ($("#next").attr("src") == "next_gray.png") {
-			$("#next").attr("src", "next.png");
-		} else {
-			$("#next").attr("src", "next_gray.png");
+		if (nextURL) {
+			chrome.tabs.getCurrent(function(tab) {
+				chrome.tabs.update(tab.id, {
+					'url' : nextURL
+				});
+			});
 		}
 	});
 }

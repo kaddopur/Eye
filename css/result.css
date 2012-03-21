@@ -66,11 +66,11 @@
   bottom: 5px;
 }
 
-#prev:hover,#next:hover {
+#prev:hover,#next:hover,#menu:hover {
   opacity: 1;
 }
 
-#prev,#next {
+#prev,#next,#menu {
   opacity: 0.2;
   -webkit-transition: opacity 0.5s linear;
 }
