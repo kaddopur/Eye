@@ -136,7 +136,7 @@ function bindHandlers() {
 
 function checkState() {
 	$.get("http://mh.99770.cc/comic/" + comicID + "/", function(data) {
-		rx = /首页<\/a> >> (\S*)/;
+		rx = /首页<\/a> >> (.*) 集数/;
 		comicTitle = rx.exec(data)[1];
 
 		// Check button color
