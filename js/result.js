@@ -52,7 +52,15 @@ function findPicURLs(data) {
 	console.log(menuURL);
 	console.log(currentEpi);
 	$.get(menuURL, function(data) {
-		half = data.split("title=\"" + currentEpi + "\"");
+		temp = data.split(currentEpi);
+		half = ["", ""];
+		var j=0;
+		for(var i=0; i<temp.length, j<2; i++){
+			if(temp[i].length > 200){
+				half[j] = temp[i];
+				j += 1;
+			}
+		}
 		// nextURL
 		try {
 			rx = /<li><a href=(\S*) target=_blank/g;
@@ -73,6 +81,10 @@ function findPicURLs(data) {
 			prevURL = null;
 		}
 	});
+	
+	console.log("prevURL: "+prevURL);
+	console.log("nextURL: "+nextURL);
+	
 }
 
 function initialize() {
