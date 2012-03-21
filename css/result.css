@@ -1,6 +1,7 @@
 ﻿body {
   background: #000;
-  background: -webkit-gradient(linear, left top, right top, from(#eee), to(#eee));
+  background: -webkit-gradient(linear, left top, right top, from(#eee), to(#eee) );
+  overflow-x: hidden;
 }
 
 .container {
@@ -8,12 +9,17 @@
   margin: 0 auto;
 }
 
-.page{
-  margin: 0 0 15px;
+.page {
+  margin-top: 15px;
 }
 
-.pagecontent{
+.page:first-child {
+  margin: 0px;
+}
+
+.pagecontent {
   border: 2px solid #555;
+  max-width: 100%;
 }
 
 #progressbar {
@@ -33,22 +39,41 @@
 
 #subscribe {
   float: right;
-
 }
 
 #unsubscribe {
+  margin-top: 5px;
   float: right;
-  margin-top: 10px;
 }
 
 #button {
   position: fixed;
-  width: 36px;
+  width: 32px;
   right: 5px;
+  top: 10px;
   opacity: 0.2;
   -webkit-transition: opacity 0.5s linear;
 }
 
 #button:hover {
   opacity: 1;
+}
+
+#nav {
+  position: fixed;
+  right: 5px;
+  bottom: 5px;
+}
+
+#prev:hover,#next:hover {
+  opacity: 1;
+}
+
+#prev,#next {
+  opacity: 0.2;
+  -webkit-transition: opacity 0.5s linear;
+}
+
+#prev {
+  margin-right: 2px;
 }
