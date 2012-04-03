@@ -33,7 +33,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 
 });
 
-var hey = 1;
+//var hey = 1;
 function checkNewest() {
 	$.get("http://mh.99770.cc/comicupdate/", function(data) {
 		rx = /href="(\S*)" target="_blank" class="lkgn">(.*)<\/a><font color=red><b>(\S*)<\/b><\/font>(\S*)<span/g;
@@ -42,7 +42,7 @@ function checkNewest() {
 		lineList = data.match(rx);
 
 	
-		if(hey == 1){ localStorage.newest = "东京ESP 24 集(卷)"; hey += 1; }
+		//if(hey == 1){ localStorage.newest = "东京ESP 24 集(卷)"; hey += 1; }
 		
 
 		var episodeList = localStorage.episodeList ? JSON.parse(localStorage.episodeList) : [];
