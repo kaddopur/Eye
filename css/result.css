@@ -25,6 +25,8 @@
 
 #progressbar {
   position: fixed;
+  left: 5px;
+  top: 10px;
   width: 200px;
   height: 16px;
   -webkit-transition: opacity 3s linear;
@@ -33,6 +35,7 @@
 #indicator {
   position: fixed;
   left: 215px;
+  top: 10px;
   font-family: 'Ropa Sans', sans-serif;
   font-size: large;
   -webkit-transition: opacity 3s linear;

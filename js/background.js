@@ -18,7 +18,7 @@ function correctDomain(targetUrl) {
 		flagBasic = true;
 	}
 
-	var domainList = ["http://1mh.com/", "http://99mh.com/", "http://dm.99manga.com/", "http://mh.99770.cc/", "http://www.99comic.com/", "http://www.cococomic.com/",
+	var domainList = ["http://1mh.com/", "http://99mh.com/", "http://dm.99manga.com/", "http://99770.cc/", "http://mh.99770.cc/", "http://www.99comic.com/", "http://www.cococomic.com/",
 			"http://www.99mh.com/", "http://www.99manga.com/"];
 
 	for ( var i = 0; i < domainList.length; i++) {
@@ -35,7 +35,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 
 //var hey = 1;
 function checkNewest() {
-	$.get("http://mh.99770.cc/comicupdate/", function(data) {
+	$.get("http://99770.cc/comicupdate/", function(data) {
 		rx = /href="(\S*)" target="_blank" class="lkgn">(.*)<\/a><font color=red><b>(\S*)<\/b><\/font>(\S*)<span/g;
 		m = rx.exec(data);
 		newestLine = m[2] + ' ' + m[3] + ' ' + m[4];

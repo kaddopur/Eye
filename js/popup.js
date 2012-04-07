@@ -8,9 +8,9 @@ var loadEpisode = function() {
 };
 
 var setPicture = function(i, targetURL) {
-	$.get("http://mh.99770.cc" + targetURL, function(data) {
+	$.get("http://99770.cc" + targetURL, function(data) {
 		var rx = /<li><a href=(\S*) target/;
-		var directURL = "http://mh.99770.cc" + rx.exec(data)[1];
+		var directURL = "http://99770.cc" + rx.exec(data)[1];
 		var target_id = '#go' + i;
 
 		$(target_id).attr('src', 'arrow.png');
@@ -47,7 +47,7 @@ $(document).ready(function() {
 		$('.container').html('<div class="episode"><div class="title">目前沒有漫畫更新</div><img src="noepi.png" id="noepi"></div></div>');
 		$('#noepi').click(function(){
 			chrome.tabs.create({
-				'url' : "http://mh.99770.cc"
+				'url' : "http://99770.cc"
 			});
 		});
 	} else {

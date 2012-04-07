@@ -43,7 +43,7 @@ function findPicURLs(data) {
 	// set menuURL
 	try{
 		rx = /当前漫画：<a href=(.*)>(.*)<\/a>图片出错请/;
-		menuURL = "http://mh.99770.cc" + rx.exec(data)[1];
+		menuURL = "http://99770.cc" + rx.exec(data)[1];
 		$("#menu").attr("src", "menu.png");
 	}catch(TypeError){
 		
@@ -64,7 +64,7 @@ function findPicURLs(data) {
 			rx = /<li><a href=(\S*) target=_blank/g;
 			m = half[0].match(rx);
 			rx = /<li><a href=(\S*) target=_blank/;
-			nextURL = "http://mh.99770.cc" + rx.exec(m[m.length - 2])[1];
+			nextURL = "http://99770.cc" + rx.exec(m[m.length - 2])[1];
 			$("#next").attr("src", "next.png");
 		} catch (TypeError) {
 			nextURL = null;
@@ -73,7 +73,7 @@ function findPicURLs(data) {
 		// prevURL
 		try {
 			rx = /<li><a href=(\S*) target=_blank/;
-			prevURL = "http://mh.99770.cc" + rx.exec(half[1])[1];
+			prevURL = "http://99770.cc" + rx.exec(half[1])[1];
 			$("#prev").attr("src", "prev.png");
 		} catch (TypeError) {
 			prevURL = null;
@@ -195,7 +195,7 @@ function bindHandlers() {
 }
 
 function checkState() {
-	$.get("http://mh.99770.cc/comic/" + comicID + "/", function(data) {
+	$.get("http://99770.cc/comic/" + comicID + "/", function(data) {
 		rx = /首页<\/a> >> (.*) 集数/;
 		comicTitle = rx.exec(data)[1];
 
