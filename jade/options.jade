@@ -1,0 +1,44 @@
+!!! 5
+html
+  head
+    title 鄉民之眼 選項
+    
+    // Meta
+    meta(charset="utf-8")
+    
+    // Script
+    script(src="js/jquery-1.7.1.min.js")
+    script(src="js/option.js")
+    
+    // Style
+    link(rel="stylesheet", type="text/css", href="css/bootstrap.min.css")
+    link(rel="stylesheet", type="text/css", href="css/option.css")
+    
+  body
+    .container
+      div
+        img(src="icon48.png", alt="Toast", style="float: left")
+        span.headline 選項
+        button.btn.btn-danger(href="#", onclick="clearAll();", style="position: relative; top: 10px; float: right;")
+          i.icon-trash.icon-white
+          清空更新列表
+        div(style="clear: both")
+        
+      hr
+      
+      form#options
+        ul
+          li
+            在漫畫更新時
+            select(name="isNotified")
+              option 需要
+              option 不需要
+            顯示桌面通知。
+          
+          li
+            每
+            select(name="frequency")
+              - for(var i=5; i<=30; i+=5)
+                option= i
+            分鐘檢查漫畫有無更新。
+            
