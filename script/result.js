@@ -44,7 +44,7 @@ function findPicURLs(data) {
 	try{
 		rx = /当前漫画：<a href=(.*)>(.*)<\/a>图片出错请/;
 		menuURL = "http://99770.cc" + rx.exec(data)[1];
-		$("#menu").attr("src", "menu.png");
+		$("#menu").attr("src", "image/menu.png");
 	}catch(TypeError){
 		
 	}
@@ -65,7 +65,7 @@ function findPicURLs(data) {
 			m = half[0].match(rx);
 			rx = /<li><a href=(\S*) target=_blank/;
 			nextURL = "http://99770.cc" + rx.exec(m[m.length - 2])[1];
-			$("#next").attr("src", "next.png");
+			$("#next").attr("src", "image/next.png");
 		} catch (TypeError) {
 			nextURL = null;
 		}
@@ -74,7 +74,7 @@ function findPicURLs(data) {
 		try {
 			rx = /<li><a href=(\S*) target=_blank/;
 			prevURL = "http://99770.cc" + rx.exec(half[1])[1];
-			$("#prev").attr("src", "prev.png");
+			$("#prev").attr("src", "image/prev.png");
 		} catch (TypeError) {
 			prevURL = null;
 		}
@@ -145,11 +145,11 @@ function bindHandlers() {
 
 		localStorage.subs = JSON.stringify(subsList);
 		subsNotification(comicTitle, true);
-		$("#subscribe").attr("src", "sub.png");
+		$("#subscribe").attr("src", "image/sub.png");
 	});
 
 	$("#unsubscribe").click(function() {
-		if ($("#subscribe").attr("src") == "sub.png") {
+		if ($("#subscribe").attr("src") == "image/sub.png") {
 			subsList = JSON.parse(localStorage.subs);
 			for ( var i = 0; i < subsList.length; i++) {
 				if (subsList[i] == comicTitle) {
@@ -161,7 +161,7 @@ function bindHandlers() {
 			}
 
 			subsNotification(comicTitle, false);
-			$("#subscribe").attr("src", "sub_gray.png");
+			$("#subscribe").attr("src", "image/sub_gray.png");
 		}
 	});
 
@@ -203,9 +203,9 @@ function checkState() {
 		if (localStorage.subs) {
 			subsList = JSON.parse(localStorage.subs);
 			if (in_array(comicTitle, subsList)) {
-				$("#subscribe").attr("src", "sub.png");
+				$("#subscribe").attr("src", "image/sub.png");
 			} else {
-				$("#subscribe").attr("src", "sub_gray.png");
+				$("#subscribe").attr("src", "image/sub_gray.png");
 			}
 		}
 	});

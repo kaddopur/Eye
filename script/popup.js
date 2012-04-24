@@ -2,7 +2,7 @@
 
 var loadEpisode = function() {
 	for ( var i = 0; i < episodeList.length; i++) {
-		$('.container').append('<div class="episode"><div class="title">' + episodeList[i].title + '</div><img src="arrow_gray.png" id="go' + i + '"></div></div>');
+		$('.container').append('<div class="episode"><div class="title">' + episodeList[i].title + '</div><img src="image/arrow_gray.png" id="go' + i + '"></div></div>');
 		setPicture(i, episodeList[i].url);
 	}
 };
@@ -13,7 +13,7 @@ var setPicture = function(i, targetURL) {
 		var directURL = "http://99770.cc" + rx.exec(data)[1];
 		var target_id = '#go' + i;
 
-		$(target_id).attr('src', 'arrow.png');
+		$(target_id).attr('src', 'image/arrow.png');
 		$(target_id).click(function() {
 			chrome.tabs.create({
 				'url' : directURL
@@ -44,7 +44,7 @@ $(document).ready(function() {
 		chrome.browserAction.setBadgeText({
 			text : ''
 		});
-		$('.container').html('<div class="episode"><div class="title">目前沒有漫畫更新</div><img src="noepi.png" id="noepi"></div></div>');
+		$('.container').html('<div class="episode"><div class="title">目前沒有漫畫更新</div><img src="image/noepi.png" id="noepi"></div></div>');
 		$('#noepi').click(function(){
 			chrome.tabs.create({
 				'url' : "http://99770.cc"
