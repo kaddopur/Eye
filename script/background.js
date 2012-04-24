@@ -1,37 +1,29 @@
-﻿function render(tab) {
-	if (correctDomain(tab.url)) {
-		$.get(tab.url, function(data) {
+﻿chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+	render(tab);
+});
+
+function render(tab){
+  var host = $.url(tab.url).attr('host');
+  var path = $.url(tab.url).attr('path');
+  
+  if(host === '99770.cc' || host === 'www.99770.cc'){ // 舊版
+    $.get(tab.url, function(data) {
 			if (data.search('PicListUrl') != -1) {
 				chrome.tabs.update(tab.id, {
 					'url' : 'result.html?url=' + tab.url
 				});
 			}
 		});
-	}
+  } else if(host === 'mh.99770.cc'){
+    console.log('新版');
+  } else if(host.search(/sfacg.com/) != -1 && path.search(/AllComic/) != -1){
+    chrome.tabs.update(tab.id, {
+      'url' : 'result_sfacg.html?url=' + tab.url
+    });
+  } else if(host === 'www.8comic.com'){
+    console.log('8comic');
+  }
 }
-
-function correctDomain(targetUrl) {
-	var flagBasic = false;
-	var flagDomain = false;
-
-	if (targetUrl != '' && targetUrl.search('result.html') == -1) {
-		flagBasic = true;
-	}
-
-	var domainList = ["http://1mh.com/", "http://99mh.com/", "http://dm.99manga.com/", "http://99770.cc/", "http://mh.99770.cc/", "http://www.99comic.com/", "http://www.cococomic.com/",
-			"http://www.99mh.com/", "http://www.99manga.com/"];
-
-	for ( var i = 0; i < domainList.length; i++) {
-		flagDomain = flagDomain || targetUrl.search(domainList[i]) != -1;
-	}
-
-	return flagBasic && flagDomain;
-}
-
-chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-	render(tab);
-
-});
 
 //var hey = 1;
 function checkNewest() {
