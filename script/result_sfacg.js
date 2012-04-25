@@ -4,6 +4,7 @@ var completePicNum;
 var menuURL;
 var prevURL;
 var nextURL;
+var subsData;
 
 function getQueryString(paramName) {
 	paramName = paramName.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]").toLowerCase();
@@ -30,6 +31,7 @@ function initialize() {
 	currentEpi = "";
 	prevURL = "";
 	nextURL = "";
+  subsData = [];
 
 	// Increase counter
 	$.get("http://eyeofxiangmin.appspot.com/add");
@@ -49,6 +51,9 @@ function loadPics() {
       $(".container").append('<div class="page"><img class="pagecontent" src="' + picURLs[i] + '"></div>');
     }
     
+    // set comicTitle
+    comicTitle = comicName;
+    
     // set up progress bar
     $("#total").text(picURLs.length);
     
@@ -67,8 +72,12 @@ function loadPics() {
     } else {
       prevURL = null;
     }
+
+    // set subsData
+    subsData = [comicTitle, menuURL];
     
     bindHandlers();
+    checkState();
   });	
 }
 
@@ -89,36 +98,30 @@ function bindHandlers() {
 	});
   
   
-  /*
+  
 	$("#subscribe").click(function() {
-		subsList = localStorage.subs ? JSON.parse(localStorage.subs) : [];
+		subsList = localStorage.subsListSFACG ? JSON.parse(localStorage.subsListSFACG) : [];
+    
+    if ($("#subscribe").attr("src") !== "image/sub.png") {
+      subsList.push(subsData);
 
-		if (!in_array(comicTitle, subsList)) {
-			subsList.push(comicTitle);
-		}
-
-		localStorage.subs = JSON.stringify(subsList);
-		subsNotification(comicTitle, true);
-		$("#subscribe").attr("src", "image/sub.png");
-	});
-
-	$("#unsubscribe").click(function() {
-		if ($("#subscribe").attr("src") == "image/sub.png") {
-			subsList = JSON.parse(localStorage.subs);
-			for ( var i = 0; i < subsList.length; i++) {
-				if (subsList[i] == comicTitle) {
+      localStorage.subsListSFACG = JSON.stringify(subsList);
+      subsNotification(comicTitle, true);
+      $("#subscribe").attr("src", "image/sub.png");
+    } else {
+      for ( var i = 0; i < subsList.length; i++) {
+				if (subsList[i].toString() === subsData.toString()) {
 					var a = subsList.slice(0, i);
 					var b = subsList.slice(i + 1, subsList.length);
-					localStorage.subs = JSON.stringify(a.concat(b));
+					localStorage.subsListSFACG = JSON.stringify(a.concat(b));
 					break;
 				}
 			}
 
 			subsNotification(comicTitle, false);
 			$("#subscribe").attr("src", "image/sub_gray.png");
-		}
+    }
 	});
-  */
   
 	$("#prev").click(function() {
 		if (prevURL) {
@@ -149,22 +152,23 @@ function bindHandlers() {
 	});
   
 }
-/*
-function checkState() {
-	$.get("http://99770.cc/comic/" + comicID + "/", function(data) {
-		rx = /首页<\/a> >> (.*) 集数/;
-		comicTitle = rx.exec(data)[1];
 
-		// Check button color
-		if (localStorage.subs) {
-			subsList = JSON.parse(localStorage.subs);
-			if (in_array(comicTitle, subsList)) {
-				$("#subscribe").attr("src", "image/sub.png");
-			} else {
-				$("#subscribe").attr("src", "image/sub_gray.png");
-			}
-		}
-	});
+function checkState() {
+	// Check button color
+  if (localStorage.subsListSFACG) {
+    subsList = JSON.parse(localStorage.subsListSFACG);
+    
+    
+    console.log(subsList.toString());
+    console.log(subsData);
+    if (in_array(''+subsData, subsList)) {
+      $("#subscribe").attr("src", "image/sub.png");
+      console.log('in');
+    } else {
+      $("#subscribe").attr("src", "image/sub_gray.png");
+      console.log('out');
+    }
+  }
 }
 
 function subsNotification(tag, isSub) {
@@ -190,7 +194,7 @@ function subsNotification(tag, isSub) {
 		notification.cancel();
 	}, 3000);
 }
-*/
+
 
 $(document).ready(function() {
 	initialize();
@@ -205,8 +209,9 @@ $(document).ready(function() {
     m = rx.exec(data);
     menuURL = m[1];
     $("#menu").attr("src", "image/menu.png");
+    
+    loadPics();
 	});
-  loadPics();
 });
 
 function in_array(stringToSearch, arrayToSearch) {
