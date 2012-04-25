@@ -5,7 +5,8 @@
     "notifications",
     "tabs",
     "http://*/*",
-    "https://*/*"
+    "https://*/*",
+    "management"
   ],
   "icons":{
     "16":"icon16.png",

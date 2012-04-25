@@ -9,36 +9,53 @@ html
     // Script
     script(src="script/jquery-1.7.1.min.js")
     script(src="script/option.js")
+    script(src="js/bootstrap.min.js")
     
     // Style
-    link(rel="stylesheet", type="text/css", href="style/bootstrap.min.css")
-    link(rel="stylesheet", type="text/css", href="style/option.css")
+    link(rel="stylesheet", type="text/css", href="css/bootstrap.min.css")
+    // link(rel="stylesheet", type="text/css", href="style/option.css")
     
   body
-    .container
-      div
-        img(src="icon48.png", alt="Toast", style="float: left")
-        span.headline 選項
-        button.btn.btn-danger(href="#", onclick="clearAll();", style="position: relative; top: 10px; float: right;")
-          i.icon-trash.icon-white
-          清空更新列表
-        div(style="clear: both")
-        
-      hr
-      
-      form#options
+    .container(style="padding-top: 20px;")
+      .page-header
+        .row
+          .span6
+            h2 選項
+          .span6
+            a.btn.btn-danger.pull-right(data-toggle="modal", href="#myModal")
+              i.icon-trash.icon-white
+              清空更新列表
+            .modal.hide.fade#myModal
+              .modal-header
+                button.close(data-dismiss="modal") &times;
+                h3 鄉民之眼
+              .modal-body
+                p 確定要清空更新列表中所有漫畫？
+              .modal-footer
+                a.btn(href="#", data-dismiss="modal") 保留
+                a.btn.btn-danger(href="#", onClick="clearAll();", data-dismiss="modal") 清空
+                
+      form#options.well
         ul
           li
-            在漫畫更新時
-            select(name="isNotified")
+            在漫畫更新時　
+            select.span2(name="isNotified")
               option 需要
               option 不需要
-            顯示桌面通知。
-          
-          li
-            每
-            select(name="frequency")
+            　顯示桌面通知。
+          li 
+            每　
+            select.span2(name="frequency")
               - for(var i=5; i<=30; i+=5)
                 option= i
-            分鐘檢查漫畫有無更新。
-            
+            　分鐘檢查漫畫有無更新。
+      .page-header(style="margin-top: 80px;")
+        h2 訂閱列表
+      table.table.table-striped
+        thead
+          tr
+            th.span9 漫畫名稱
+            th.span2 網頁連結
+            th.span1 取消訂閱
+        tbody#subsDisplay
+        

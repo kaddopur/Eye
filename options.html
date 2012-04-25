@@ -7,37 +7,67 @@
     <!-- Script-->
     <script src="script/jquery-1.7.1.min.js"></script>
     <script src="script/option.js"></script>
+    <script src="js/bootstrap.min.js"></script>
     <!-- Style-->
-    <link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="style/option.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <!-- link(rel="stylesheet", type="text/css", href="style/option.css")-->
   </head>
   <body>
-    <div class="container">
-      <div><img src="icon48.png" alt="Toast" style="float: left"><span class="headline">選項</span>
-        <button href="#" onclick="clearAll();" style="position: relative; top: 10px; float: right;" class="btn btn-danger"><i class="icon-trash icon-white"></i>清空更新列表</button>
-        <div style="clear: both"></div>
+    <div style="padding-top: 20px;" class="container">
+      <div class="page-header">
+        <div class="row">
+          <div class="span6">
+            <h2>選項</h2>
+          </div>
+          <div class="span6"><a data-toggle="modal" href="#myModal" class="btn btn-danger pull-right"><i class="icon-trash icon-white"></i>清空更新列表</a>
+            <div id="myModal" class="modal hide fade">
+              <div class="modal-header">
+                <button data-dismiss="modal" class="close">&times;</button>
+                <h3>鄉民之眼</h3>
+              </div>
+              <div class="modal-body">
+                <p>確定要清空更新列表中所有漫畫？</p>
+              </div>
+              <div class="modal-footer"><a href="#" data-dismiss="modal" class="btn">保留</a><a href="#" onClick="clearAll();" data-dismiss="modal" class="btn btn-danger">清空</a></div>
+            </div>
+          </div>
+        </div>
       </div>
-      <hr>
-      <form id="options">
+      <form id="options" class="well">
         <ul>
-          <li>在漫畫更新時
-            <select name="isNotified">
+          <li>在漫畫更新時　
+            <select name="isNotified" class="span2">
               <option>需要</option>
               <option>不需要</option>
-            </select>顯示桌面通知。
+            </select>　顯示桌面通知。
           </li>
-          <li>每
-            <select name="frequency">
+          <li>
+             
+            每　
+            <select name="frequency" class="span2">
               <option>5</option>
               <option>10</option>
               <option>15</option>
               <option>20</option>
               <option>25</option>
               <option>30</option>
-            </select>分鐘檢查漫畫有無更新。
+            </select>　分鐘檢查漫畫有無更新。
           </li>
         </ul>
       </form>
+      <div style="margin-top: 80px;" class="page-header">
+        <h2>訂閱列表</h2>
+      </div>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th class="span9">漫畫名稱</th>
+            <th class="span2">網頁連結</th>
+            <th class="span1">取消訂閱</th>
+          </tr>
+        </thead>
+        <tbody id="subsDisplay"></tbody>
+      </table>
     </div>
   </body>
 </html>

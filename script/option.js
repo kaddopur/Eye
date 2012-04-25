@@ -1,12 +1,11 @@
-var refreshData, ﻿clearAll;
+var refreshData, ﻿clearAll, deleteSubs;
+var subsList;
 
 ﻿clearAll = function() {
-  if (confirm("確定要清空更新列表中所有漫畫？")) {
-    localStorage.episodeList = JSON.stringify([]);
-    return chrome.browserAction.setBadgeText({
-      text: ''
-    });
-  }
+  localStorage.episodeList = JSON.stringify([]);
+  return chrome.browserAction.setBadgeText({
+    text: ''
+  });
 };
 
 refreshData = function() {
@@ -21,4 +20,29 @@ refreshData = function() {
   };
 };
 
-window.addEventListener('load', refreshData);
+//window.addEventListener('load', refreshData);
+
+loadList = function(){
+  subsList = localStorage.subsListSFACG? JSON.parse(localStorage.subsListSFACG): [];
+  
+  $('#subsDisplay').html('');
+  for(var i=0; i<subsList.length; i++){
+    var node = '<tr><td>'+subsList[i][0]+'</td>';
+    node += '<td> <span onClick="window.open(\''+subsList[i][1]+'\')" class="label">前往</span></td>'
+    node += '<td><button class="close" onClick="deleteSubs('+i+')">&times;</button></td></tr>'
+    $('#subsDisplay').append(node);
+  }
+}
+
+deleteSubs = function(index){
+  subsList = localStorage.subsListSFACG? JSON.parse(localStorage.subsListSFACG): [];
+  var a = subsList.slice(0, index);
+  var b = subsList.slice(index+1);
+  localStorage.subsListSFACG = JSON.stringify(a.concat(b));
+  loadList();
+}
+
+$(document).ready(function(){
+  refreshData();
+  loadList();
+});

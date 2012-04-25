@@ -121,6 +121,7 @@ function bindHandlers() {
 			subsNotification(comicTitle, false);
 			$("#subscribe").attr("src", "image/sub_gray.png");
     }
+    checkState();
 	});
   
 	$("#prev").click(function() {
@@ -158,17 +159,17 @@ function checkState() {
   if (localStorage.subsListSFACG) {
     subsList = JSON.parse(localStorage.subsListSFACG);
     
-    
-    console.log(subsList.toString());
-    console.log(subsData);
     if (in_array(''+subsData, subsList)) {
       $("#subscribe").attr("src", "image/sub.png");
-      console.log('in');
     } else {
       $("#subscribe").attr("src", "image/sub_gray.png");
-      console.log('out');
     }
   }
+  setTimeout(function(){
+    if ($("#subscribe").attr("src") === "image/sub.png"){
+      checkState();
+    }
+  }, 3000);
 }
 
 function subsNotification(tag, isSub) {
@@ -200,10 +201,11 @@ $(document).ready(function() {
 	initialize();
 	$.get(targetURL, function(data) {
 		// set title
+    /*
     rx = /var lName = encodeURIComponent\('(\S*)'\);/;
     m = rx.exec(data);
     $("title").text(m[1]);
-    
+    */
     // set menu button
     rx = /"([^"]*HTML[^"]*)"/;
     m = rx.exec(data);

@@ -1,5 +1,9 @@
 ﻿chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-	render(tab);
+  render(tab);
+});
+
+chrome.management.onInstalled.addListener(function(info) {
+  localStorage.clear();
 });
 
 function render(tab){
@@ -25,8 +29,74 @@ function render(tab){
   }
 }
 
-//var hey = 1;
 function checkNewest() {
+  $.get("http://comic.sfacg.com/", function(data){
+    var rx = /<div id="TopList_1">([\w\W]*)<div id="TopList_2"/m;
+    var m = rx.exec(data);
+    var updateRaw = m[1];
+    
+    rx = /<td height="30" align="center" bgcolor="#FFFFFF"><a href="\/HTML.*<\/a><\/td>/g;
+    updateList = updateRaw.match(rx);
+    
+    rx = /<a href="(\S*)".*>(.*)<\/a/;
+    m = rx.exec(updateList[0]);
+    var newLine = [m[2], "http://comic.sfacg.com" + m[1]];
+    
+    var newest = localStorage.newest? JSON.parse(localStorage.newest): [];
+    var episodeList = localStorage.episodeList? JSON.parse(localStorage.episodeList) : [];
+    var subsList = localStorage.subsListSFACG? JSON.parse(localStorage.subsListSFACG) : [];
+    var updateEpisode = [];
+    
+    if(newLine !== newest){
+      for(i=0; i<updateList.length; i++){
+        rx = /<a href="(\S*)".*>(.*)<\/a/;
+        m = rx.exec(updateList[i]);
+        var thisLine = [m[2], "http://comic.sfacg.com" + m[1]];
+        
+        
+        // update is done! 
+        if (thisLine.toString() === newest.toString()) {
+          break;
+				}
+        
+        // continue if thisLine is not in subsList
+        console.log('this: '+ thisLine.toString());
+        if(!in_array(thisLine.toString(), subsList)){
+          continue;
+        }
+        
+        console.log('ready to push' + thisLine);
+        updateEpisode.push(thisLine);
+        episodeList.push({
+					title : thisLine[0],
+					url : thisLine[1]
+				});
+      }
+      localStorage.newest = JSON.stringify(newLine);
+      localStorage.episodeList = JSON.stringify(episodeList);
+    }
+    
+    // if there is a possibly change
+    if (localStorage.isNotified === "需要" || !localStorage.isNotified) {
+      if (updateEpisode.length > 0) {
+        makeNotification(updateEpisode);
+      }
+    }
+    if (episodeList.length === 0) {
+				chrome.browserAction.setBadgeText({
+					text : ''
+				});
+    } else {
+      chrome.browserAction.setBadgeText({
+        text : '' + episodeList.length
+      });
+    }
+    
+    
+    
+  });
+}
+/*
 	$.get("http://99770.cc/comicupdate/", function(data) {
 		rx = /href="(\S*)" target="_blank" class="lkgn">(.*)<\/a><font color=red><b>(\S*)<\/b><\/font>(\S*)<span/g;
 		m = rx.exec(data);
@@ -88,8 +158,10 @@ function checkNewest() {
 			console.log(localStorage.newest + ' | ' + new Date());
 		}
 	});
+  
+  
 }
-
+*/
 function makeNotification(episodes) {
 	var notification = window.webkitNotifications.createNotification('icon48.png', // The
 																					// image.
