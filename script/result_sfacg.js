@@ -42,6 +42,8 @@ function loadPics() {
     eval(data);
     picURLs = picAy;
     
+    console.log(data);
+    
     // load pics
     for ( var i = 0; i < picURLs.length; i++) {
       $(".container").append('<div class="page"><img class="pagecontent" src="' + picURLs[i] + '"></div>');
@@ -52,7 +54,7 @@ function loadPics() {
     
     // set next button
     nextURL = nextVolume;
-    if(nextURL.search(/javascript/) == -1){
+    if(nextURL.search(/javascript/) == -1 && nextURL.indexOf('#') == -1){
       $("#next").attr("src", "image/next.png");
     } else {
       nextURL = null;
@@ -60,7 +62,7 @@ function loadPics() {
     
     // set prev button
     prevURL = preVolume;
-    if(prevURL.search(/javascript/) == -1){
+    if(prevURL.search(/javascript/) == -1 && prevURL.indexOf('#') == -1){
       $("#prev").attr("src", "image/prev.png");
     } else {
       prevURL = null;
