@@ -201,11 +201,10 @@ $(document).ready(function() {
 	initialize();
 	$.get(targetURL, function(data) {
 		// set title
-    /*
-    rx = /var lName = encodeURIComponent\('(\S*)'\);/;
+    rx = /var lName = encodeURIComponent\('(.*)'\);/;
     m = rx.exec(data);
     $("title").text(m[1]);
-    */
+    
     // set menu button
     rx = /"([^"]*HTML[^"]*)"/;
     m = rx.exec(data);
