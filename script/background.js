@@ -118,9 +118,7 @@ inEpisodeList = function(targetURL) {
 initialize = function() {
   if (ls.newestSFACG == null) ls.newestSFACG = JSON.stringify([]);
   if (ls.subsListSFACG == null) ls.subsListSFACG = JSON.stringify([]);
-  if (ls.newest99770 == null) {
-    ls.newest99770 = JSON.stringify(["GAUS", "http://99770.cc/comic/11844/"]);
-  }
+  if (ls.newest99770 == null) ls.newest99770 = JSON.stringify([]);
   if (ls.subsList99770 == null) ls.subsList99770 = JSON.stringify([]);
   if (ls.episodeList == null) return ls.episodeList = JSON.stringify([]);
 };

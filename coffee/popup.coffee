@@ -10,7 +10,7 @@ refreshBadge = ->
   chrome.browserAction.setBadgeText {text: badgeText}
   
   if episodeList.length == 0
-    $('.container').html("<div class='episode'><div class='title'>目前沒有漫畫更新</div><span class='label label-warning'>SFACG</span> <span class='label label-success'>99770</span></div>")
+    $('.container').html("<div class='episode'><div class='title title-noepi'>目前沒有漫畫更新</div><span class='label label-warning'>SFACG</span> <span class='label label-success'>99770</span></div>")
     $('.label-warning').click -> chrome.tabs.create {url: 'http://comic.sfacg.com/'}
     $('.label-success').click -> chrome.tabs.create {url: 'http://99770.cc/'}
   else

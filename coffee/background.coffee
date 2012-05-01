@@ -108,7 +108,7 @@ initialize = ->
 	ls.newestSFACG = JSON.stringify [] unless ls.newestSFACG?
 	ls.subsListSFACG = JSON.stringify [] unless ls.subsListSFACG?
 
-	ls.newest99770 = JSON.stringify ["GAUS", "http://99770.cc/comic/11844/"] unless ls.newest99770?
+	ls.newest99770 = JSON.stringify [] unless ls.newest99770?
 	ls.subsList99770 = JSON.stringify [] unless ls.subsList99770?
 
 	ls.episodeList = JSON.stringify [] unless ls.episodeList?

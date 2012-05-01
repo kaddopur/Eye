@@ -1,7 +1,7 @@
 ﻿.container {
   margin: 0;
   padding: 3px;
-  min-width: 250px;
+  min-width: 270px;
 }
 
 .episode {
@@ -17,7 +17,7 @@
 .title {
   margin: 0;
   padding: 0;
-  width: 150px;
+  width: 240px;
   float: left;
   line-height: 24px;
   font-family: sans-serif;
@@ -27,9 +27,21 @@
   white-space: nowrap;
 }
 
+.title-noepi {
+  width: 150px;
+}
+
 .label {
   float: right;
   margin: 5px 2px;
+  cursor: pointer;
+  -webkit-transition-property: padding;
+  -webkit-transition-duration: 0.1s;
+}
+
+.label:hover {
+  padding-right: 10px;
+  padding-left: 10px;
 }
 
 img {
