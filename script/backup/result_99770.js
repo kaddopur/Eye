@@ -137,32 +137,15 @@ function bindHandlers() {
 	});
 
 	$("#subscribe").click(function() {
-		subsList = localStorage.subs ? JSON.parse(localStorage.subs) : [];
+		subsList = localStorage.subsList99770 ? JSON.parse(localStorage.subsList99770) : [];
 
-		if (!in_array(comicTitle, subsList)) {
-			subsList.push(comicTitle);
+		if (!in_array([comicTitle, menuURL.toLowerCase()].toString(), subsList)) {
+			subsList.push([comicTitle, menuURL.toLowerCase()]);
 		}
 
-		localStorage.subs = JSON.stringify(subsList);
+		localStorage.subsList99770 = JSON.stringify(subsList);
 		subsNotification(comicTitle, true);
 		$("#subscribe").attr("src", "image/sub.png");
-	});
-
-	$("#unsubscribe").click(function() {
-		if ($("#subscribe").attr("src") == "image/sub.png") {
-			subsList = JSON.parse(localStorage.subs);
-			for ( var i = 0; i < subsList.length; i++) {
-				if (subsList[i] == comicTitle) {
-					var a = subsList.slice(0, i);
-					var b = subsList.slice(i + 1, subsList.length);
-					localStorage.subs = JSON.stringify(a.concat(b));
-					break;
-				}
-			}
-
-			subsNotification(comicTitle, false);
-			$("#subscribe").attr("src", "image/sub_gray.png");
-		}
 	});
 
 	$("#prev").click(function() {
@@ -200,9 +183,9 @@ function checkState() {
 		comicTitle = rx.exec(data)[1];
 
 		// Check button color
-		if (localStorage.subs) {
-			subsList = JSON.parse(localStorage.subs);
-			if (in_array(comicTitle, subsList)) {
+		if (localStorage.subsList99770) {
+			subsList = JSON.parse(localStorage.subsList99770);
+			if (in_array([comicTitle, menuURL.toLowerCase()].toString(), subsList)) {
 				$("#subscribe").attr("src", "image/sub.png");
 			} else {
 				$("#subscribe").attr("src", "image/sub_gray.png");

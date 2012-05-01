@@ -49,13 +49,10 @@ checkNewest = ->
 				rx = /<a href="(\S*)".*>(.*)<\/a/
 				m = rx.exec(update)
 				thisLine = [m[2], 'http://comic.sfacg.com' + m[1]]
-				
-				# update is done!
-				break if thisLine.toString() == newest.toString()
 
 				# continue if thisLine in not in subsList
 				for subs in subsList
-					if thisLine.toString() == subs.toString() and not inEpisodeList(subs[1])
+					if thisLine[1] == subs[1] and not inEpisodeList(subs[1])
 						updateEpisodeCount += 1
 						episodeList.push {title: thisLine[0], url: thisLine[1]}
 						break
@@ -84,13 +81,10 @@ checkNewest = ->
 				rx = /href="(\S*)" target="_blank" class="lkgn">(.*)<\/a><font color=red>/g
 				m = rx.exec(update)
 				thisLine = [m[2], 'http://99770.cc' + m[1]]
-
-				# update is done!
-				break if thisLine.toString() == newest.toString()
-
+				
 				# continue if thisLine in not in subsList
 				for subs in subsList
-					if thisLine.toString() == subs.toString() and not inEpisodeList(subs[1])
+					if thisLine[1] == subs[1] and not inEpisodeList(subs[1])
 						updateEpisodeCount += 1
 						episodeList.push {title: thisLine[0], url: thisLine[1]}
 						break
@@ -142,7 +136,7 @@ makeNotification = (from, count) ->
 
 
 # checkNewest interval
-isDebugging = true
+isDebugging = false
 ls.frequency = 10 unless ls.frequency?
 checkNewest()
 setTimeout (-> setLoop()), ls.frequency * 1000 * if isDebugging then 1 else 60
