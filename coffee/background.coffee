@@ -1,5 +1,5 @@
 ﻿chrome.tabs.onUpdated.addListener (tabId, changeInfo, tab) -> render(tab)
-chrome.management.onInstalled.addListener (info) -> localStorage.clear()
+# chrome.management.onInstalled.addListener (info) -> localStorage.clear()
 
 ls = localStorage
 

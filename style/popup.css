@@ -1,7 +1,7 @@
 ﻿.container {
   margin: 0;
   padding: 3px;
-  width: 250px;
+  min-width: 250px;
 }
 
 .episode {
@@ -30,6 +30,14 @@
 .label {
   float: right;
   margin: 5px 2px;
+}
+
+img {
+  margin: 0;
+  padding: 2px 0 0;
+  width: 24px;
+  height: 24px;
+  float: right;
 }
 
 body {

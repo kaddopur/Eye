@@ -1,12 +1,11 @@
 ﻿{
   "name":"鄉民之眼",
-  "version":"1.8.2",
+  "version":"1.8.4",
   "permissions":[
     "notifications",
     "tabs",
     "http://*/*",
-    "https://*/*",
-    "management"
+    "https://*/*"
   ],
   "icons":{
     "16":"icon16.png",

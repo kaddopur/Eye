@@ -5,10 +5,6 @@ var checkNewest, inEpisodeList, initialize, isDebugging, ls, makeNotification, r
   return render(tab);
 });
 
-chrome.management.onInstalled.addListener(function(info) {
-  return localStorage.clear();
-});
-
 ls = localStorage;
 
 render = function(tab) {
