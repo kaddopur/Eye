@@ -35,10 +35,11 @@ setPicture = (i, targetURL) ->
     # refresh episode list
     newEpisodeList = []
     for epi in episodeList
-      if epi.url  != targetURL
+      if epi.url != targetURL
         newEpisodeList.push epi
     ls.episodeList = JSON.stringify newEpisodeList
     refreshBadge()
 
+    
 $(document).ready ->
   refreshBadge()

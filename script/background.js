@@ -1,199 +1,172 @@
-﻿chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-  render(tab);
-});
+(function() {
+  var checkNewest, inEpisodeList, initialize, isDebugging, ls, makeNotification, render, setLoop, updateBadge,
+    __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
-chrome.management.onInstalled.addListener(function(info) {
-  localStorage.clear();
-});
+  ﻿chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+    return render(tab);
+  });
 
-function render(tab){
-  var host = $.url(tab.url).attr('host');
-  var path = $.url(tab.url).attr('path');
-  
-  if(host === '99770.cc' || host === 'www.99770.cc'){ // 舊版
-    $.get(tab.url, function(data) {
-			if (data.search('PicListUrl') != -1) {
-				chrome.tabs.update(tab.id, {
-					'url' : 'result.html?url=' + tab.url
-				});
-			}
-		});
-  } else if(host === 'mh.99770.cc'){
-    console.log('新版');
-  } else if(host.search(/sfacg.com/) != -1 && path.search(/AllComic/) != -1){
-    chrome.tabs.update(tab.id, {
-      'url' : 'result_sfacg.html?url=' + tab.url
-    });
-  } else if(host === 'www.8comic.com'){
-    console.log('8comic');
-  }
-}
+  chrome.management.onInstalled.addListener(function(info) {
+    return localStorage.clear();
+  });
 
-function checkNewest() {
-  $.get("http://comic.sfacg.com/", function(data){
-    var rx = /<div id="TopList_1">([\w\W]*)<div id="TopList_2"/m;
-    var m = rx.exec(data);
-    var updateRaw = m[1];
-    
-    rx = /<td height="30" align="center" bgcolor="#FFFFFF"><a href="\/HTML.*<\/a><\/td>/g;
-    updateList = updateRaw.match(rx);
-    
-    rx = /<a href="(\S*)".*>(.*)<\/a/;
-    m = rx.exec(updateList[0]);
-    var newLine = [m[2], "http://comic.sfacg.com" + m[1]];
-    
-    var newest = localStorage.newest? JSON.parse(localStorage.newest): [];
-    var episodeList = localStorage.episodeList? JSON.parse(localStorage.episodeList) : [];
-    var subsList = localStorage.subsListSFACG? JSON.parse(localStorage.subsListSFACG) : [];
-    var updateEpisode = [];
-    
-    if(newLine !== newest){
-      for(i=0; i<updateList.length; i++){
-        rx = /<a href="(\S*)".*>(.*)<\/a/;
-        m = rx.exec(updateList[i]);
-        var thisLine = [m[2], "http://comic.sfacg.com" + m[1]];
-        
-        
-        // update is done! 
-        if (thisLine.toString() === newest.toString()) {
-          break;
-				}
-        
-        // continue if thisLine is not in subsList
-        console.log('this: '+ thisLine.toString());
-        if(!in_array(thisLine.toString(), subsList)){
-          continue;
+  ls = localStorage;
+
+  render = function(tab) {
+    var host, new99770, old99770, path;
+    host = $.url(tab.url).attr('host');
+    path = $.url(tab.url).attr('path');
+    old99770 = ['99770.cc', 'www.99770.cc', '99mh.com', '99comic.com', 'cococomic.com', '99manga.com'];
+    new99770 = ['mh.99770.cc', 'dm.99manga.com'];
+    if (__indexOf.call(old99770, host) >= 0) {
+      return $.get(tab.url, function(data) {
+        if (data.search('PicListUrl') !== -1) {
+          return chrome.tabs.update(tab.id, {
+            url: 'result_99770.html?url=' + tab.url
+          });
         }
-        
-        console.log('ready to push' + thisLine);
-        updateEpisode.push(thisLine);
-        episodeList.push({
-					title : thisLine[0],
-					url : thisLine[1]
-				});
-      }
-      localStorage.newest = JSON.stringify(newLine);
-      localStorage.episodeList = JSON.stringify(episodeList);
-    }
-    
-    // if there is a possibly change
-    if (localStorage.isNotified === "需要" || !localStorage.isNotified) {
-      if (updateEpisode.length > 0) {
-        makeNotification(updateEpisode);
-      }
-    }
-    if (episodeList.length === 0) {
-				chrome.browserAction.setBadgeText({
-					text : ''
-				});
-    } else {
-      chrome.browserAction.setBadgeText({
-        text : '' + episodeList.length
+      });
+    } else if (__indexOf.call(new99770, host) >= 0) {
+      return console.log('新版');
+    } else if (host.search(/sfacg.com/) !== -1 && path.search(/AllComic/) !== -1) {
+      return chrome.tabs.update(tab.id, {
+        url: 'result_sfacg.html?url=' + tab.url
       });
     }
-    
-    
-    
-  });
-}
-/*
-	$.get("http://99770.cc/comicupdate/", function(data) {
-		rx = /href="(\S*)" target="_blank" class="lkgn">(.*)<\/a><font color=red><b>(\S*)<\/b><\/font>(\S*)<span/g;
-		m = rx.exec(data);
-		newestLine = m[2] + ' ' + m[3] + ' ' + m[4];
-		lineList = data.match(rx);
+  };
 
-	
-		//if(hey == 1){ localStorage.newest = "东京ESP 24 集(卷)"; hey += 1; }
-		
+  checkNewest = function() {
+    var episodeList;
+    initialize();
+    episodeList = JSON.parse(ls.episodeList);
+    $.get('http://comic.sfacg.com/', function(data) {
+      var m, newLine, newest, rx, subs, subsList, thisLine, update, updateEpisodeCount, updateList, updateRaw, _i, _j, _len, _len2;
+      newest = JSON.parse(ls.newestSFACG);
+      subsList = JSON.parse(ls.subsListSFACG);
+      rx = /<div id="TopList_1">([\w\W]*)<div id="TopList_2"/m;
+      m = rx.exec(data);
+      updateRaw = m[1];
+      rx = /<td height="30" align="center" bgcolor="#FFFFFF"><a href="\/HTML.*<\/a><\/td>/g;
+      updateList = updateRaw.match(rx);
+      rx = /<a href="(\S*)".*>(.*)<\/a/;
+      m = rx.exec(updateList[0]);
+      newLine = [m[2], 'http://comic.sfacg.com' + m[1]];
+      if (newLine.toString() !== newest.toString()) {
+        updateEpisodeCount = 0;
+        for (_i = 0, _len = updateList.length; _i < _len; _i++) {
+          update = updateList[_i];
+          rx = /<a href="(\S*)".*>(.*)<\/a/;
+          m = rx.exec(update);
+          thisLine = [m[2], 'http://comic.sfacg.com' + m[1]];
+          if (thisLine.toString() === newest.toString()) break;
+          for (_j = 0, _len2 = subsList.length; _j < _len2; _j++) {
+            subs = subsList[_j];
+            if (thisLine.toString() === subs.toString() && !inEpisodeList(subs[1])) {
+              updateEpisodeCount += 1;
+              episodeList.push({
+                title: thisLine[0],
+                url: thisLine[1]
+              });
+              break;
+            }
+          }
+        }
+        ls.newestSFACG = JSON.stringify(newLine);
+        ls.episodeList = JSON.stringify(episodeList);
+        return updateBadge('SFACG', updateEpisodeCount);
+      }
+    });
+    return $.get('http://99770.cc/comicupdate/', function(data) {
+      var m, newLine, newest, rx, subs, subsList, thisLine, update, updateEpisodeCount, updateList, _i, _j, _len, _len2;
+      newest = JSON.parse(ls.newest99770);
+      subsList = JSON.parse(ls.subsList99770);
+      rx = /href="(\S*)" target="_blank" class="lkgn">(.*)<\/a><font color=red>/g;
+      m = rx.exec(data);
+      newLine = [m[2], 'http://99770.cc' + m[1]];
+      updateList = data.match(rx);
+      if (newLine.toString() !== newest.toString()) {
+        updateEpisodeCount = 0;
+        for (_i = 0, _len = updateList.length; _i < _len; _i++) {
+          update = updateList[_i];
+          rx = /href="(\S*)" target="_blank" class="lkgn">(.*)<\/a><font color=red>/g;
+          m = rx.exec(update);
+          thisLine = [m[2], 'http://99770.cc' + m[1]];
+          if (thisLine.toString() === newest.toString()) break;
+          for (_j = 0, _len2 = subsList.length; _j < _len2; _j++) {
+            subs = subsList[_j];
+            if (thisLine.toString() === subs.toString() && !inEpisodeList(subs[1])) {
+              updateEpisodeCount += 1;
+              episodeList.push({
+                title: thisLine[0],
+                url: thisLine[1]
+              });
+              break;
+            }
+          }
+        }
+        ls.newest99770 = JSON.stringify(newLine);
+        ls.episodeList = JSON.stringify(episodeList);
+        return updateBadge('99770', updateEpisodeCount);
+      }
+    });
+  };
 
-		var episodeList = localStorage.episodeList ? JSON.parse(localStorage.episodeList) : [];
-		if (newestLine != localStorage.newest) {
-			var updateEpisode = [];
-			for ( var i = 0; i < lineList.length; i++) {
-				rx = /href="(\S*)" target="_blank" class="lkgn">(.*)<\/a><font color=red><b>(\S*)<\/b><\/font>(\S*)<span/;
-				m = rx.exec(lineList[i]);
-				thisLine = m[2] + ' ' + m[3] + ' ' + m[4];
-				comicTitle = m[2];
-				targetPage = m[1];
-				console.log(comicTitle, targetPage);
+  inEpisodeList = function(targetURL) {
+    var epi, episodeList, newEpisodeList, _i, _len;
+    episodeList = JSON.parse(ls.episodeList);
+    newEpisodeList = [];
+    for (_i = 0, _len = episodeList.length; _i < _len; _i++) {
+      epi = episodeList[_i];
+      if (epi.url === targetURL) return true;
+    }
+    return false;
+  };
 
-				// it's cool below
-				if (thisLine == localStorage.newest) {
-					break;
-				}
+  initialize = function() {
+    if (ls.newestSFACG == null) ls.newestSFACG = JSON.stringify([]);
+    if (ls.subsListSFACG == null) ls.subsListSFACG = JSON.stringify([]);
+    if (ls.newest99770 == null) {
+      ls.newest99770 = JSON.stringify(["GAUS", "http://99770.cc/comic/11844/"]);
+    }
+    if (ls.subsList99770 == null) ls.subsList99770 = JSON.stringify([]);
+    if (ls.episodeList == null) return ls.episodeList = JSON.stringify([]);
+  };
 
-				// continue if it's not in subscription
-				if (!in_array(comicTitle, JSON.parse(localStorage.subs))) {
-					console.log("not my favorite: " + comicTitle);
-					continue;
-				} else {
-					console.log("update: " + comicTitle);
-				}
+  updateBadge = function(from, count) {
+    var badgeText, episodeList;
+    episodeList = JSON.parse(ls.episodeList);
+    if (ls.isNotified == null) ls.isNotified = '需要';
+    if (ls.isNotified === '需要' && count > 0) makeNotification(from, count);
+    badgeText = episodeList.length > 0 ? '' + episodeList.length : '';
+    return chrome.browserAction.setBadgeText({
+      text: badgeText
+    });
+  };
 
-				updateEpisode.push(thisLine);
-				episodeList.push({
-					title : thisLine,
-					url : targetPage
-				});
-			}
-			// if there is a possibly change
-			if (localStorage.isNotified === "需要" || !localStorage.isNotified) {
-				if (updateEpisode.length > 0) {
-					makeNotification(updateEpisode);
-				}
-			}
-			localStorage.newest = newestLine;
-			localStorage.episodeList = JSON.stringify(episodeList);
-			if (episodeList.length === 0) {
-				chrome.browserAction.setBadgeText({
-					text : ''
-				});
-			} else {
-				chrome.browserAction.setBadgeText({
-					text : '' + episodeList.length
-				});
-			}
-		} else {
-			console.log(localStorage.newest + ' | ' + new Date());
-		}
-	});
-  
-  
-}
-*/
-function makeNotification(episodes) {
-	var notification = window.webkitNotifications.createNotification('icon48.png', // The
-																					// image.
-	'鄉民之眼', // The title.
-	'共有' + episodes.length + '則漫畫更新' // The body.
-	);
+  makeNotification = function(from, count) {
+    var notification;
+    notification = window.webkitNotifications.createNotification('icon48.png', "" + from, "共有" + count + "則漫畫更新");
+    notification.show();
+    return setTimeout((function() {
+      return notification.cancel();
+    }), 10000);
+  };
 
-	notification.show();
-	setTimeout(function() {
-		notification.cancel();
-	}, 10000);
-}
+  isDebugging = true;
 
-// checkNewest interval
-checkNewest();
-setTimeout(function() {
-	setLoop();
-}, (localStorage.frequency ? localStorage.frequency : 10) * 60000);
+  if (ls.frequency == null) ls.frequency = 10;
 
-function setLoop() {
-	checkNewest();
-	setTimeout(function() {
-		setLoop();
-	}, (localStorage.frequency ? localStorage.frequency : 10) * 60000);
-}
+  checkNewest();
 
-function in_array(stringToSearch, arrayToSearch) {
-	for (s = 0; s < arrayToSearch.length; s++) {
-		thisEntry = arrayToSearch[s].toString();
-		if (thisEntry == stringToSearch) {
-			return true;
-		}
-	}
-	return false;
-}
+  setTimeout((function() {
+    return setLoop();
+  }), ls.frequency * 1000 * (isDebugging ? 1 : 60));
+
+  setLoop = function() {
+    checkNewest();
+    return setTimeout((function() {
+      return setLoop();
+    }), ls.frequency * 1000 * (isDebugging ? 1 : 60));
+  };
+
+}).call(this);
