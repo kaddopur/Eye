@@ -18,7 +18,7 @@ refreshBadge = ->
     $('.container').html(tempHtml)
     $('.label-warning').click -> chrome.tabs.create {url: 'http://comic.sfacg.com/'}
     $('.label-success').click -> chrome.tabs.create {url: 'http://99770.cc/'}
-    $('.label-info').click -> chrome.tabs.create {url: 'http://www.8comic.com/'}
+    $('.label-info').click -> chrome.tabs.create {url: 'http://www.8comic.com/comic/'}
   else
     $('.container').html('')
     loadEpisode()

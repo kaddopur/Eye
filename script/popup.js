@@ -31,7 +31,7 @@ refreshBadge = function() {
     });
     return $('.label-info').click(function() {
       return chrome.tabs.create({
-        url: 'http://www.8comic.com/'
+        url: 'http://www.8comic.com/comic/'
       });
     });
   } else {
