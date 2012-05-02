@@ -1,4 +1,4 @@
-﻿.container {
+.container {
   margin: 0;
   padding: 3px;
   min-width: 270px;
@@ -37,11 +37,6 @@
   cursor: pointer;
   -webkit-transition-property: padding;
   -webkit-transition-duration: 0.1s;
-}
-
-.label:hover {
-  padding-right: 10px;
-  padding-left: 10px;
 }
 
 img {

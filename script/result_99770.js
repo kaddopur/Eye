@@ -1,4 +1,4 @@
-﻿var targetURL;
+var targetURL;
 var serverID;
 var picURLs;
 var completePicNum;

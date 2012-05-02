@@ -1,4 +1,4 @@
-﻿var targetURL;
+var targetURL;
 var picURLs;
 var completePicNum;
 var menuURL;
