@@ -1,7 +1,8 @@
 .container {
   margin: 0;
   padding: 3px;
-  min-width: 270px;
+  min-width: 240px;
+  #width: 500px;
 }
 
 .episode {
@@ -17,7 +18,7 @@
 .title {
   margin: 0;
   padding: 0;
-  width: 240px;
+  width: 210px;
   float: left;
   line-height: 24px;
   font-family: sans-serif;
@@ -32,7 +33,7 @@
 }
 
 .label {
-  float: right;
+  float: left;
   margin: 5px 2px;
   cursor: pointer;
   -webkit-transition-property: padding;

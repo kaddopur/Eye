@@ -1,5 +1,4 @@
 ﻿chrome.tabs.onUpdated.addListener (tabId, changeInfo, tab) -> render(tab)
-# chrome.management.onInstalled.addListener (info) -> localStorage.clear()
 
 ls = localStorage
 
@@ -9,7 +8,7 @@ render = (tab) ->
   
   old99770 = ['99770.cc', 'www.99770.cc', '99mh.com', '99comic.com', 'cococomic.com', '99manga.com']
   new99770 = ['mh.99770.cc', 'dm.99manga.com']
-  
+  eightComic = ['www.8comic.com']
   if host in old99770
     $.get(tab.url, (data) ->
       if data.search('PicListUrl') != -1
@@ -17,83 +16,130 @@ render = (tab) ->
     )
   else if host in new99770
     console.log '新版'
+  else if host in eightComic
+    $.get(tab.url, (data) ->
+      if data.search('itemid') != -1
+        chrome.tabs.update(tab.id, {url: 'result_8comic.html?url=' + tab.url})
+    )
   else if host.search(/sfacg.com/) != -1 and path.search(/AllComic/) != -1
     chrome.tabs.update(tab.id, {url: 'result_sfacg.html?url=' + tab.url})
+  
 
 
 checkNewest = ->
-	initialize()
-	episodeList = JSON.parse(ls.episodeList)
+  initialize()
+  episodeList = JSON.parse(ls.episodeList)
 
   # sfacg
-	$.get('http://comic.sfacg.com/', (data) ->
-		# Read LocalStorage
-		newest = JSON.parse(ls.newestSFACG)
-		subsList = JSON.parse(ls.subsListSFACG)
+  $.get('http://comic.sfacg.com/', (data) ->
+    # Read LocalStorage
+    newest = JSON.parse(ls.newestSFACG)
+    subsList = JSON.parse(ls.subsListSFACG)
 
-		rx = /<div id="TopList_1">([\w\W]*)<div id="TopList_2"/m
-		m = rx.exec(data)
-		updateRaw = m[1]
+    rx = /<div id="TopList_1">([\w\W]*)<div id="TopList_2"/m
+    m = rx.exec(data)
+    updateRaw = m[1]
+
+    rx = /<td height="30" align="center" bgcolor="#FFFFFF"><a href="\/HTML.*<\/a><\/td>/g
+    updateList = updateRaw.match(rx)
+
+    rx = /<a href="(\S*)".*>(.*)<\/a/
+    m = rx.exec(updateList[0])
+    newLine = [m[2], 'http://comic.sfacg.com' + m[1]]
+
+    unless newLine[1] == newest[1]
+      updateEpisodeCount = 0
+
+      for update in updateList
+        rx = /<a href="(\S*)".*>(.*)<\/a/
+        m = rx.exec(update)
+        thisLine = [m[2], 'http://comic.sfacg.com' + m[1]]
+
+        # break if all jobs are done
+        break if thisLine[1] == newest[1]
+
+        # continue if thisLine in not in subsList
+        for subs in subsList
+          if thisLine[1] == subs[1] and not inEpisodeList(subs[1])
+            updateEpisodeCount += 1
+            episodeList.push {title: thisLine[0], url: thisLine[1]}
+            break
+
+      # Write back to Local Storage
+      ls.newestSFACG = JSON.stringify(newLine)
+      ls.episodeList = JSON.stringify(episodeList)
+      updateBadge('SFACG', updateEpisodeCount)
+  )
+
+  # 99770
+  $.get('http://99770.cc/comicupdate/', (data) ->
+    # Read LocalStorage
+    newest = JSON.parse(ls.newest99770)
+    subsList = JSON.parse(ls.subsList99770)
+
+    rx = /href="(\S*)" target="_blank" class="lkgn">(.*)<\/a><font color=red>/g
+    m = rx.exec(data)
+    newLine = [m[2], 'http://99770.cc' + m[1]]
+    updateList = data.match(rx)
+
+    unless newLine[1] == newest[1]
+      updateEpisodeCount = 0
+
+      for update in updateList
+        rx = /href="(\S*)" target="_blank" class="lkgn">(.*)<\/a><font color=red>/g
+        m = rx.exec(update)
+        thisLine = [m[2], 'http://99770.cc' + m[1]]
 		
-		rx = /<td height="30" align="center" bgcolor="#FFFFFF"><a href="\/HTML.*<\/a><\/td>/g
-		updateList = updateRaw.match(rx)
-    
-		rx = /<a href="(\S*)".*>(.*)<\/a/
-		m = rx.exec(updateList[0])
-		newLine = [m[2], 'http://comic.sfacg.com' + m[1]]
+        # break if all jobs are done
+        break if thisLine[1] == newest[1]
 
-		unless newLine.toString() == newest.toString()
-			updateEpisodeCount = 0
-			
-			for update in updateList
-				rx = /<a href="(\S*)".*>(.*)<\/a/
-				m = rx.exec(update)
-				thisLine = [m[2], 'http://comic.sfacg.com' + m[1]]
+        # continue if thisLine in not in subsList
+        for subs in subsList
+          if thisLine[1] == subs[1] and not inEpisodeList(subs[1])
+            updateEpisodeCount += 1
+            episodeList.push {title: thisLine[0], url: thisLine[1]}
+            break
 
-				# continue if thisLine in not in subsList
-				for subs in subsList
-					if thisLine[1] == subs[1] and not inEpisodeList(subs[1])
-						updateEpisodeCount += 1
-						episodeList.push {title: thisLine[0], url: thisLine[1]}
-						break
-			
-			# Write back to Local Storage
-			ls.newestSFACG = JSON.stringify(newLine)
-			ls.episodeList = JSON.stringify(episodeList)
-			updateBadge('SFACG', updateEpisodeCount)
-	)
+      # Write back to Local Storage
+      ls.newest99770 = JSON.stringify(newLine)
+      ls.episodeList = JSON.stringify(episodeList)
+      updateBadge('99770', updateEpisodeCount)
+  )
+  
+  # 8COMIC
+  $.get('http://www.8comic.com/comic/u-1.html', (data) ->
+    # Read LocalStorage
+    newest = JSON.parse(ls.newest8COMIC)
+    subsList = JSON.parse(ls.subsList8COMIC)
 
-	# 99770
-	$.get('http://99770.cc/comicupdate/', (data) ->
-		# Read LocalStorage
-		newest = JSON.parse(ls.newest99770)
-		subsList = JSON.parse(ls.subsList99770)
+    rx = /<td height="30" nowrap> · <a href='(.*)'.*>\s*(\S*)/g
+    m = rx.exec(data)
+    newLine = [m[2], 'http://www.8comic.com' + m[1]]
+    updateList = data.match(rx)
 
-		rx = /href="(\S*)" target="_blank" class="lkgn">(.*)<\/a><font color=red>/g
-		m = rx.exec(data)
-		newLine = [m[2], 'http://99770.cc' + m[1]]
-		updateList = data.match(rx)
+    unless newLine[1] == newest[1]
+      updateEpisodeCount = 0
+
+      for update in updateList
+        rx = /<td height="30" nowrap> · <a href='(.*)'.*>\s*(\S*)/g
+        m = rx.exec(update)
+        thisLine = [m[2], 'http://www.8comic.com' + m[1]]
 		
-		unless newLine.toString() == newest.toString()
-			updateEpisodeCount = 0
+        # break if all jobs are done
+        break if thisLine[1] == newest[1]
 
-			for update in updateList
-				rx = /href="(\S*)" target="_blank" class="lkgn">(.*)<\/a><font color=red>/g
-				m = rx.exec(update)
-				thisLine = [m[2], 'http://99770.cc' + m[1]]
-				
-				# continue if thisLine in not in subsList
-				for subs in subsList
-					if thisLine[1] == subs[1] and not inEpisodeList(subs[1])
-						updateEpisodeCount += 1
-						episodeList.push {title: thisLine[0], url: thisLine[1]}
-						break
-			
-			# Write back to Local Storage
-			ls.newest99770 = JSON.stringify(newLine)
-			ls.episodeList = JSON.stringify(episodeList)
-			updateBadge('99770', updateEpisodeCount)
-	)
+        # continue if thisLine in not in subsList
+        for subs in subsList
+          if thisLine[1] == subs[1] and not inEpisodeList(subs[1])
+            updateEpisodeCount += 1
+            episodeList.push {title: thisLine[0], url: thisLine[1]}
+            break
+
+      # Write back to Local Storage
+      ls.newest8COMIC = JSON.stringify(newLine)
+      ls.episodeList = JSON.stringify(episodeList)
+      updateBadge('8comic', updateEpisodeCount)
+  )
 
 
 inEpisodeList = (targetURL) ->
@@ -105,13 +151,16 @@ inEpisodeList = (targetURL) ->
 	return false
 
 initialize = ->
-	ls.newestSFACG = JSON.stringify [] unless ls.newestSFACG?
-	ls.subsListSFACG = JSON.stringify [] unless ls.subsListSFACG?
+  ls.newestSFACG = JSON.stringify [] unless ls.newestSFACG?
+  ls.subsListSFACG = JSON.stringify [] unless ls.subsListSFACG?
 
-	ls.newest99770 = JSON.stringify [] unless ls.newest99770?
-	ls.subsList99770 = JSON.stringify [] unless ls.subsList99770?
+  ls.newest99770 = JSON.stringify [] unless ls.newest99770?
+  ls.subsList99770 = JSON.stringify [] unless ls.subsList99770?
 
-	ls.episodeList = JSON.stringify [] unless ls.episodeList?
+  ls.newest8COMIC = JSON.stringify [] unless ls.newest8COMIC?
+  ls.subsList8COMIC = JSON.stringify [] unless ls.subsList8COMIC?
+
+  ls.episodeList = JSON.stringify [] unless ls.episodeList?
 	
 
 updateBadge = (from, count) ->
@@ -136,7 +185,7 @@ makeNotification = (from, count) ->
 
 
 # checkNewest interval
-isDebugging = false
+isDebugging = true
 ls.frequency = 10 unless ls.frequency?
 checkNewest()
 setTimeout (-> setLoop()), ls.frequency * 1000 * if isDebugging then 1 else 60

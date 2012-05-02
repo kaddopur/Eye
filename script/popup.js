@@ -7,22 +7,31 @@ episodeList = ls.episodeList != null ? JSON.parse(ls.episodeList) : [];
 ls.episodeList = JSON.stringify(episodeList);
 
 refreshBadge = function() {
-  var badgeText;
+  var badgeText, tempHtml;
   episodeList = ls.episodeList != null ? JSON.parse(ls.episodeList) : [];
   badgeText = episodeList.length !== 0 ? '' + episodeList.length : '';
   chrome.browserAction.setBadgeText({
     text: badgeText
   });
   if (episodeList.length === 0) {
-    $('.container').html("<div class='episode'><div class='title title-noepi'>目前沒有漫畫更新</div><span class='label label-warning'>SFACG</span> <span class='label label-success'>99770</span></div>");
+    tempHtml = "<div class='episode'><div class='title title-noepi'>目前沒有漫畫更新</div></div><div class='episode'>";
+    tempHtml += "<span class='label label-success'>99770</span>";
+    tempHtml += "<span class='label label-warning'>SFACG</span>";
+    tempHtml += "<span class='label label-info'>8Comic</span></div>";
+    $('.container').html(tempHtml);
     $('.label-warning').click(function() {
       return chrome.tabs.create({
         url: 'http://comic.sfacg.com/'
       });
     });
-    return $('.label-success').click(function() {
+    $('.label-success').click(function() {
       return chrome.tabs.create({
         url: 'http://99770.cc/'
+      });
+    });
+    return $('.label-info').click(function() {
+      return chrome.tabs.create({
+        url: 'http://www.8comic.com/'
       });
     });
   } else {
