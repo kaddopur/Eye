@@ -189,7 +189,7 @@ makeNotification = function(from, count) {
   }), 10000);
 };
 
-isDebugging = true;
+isDebugging = false;
 
 if (ls.frequency == null) ls.frequency = 10;
 

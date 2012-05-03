@@ -185,7 +185,7 @@ makeNotification = (from, count) ->
 
 
 # checkNewest interval
-isDebugging = true
+isDebugging = false
 ls.frequency = 10 unless ls.frequency?
 checkNewest()
 setTimeout (-> setLoop()), ls.frequency * 1000 * if isDebugging then 1 else 60
