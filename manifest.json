@@ -18,5 +18,12 @@
     "default_title": "訂閱漫畫更新", 
     "default_popup": "popup.html" 
   },
-  "options_page": "options.html"
+  "options_page": "options.html",
+  "content_scripts": [
+    {
+        "matches": ["http://www.8comic.com/show/*"],
+        "css": ["css/viewer.css"],
+        "js": ["js/jquery-1.7.1.min.js", "js/cs_8comic.js"]
+    }
+  ]
 }
