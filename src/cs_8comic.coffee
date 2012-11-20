@@ -97,7 +97,7 @@ setNavButton = (prev_uri, menu_uri, next_uri) ->
 
 
 setPicture()
-setSubButton()
+#setSubButton()
 
 $(window).resize ->
     $('.eox-page').css('width', window.innerWidth - 120)
