@@ -95,6 +95,21 @@ setNavButton = function(prev_uri, menu_uri, next_uri) {
 
 setPicture();
 
+$(document).keydown(function(e) {
+  switch (e.which) {
+    case 37:
+      return $(window).scrollTop($('img').filter(function() {
+        return $(this).offset().top < $('html').offset().top * -1;
+      }).last().offset().top);
+    case 39:
+      return $(window).scrollTop($('img').filter(function() {
+        return $(this).offset().top > $('html').offset().top * -1;
+      }).first().offset().top);
+    default:
+      return console.log('keydown');
+  }
+});
+
 $(window).resize(function() {
   return $('.eox-page').css('width', window.innerWidth - 120);
 });
