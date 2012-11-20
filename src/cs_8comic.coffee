@@ -97,7 +97,20 @@ setNavButton = (prev_uri, menu_uri, next_uri) ->
 
 
 setPicture()
-setSubButton()
+#setSubButton()
+$(document).keydown (e) ->
+  switch e.which
+	# left arrow
+    when 37
+      $(window).scrollTop($('img').filter( ->
+        return $(this).offset().top < $('html').offset().top * -1
+      ).last().offset().top)
+    # right arrow
+    when 39
+      $(window).scrollTop($('img').filter( ->
+        return $(this).offset().top > $('html').offset().top * -1
+      ).first().offset().top)
+    else console.log 'keydown'
 
 $(window).resize ->
     $('.eox-page').css('width', window.innerWidth - 120)
