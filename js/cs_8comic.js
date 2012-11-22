@@ -74,12 +74,16 @@ setNavButton = function(prev_uri, menu_uri, next_uri) {
   console.log('setNavButton');
   $('body').append("    <img id='eox-prev' class='eox-button' src='" + (chrome.extension.getURL('img/prev_gray.png')) + "'>    <img id='eox-menu' class='eox-button' src='" + (chrome.extension.getURL('img/menu_gray.png')) + "'>    <img id='eox-next' class='eox-button' src='" + (chrome.extension.getURL('img/next_gray.png')) + "'>    <img id='eox-resize' class='eox-button' src='" + (chrome.extension.getURL('img/resize_gray.png')) + "'>  ");
   $('#eox-resize').click(function() {
-    if ($('#eox-resize').attr('src') === chrome.extension.getURL('img/resize_gray.png')) {
+    var resizeState;
+    resizeState = localStorage['isResized'] != null ? localStorage['isResized'] : 'false';
+    if (resizeState === 'false') {
       $('#eox-resize').attr('src', chrome.extension.getURL('img/resize.png'));
-      return $('.eox-page img').css('height', window.innerHeight);
-    } else {
+      $('.eox-page img').css('height', window.innerHeight);
+      return localStorage['isResized'] = 'true';
+    } else if (resizeState === 'true') {
       $('#eox-resize').attr('src', chrome.extension.getURL('img/resize_gray.png'));
-      return $('.eox-page img').css('height', '');
+      $('.eox-page img').css('height', '');
+      return localStorage['isResized'] = 'false';
     }
   });
   if (prev_uri) {
@@ -104,6 +108,8 @@ setNavButton = function(prev_uri, menu_uri, next_uri) {
 
 setPicture();
 
+$('#eox-resize').click().click();
+
 $(document).keydown(function(e) {
   switch (e.which) {
     case 37:
@@ -126,5 +132,6 @@ $(document).keydown(function(e) {
 });
 
 $(window).resize(function() {
-  return $('.eox-page').css('width', window.innerWidth - 120);
+  $('.eox-page').css('width', window.innerWidth - 120);
+  return $('#eox-resize').click().click();
 });
