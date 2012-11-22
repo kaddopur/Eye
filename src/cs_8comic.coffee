@@ -85,12 +85,15 @@ setNavButton = (prev_uri, menu_uri, next_uri) ->
   ")
 
   $('#eox-resize').click ->
-    if $('#eox-resize').attr('src') == chrome.extension.getURL('img/resize_gray.png')
+    resizeState = if localStorage['isResized']? then localStorage['isResized'] else 'false'
+    if resizeState == 'false'
       $('#eox-resize').attr('src', chrome.extension.getURL('img/resize.png'))
       $('.eox-page img').css('height', window.innerHeight)
-    else
+      localStorage['isResized'] = 'true'
+    else if resizeState == 'true'
       $('#eox-resize').attr('src', chrome.extension.getURL('img/resize_gray.png'))
       $('.eox-page img').css('height', '')
+      localStorage['isResized'] = 'false'
 
   if prev_uri
     $('#eox-prev').click -> location.href = prev_uri
@@ -107,8 +110,11 @@ setNavButton = (prev_uri, menu_uri, next_uri) ->
 
 
 setPicture()
-#setSubButton()
 
+# Setting up resize state
+$('#eox-resize').click().click()
+
+# Binding hotkeys
 $(document).keydown (e) ->
   switch e.which
     when 37, 75 # left arrow, K
@@ -125,6 +131,8 @@ $(document).keydown (e) ->
       $('#eox-next').click()
     when 70 # F
       $('#eox-resize').click()
-$(window).resize ->
-    $('.eox-page').css('width', window.innerWidth - 120)
 
+	  
+$(window).resize ->
+  $('.eox-page').css('width', window.innerWidth - 120)
+  $('#eox-resize').click().click()
