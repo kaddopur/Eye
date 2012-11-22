@@ -107,15 +107,23 @@ setPicture();
 $(document).keydown(function(e) {
   switch (e.which) {
     case 37:
+    case 75:
       return $(window).scrollTop($('img').filter(function() {
         return $(this).offset().top < $('html').offset().top * -1;
       }).last().offset().top);
     case 39:
+    case 74:
       return $(window).scrollTop($('img').filter(function() {
         return $(this).offset().top > $('html').offset().top * -1;
       }).first().offset().top);
+    case 72:
+      return $('#eox-prev').click();
+    case 76:
+      return $('#eox-next').click();
+    case 70:
+      return $('#eox-resize').click();
   }
-}, console.log('keypressed'));
+});
 
 $(window).resize(function() {
   return $('.eox-page').css('width', window.innerWidth - 120);

@@ -111,17 +111,20 @@ setPicture()
 
 $(document).keydown (e) ->
   switch e.which
-	# left arrow
-    when 37
+    when 37, 75 # left arrow, K
       $(window).scrollTop($('img').filter( ->
         return $(this).offset().top < $('html').offset().top * -1
       ).last().offset().top)
-    # right arrow
-    when 39
+    when 39, 74 # right arrow, J
       $(window).scrollTop($('img').filter( ->
         return $(this).offset().top > $('html').offset().top * -1
       ).first().offset().top)
-	then console.log 'keypressed'
+    when 72 # H
+      $('#eox-prev').click()
+    when 76 # L
+      $('#eox-next').click()
+    when 70 # F
+      $('#eox-resize').click()
 $(window).resize ->
     $('.eox-page').css('width', window.innerWidth - 120)
 
