@@ -81,7 +81,16 @@ setNavButton = (prev_uri, menu_uri, next_uri) ->
     <img id='eox-prev' class='eox-button' src='#{chrome.extension.getURL('img/prev_gray.png')}'>
     <img id='eox-menu' class='eox-button' src='#{chrome.extension.getURL('img/menu_gray.png')}'>
     <img id='eox-next' class='eox-button' src='#{chrome.extension.getURL('img/next_gray.png')}'>
+    <img id='eox-resize' class='eox-button' src='#{chrome.extension.getURL('img/resize_gray.png')}'>
   ")
+
+  $('#eox-resize').click ->
+    if $('#eox-resize').attr('src') == chrome.extension.getURL('img/resize_gray.png')
+      $('#eox-resize').attr('src', chrome.extension.getURL('img/resize.png'))
+      $('.eox-page img').css('height', window.innerHeight)
+    else
+      $('#eox-resize').attr('src', chrome.extension.getURL('img/resize_gray.png'))
+      $('.eox-page img').css('height', '')
 
   if prev_uri
     $('#eox-prev').click -> location.href = prev_uri
@@ -96,8 +105,10 @@ setNavButton = (prev_uri, menu_uri, next_uri) ->
     $('#eox-next').attr('src', chrome.extension.getURL('img/next.png'))
 
 
+
 setPicture()
 #setSubButton()
+
 $(document).keydown (e) ->
   switch e.which
 	# left arrow
@@ -110,8 +121,7 @@ $(document).keydown (e) ->
       $(window).scrollTop($('img').filter( ->
         return $(this).offset().top > $('html').offset().top * -1
       ).first().offset().top)
-    else console.log 'keydown'
-
+	then console.log 'keypressed'
 $(window).resize ->
     $('.eox-page').css('width', window.innerWidth - 120)
 

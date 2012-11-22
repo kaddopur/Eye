@@ -72,7 +72,16 @@ setSubButton = function() {
 
 setNavButton = function(prev_uri, menu_uri, next_uri) {
   console.log('setNavButton');
-  $('body').append("    <img id='eox-prev' class='eox-button' src='" + (chrome.extension.getURL('img/prev_gray.png')) + "'>    <img id='eox-menu' class='eox-button' src='" + (chrome.extension.getURL('img/menu_gray.png')) + "'>    <img id='eox-next' class='eox-button' src='" + (chrome.extension.getURL('img/next_gray.png')) + "'>  ");
+  $('body').append("    <img id='eox-prev' class='eox-button' src='" + (chrome.extension.getURL('img/prev_gray.png')) + "'>    <img id='eox-menu' class='eox-button' src='" + (chrome.extension.getURL('img/menu_gray.png')) + "'>    <img id='eox-next' class='eox-button' src='" + (chrome.extension.getURL('img/next_gray.png')) + "'>    <img id='eox-resize' class='eox-button' src='" + (chrome.extension.getURL('img/resize_gray.png')) + "'>  ");
+  $('#eox-resize').click(function() {
+    if ($('#eox-resize').attr('src') === chrome.extension.getURL('img/resize_gray.png')) {
+      $('#eox-resize').attr('src', chrome.extension.getURL('img/resize.png'));
+      return $('.eox-page img').css('height', window.innerHeight);
+    } else {
+      $('#eox-resize').attr('src', chrome.extension.getURL('img/resize_gray.png'));
+      return $('.eox-page img').css('height', '');
+    }
+  });
   if (prev_uri) {
     $('#eox-prev').click(function() {
       return location.href = prev_uri;
@@ -105,10 +114,8 @@ $(document).keydown(function(e) {
       return $(window).scrollTop($('img').filter(function() {
         return $(this).offset().top > $('html').offset().top * -1;
       }).first().offset().top);
-    default:
-      return console.log('keydown');
   }
-});
+}, console.log('keypressed'));
 
 $(window).resize(function() {
   return $('.eox-page').css('width', window.innerWidth - 120);

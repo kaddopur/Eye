@@ -23,7 +23,7 @@
   "content_scripts": [
     {
         "matches": ["http://www.8comic.com/show/*"],
-        "css": ["css/viewer.css"],
+        "css": ["css/viewer.css", "css/font-awesome.css"],
         "js": ["js/jquery-1.7.1.min.js", "js/cs_8comic.js"]
     }
   ],
@@ -40,6 +40,8 @@
   	"img/next_gray.png",
   	"img/prev.png",
   	"img/menu.png",
-  	"img/next.png"
+  	"img/next.png",
+  	"img/resize.png",
+  	"img/resize_gray.png"
   ]
 }
