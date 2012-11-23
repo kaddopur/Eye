@@ -1,7 +1,8 @@
+prevUri = nextUri = menuUri = ''
+
 checkPath = ->
   re_path = /\/m\d*.*/gi
   re_cid = /m(\d*)/
-  re_menu = /href="(\S*)">返回目录/
 
   if window.location.pathname.match(re_path) is null
   	return
@@ -10,44 +11,39 @@ checkPath = ->
   cid = parseInt(window.location.pathname.match(re_cid)[1])
   max = $('select option').length
 
-  imageList = []
-  cursor = 1
-
-  prevUri = nextUri = ''
   menuUri = window.location.origin + $('a#btnFavorite + a').attr('href')
   
   if $('.innr8 a.redzia').length >= 2
     nextUri = $('.innr8 a.redzia')[1].href
   console.log prevUri, menuUri, nextUri
 
-  for i in [1..max]
-    $.get 'http://tel.dm5.com/chapterimagefun.ashx', {cid: cid, page: i, key: $('#dm5_key').val(), language: 1}, (res) ->
-      eval(res)
-      imageList.push(d[0])
-	  # if all images are ready
-      if imageList.length >= max
-        imageList.sort(urlSort)
-        setImage(imageList)
-        setNavButton(prevUri, menuUri, nextUri)
+  imageList = (' ' for i in [0..max])
+  imageList[0] = 'head'
+  findUrl(i, cid, imageList) for i in [1..max]
+	  
 
-
-urlSort = (a, b) ->
-  re_page = /\/(\d*)_/
-  aIndex = parseInt(a.match(re_page)[1])
-  bIndex = parseInt(b.match(re_page)[1])
-  return aIndex - bIndex
+findUrl = (i, cid, imageList) ->
+  $.get 'http://tel.dm5.com/chapterimagefun.ashx', {cid: cid, page: i, key: $('#dm5_key').val(), language: 1}, (res) ->
+    eval(res)
+    imageList[i] = d[0]
+    if ' ' not in imageList
+      setImage(imageList)
+      setNavButton(prevUri, menuUri, nextUri)
+      console.log a for a in imageList
 
 
 setImage = (imageList) ->
   $('body').html('')
   $('body').css('background', 'none')
-
-  for url in imageList
+  
+  imageList.shift()
+  for ele in imageList
     $('body').append("
 	  <div class='eox-page'>
-		<img src=#{url}>
+		<img src=#{ele}>
 	  </div>")
   $('.eox-page').css('width', window.innerWidth - 120)
+  
 
 
 setNavButton = (prev_uri, menu_uri, next_uri) ->
