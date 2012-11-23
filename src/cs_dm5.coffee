@@ -33,6 +33,7 @@ findUrl = (i, cid, imageList) ->
     if ' ' not in imageList
       setImage(imageList)
       setNavButton(prevUri, menuUri, nextUri)
+      setHotkeyPanel()
 
 
 setImage = (imageList) ->
@@ -87,6 +88,22 @@ setNavButton = (prev_uri, menu_uri, next_uri) ->
   $('#eox-resize').click().click()
 
 
+setHotkeyPanel = ->
+  $('body').append("
+	<div id='eox-panel'>
+	  <h1>快捷鍵列表</h1>
+	  <hr />
+	  <ul>
+		<li><span>H</span> : 上一卷（話）
+		<li><span>L</span> : 下一卷（話）
+		<li><span>→</span> or <span>J</span> : 下一頁
+		<li><span>←</span> or <span>K</span> : 上一頁
+		<li><span>F</span> : 符合頁面
+		<li><span>?</span> : 打開/關閉此列表
+	  </ul>
+	</div>
+  ")
+  $('#eox-panel').hide()
 
 checkPath()
 
@@ -107,7 +124,8 @@ $(document).keydown (e) ->
       $('#eox-next').click()
     when 70 # F
       $('#eox-resize').click()
-
+    when 191
+      $('#eox-panel').fadeToggle("fast")
 	  
 $(window).resize ->
   $('.eox-page').css('width', window.innerWidth - 120)
