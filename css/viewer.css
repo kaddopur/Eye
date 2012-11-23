@@ -36,3 +36,32 @@ body {
 #eox-next {
   bottom: 10px;
 }
+#eox-panel {
+  font-family: 'Courier New', monospace;
+  font-size: 10pt;
+  color: #fff;
+  position: fixed;
+  bottom: 10px;
+  right: 80px;
+  padding: 20px 0 20px 80px;
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.6);
+  -webkit-box-shadow: 0 6px 10px 0 rgba(0,0,0,0.3);
+  -webkit-transition: all 0.3 ease-in-out;
+}
+#eox-panel li {
+  padding-bottom: 2px;
+}
+#eox-panel li span {
+  color: #efbb24;
+}
+#eox-panel li:nth-child(3),
+#eox-panel li:nth-child(4),
+#eox-panel hr {
+  position: relative;
+  left: -40px;
+}
+#eox-panel hr {
+  width: 170px;
+}
