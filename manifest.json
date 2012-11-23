@@ -23,8 +23,13 @@
   "content_scripts": [
     {
         "matches": ["http://www.8comic.com/show/*"],
-        "css": ["css/viewer.css", "css/font-awesome.css"],
+        "css": ["css/viewer.css"],
         "js": ["js/jquery-1.7.1.min.js", "js/cs_8comic.js"]
+    },
+    {
+        "matches": ["http://tel.dm5.com/m*/"],
+        "css": ["css/viewer.css"],
+        "js": ["js/jquery-1.7.1.min.js", "js/cs_dm5.js"]
     }
   ],
   "permissions":[
