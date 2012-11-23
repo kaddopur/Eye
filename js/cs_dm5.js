@@ -61,7 +61,7 @@ findUrl = function(i, cid, imageList) {
 setImage = function(imageList) {
   var ele, _i, _len;
   $('body').html('');
-  $('body').css('background', 'none');
+  $('body').css('background', "url(" + (chrome.extension.getURL('img/texture.png')) + ") repeat, #FCFAF2");
   imageList.shift();
   for (_i = 0, _len = imageList.length; _i < _len; _i++) {
     ele = imageList[_i];
@@ -78,7 +78,7 @@ setNavButton = function(prev_uri, menu_uri, next_uri) {
     resizeState = localStorage['isResized'] != null ? localStorage['isResized'] : 'false';
     if (resizeState === 'false') {
       $('#eox-resize').attr('src', chrome.extension.getURL('img/resize.png'));
-      $('.eox-page img').css('height', window.innerHeight);
+      $('.eox-page img').css('height', window.innerHeight - 12);
       return localStorage['isResized'] = 'true';
     } else if (resizeState === 'true') {
       $('#eox-resize').attr('src', chrome.extension.getURL('img/resize_gray.png'));

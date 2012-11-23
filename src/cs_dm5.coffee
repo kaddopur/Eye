@@ -34,7 +34,7 @@ findUrl = (i, cid, imageList) ->
 
 setImage = (imageList) ->
   $('body').html('')
-  $('body').css('background', 'none')
+  $('body').css('background', "url(#{chrome.extension.getURL('img/texture.png')}) repeat, #FCFAF2")
   
   imageList.shift()
   for ele in imageList
@@ -61,7 +61,7 @@ setNavButton = (prev_uri, menu_uri, next_uri) ->
     resizeState = if localStorage['isResized']? then localStorage['isResized'] else 'false'
     if resizeState == 'false'
       $('#eox-resize').attr('src', chrome.extension.getURL('img/resize.png'))
-      $('.eox-page img').css('height', window.innerHeight)
+      $('.eox-page img').css('height', window.innerHeight-12)
       localStorage['isResized'] = 'true'
     else if resizeState == 'true'
       $('#eox-resize').attr('src', chrome.extension.getURL('img/resize_gray.png'))
