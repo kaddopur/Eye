@@ -12,10 +12,14 @@ checkPath = ->
   max = $('select option').length
 
   menuUri = window.location.origin + $('a#btnFavorite + a').attr('href')
-  
   if $('.innr8 a.redzia').length >= 2
     nextUri = $('.innr8 a.redzia')[1].href
-  console.log prevUri, menuUri, nextUri
+  $.get menuUri, (res) ->
+    prevUri = $(res).find("a[href='#{location.pathname}']").parent().parent().next().find('a').attr('href')
+    if prevUri
+      prevUri = location.origin + prevUri
+      $('#eox-prev').click -> location.href = prevUri
+      $('#eox-prev').attr('src', chrome.extension.getURL('img/prev.png'))
 
   imageList = (' ' for i in [0..max])
   imageList[0] = 'head'
@@ -29,7 +33,6 @@ findUrl = (i, cid, imageList) ->
     if ' ' not in imageList
       setImage(imageList)
       setNavButton(prevUri, menuUri, nextUri)
-      console.log a for a in imageList
 
 
 setImage = (imageList) ->

@@ -18,7 +18,16 @@ checkPath = function() {
   if ($('.innr8 a.redzia').length >= 2) {
     nextUri = $('.innr8 a.redzia')[1].href;
   }
-  console.log(prevUri, menuUri, nextUri);
+  $.get(menuUri, function(res) {
+    prevUri = $(res).find("a[href='" + location.pathname + "']").parent().parent().next().find('a').attr('href');
+    if (prevUri) {
+      prevUri = location.origin + prevUri;
+      $('#eox-prev').click(function() {
+        return location.href = prevUri;
+      });
+      return $('#eox-prev').attr('src', chrome.extension.getURL('img/prev.png'));
+    }
+  });
   imageList = (function() {
     var _i, _results;
     _results = [];
@@ -42,18 +51,11 @@ findUrl = function(i, cid, imageList) {
     key: $('#dm5_key').val(),
     language: 1
   }, function(res) {
-    var a, _i, _len, _results;
     eval(res);
     imageList[i] = d[0];
     if (__indexOf.call(imageList, ' ') < 0) {
       setImage(imageList);
-      setNavButton(prevUri, menuUri, nextUri);
-      _results = [];
-      for (_i = 0, _len = imageList.length; _i < _len; _i++) {
-        a = imageList[_i];
-        _results.push(console.log(a));
-      }
-      return _results;
+      return setNavButton(prevUri, menuUri, nextUri);
     }
   });
 };
