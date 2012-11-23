@@ -6,10 +6,11 @@ body {
   margin: 0 auto 30px 25px;
 }
 .eox-page img {
+  padding-top: 6px;
   display: block;
   max-width: 100%;
   margin: 0 auto;
-  -webkit-box-shadow: 0px 5px 6px 3px rgba(0,0,0,0.4);
+  -webkit-box-shadow: 0 6px 10px 0 rgba(0,0,0,0.4);
 }
 .eox-button {
   position: fixed;
