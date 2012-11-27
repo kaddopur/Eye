@@ -11,13 +11,13 @@ refreshBadge = ->
   
   if episodeList.length == 0
     tempHtml = "<div class='episode'><div class='title title-noepi'>目前沒有漫畫更新</div></div><div class='episode'>"
-    tempHtml += "<span class='label label-success'>99770</span>"
-    tempHtml += "<span class='label label-warning'>SFACG</span>"
+	#tempHtml += "<span class='label label-success'>99770</span>"
+	#tempHtml += "<span class='label label-warning'>SFACG</span>"
     tempHtml += "<span class='label label-info'>8Comic</span></div>"
     
     $('.container').html(tempHtml)
-    $('.label-warning').click -> chrome.tabs.create {url: 'http://comic.sfacg.com/'}
-    $('.label-success').click -> chrome.tabs.create {url: 'http://99770.cc/'}
+	#$('.label-warning').click -> chrome.tabs.create {url: 'http://comic.sfacg.com/'}
+	#$('.label-success').click -> chrome.tabs.create {url: 'http://99770.cc/'}
     $('.label-info').click -> chrome.tabs.create {url: 'http://www.8comic.com/comic/'}
   else
     $('.container').html('')

@@ -1,14 +1,20 @@
 body
   background #dfdfdf
+  font-family 'Courier New', monospace
+div
+  font-family 'Courier New', monospace
+
+
 
 .eox-page
   min-width 600px
   margin 0 auto 30px 25px
   img
+    padding-top 6px
     display block
     max-width 100%
     margin 0 auto
-    -webkit-box-shadow 0px 5px 6px 3px rgba(0, 0, 0, 0.4)
+    -webkit-box-shadow: 0 6px 10px 0 rgba(0, 0, 0, .4)
 
 .eox-button
   position fixed
@@ -21,6 +27,9 @@ body
 #eox-sub
   top 10px
 
+#eox-resize
+  top 10px
+
 #eox-prev
   bottom 90px
 
@@ -30,3 +39,32 @@ body
 #eox-next
   bottom 10px
 
+#eox-panel
+  font-family 'Courier New', monospace
+  font-size 10pt
+  color white
+  position fixed
+  bottom 10px
+  right 80px
+  padding 20px 0 20px 80px
+  -webkit-border-radius 8px
+  border-radius 8px
+  background rgba(0, 0, 0, 0.6)
+  -webkit-box-shadow: 0 6px 10px 0 rgba(0, 0, 0, .3)
+  -webkit-transition all 0.3 ease-in-out
+  h1
+    color white
+    font-size 10pt
+  li
+    padding-bottom 2px
+    font-family 'Courier New', monospace
+    span
+      color #EFBB24
+      font-family 'Courier New', monospace
+
+  li:nth-child(3), li:nth-child(4), hr
+    position relative
+    left -40px
+
+  hr
+    width 170px
