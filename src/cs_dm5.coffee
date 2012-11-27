@@ -10,6 +10,7 @@ isValidPath = ->
     console.log 'loading OK'
     true
 
+
 findUrl = ->
   re_path = /\/m\d*.*/gi
   re_cid = /m(\d*)/
@@ -35,6 +36,7 @@ findUrl = ->
   imageList[0] = 'head'
   findEachUrl(i, cid, imageList) for i in [1..max]  
 
+
 findEachUrl = (i, cid, imageList) ->
   $.get 'http://tel.dm5.com/chapterimagefun.ashx', {cid: cid, page: i, key: $('#dm5_key').val(), language: 1}, (res) ->
     eval(res)
@@ -43,6 +45,7 @@ findEachUrl = (i, cid, imageList) ->
       setImage(imageList)
       setNavButton()
       setHotkeyPanel()
+
 
 setImage = (imageList) ->
   $('body').html('')
@@ -56,6 +59,7 @@ setImage = (imageList) ->
       </div>
     ")
   $('.eox-page').css('width', window.innerWidth - 120)
+
 
 setNavButton = ->
   console.log 'setNavButton'
@@ -72,7 +76,7 @@ setNavButton = ->
     resizeState = if localStorage['isResized']? then localStorage['isResized'] else 'false'
     if resizeState == 'false'
       $('#eox-resize').attr('src', chrome.extension.getURL('img/resize.png'))
-      $('.eox-page img').css('height', window.innerHeight-12)
+      $('.eox-page img').css('height', window.innerHeight - 12)
       localStorage['isResized'] = 'true'
     else if resizeState == 'true'
       $('#eox-resize').attr('src', chrome.extension.getURL('img/resize_gray.png'))
@@ -94,6 +98,7 @@ setNavButton = ->
   # Setting up resize state
   $('#eox-resize').click().click()
 
+
 setHotkeyPanel = ->
   $('body').append("
     <div id='eox-panel'>
@@ -110,6 +115,7 @@ setHotkeyPanel = ->
     </div>
   ")
   $('#eox-panel').hide()
+
 
 bindListener = ->
   # Binding hotkeys
@@ -135,6 +141,7 @@ bindListener = ->
   $(window).resize ->
     $('.eox-page').css('width', window.innerWidth - 120)
     $('#eox-resize').click().click()
+
 
 if isValidPath()
   findUrl()

@@ -1,5 +1,9 @@
-setPicture = ->
-  console.log 'setPicture'
+isValidPath = ->
+  true
+
+
+findUrl = ->
+  console.log 'findUrl'
   
   # get codes
   page_info = $('script:contains(ch=request)').html()
@@ -27,6 +31,8 @@ setPicture = ->
 
   # get uri of all pictures
   $('body').html('')
+  $('body').css('background', "url(#{chrome.extension.getURL('img/texture.png')}) repeat, #FCFAF2")
+  
   code_info = target_code.split(' ')
   num = code_info[0]
   sid = code_info[1]
@@ -63,14 +69,7 @@ setPicture = ->
   menu_uri = "http://www.8comic.com/html/#{itemid}.html"
 
   setNavButton(prev_uri, menu_uri, next_uri)
-  console.log window
-
-
-setSubButton = ->
-  console.log 'setSubButton'
-
-  # initialize
-  $('body').append("<img id='eox-sub' class='eox-button' src='#{chrome.extension.getURL('img/sub_gray.png')}'>")
+  setHotkeyPanel()
 
 
 setNavButton = (prev_uri, menu_uri, next_uri) ->
@@ -88,7 +87,7 @@ setNavButton = (prev_uri, menu_uri, next_uri) ->
     resizeState = if localStorage['isResized']? then localStorage['isResized'] else 'false'
     if resizeState == 'false'
       $('#eox-resize').attr('src', chrome.extension.getURL('img/resize.png'))
-      $('.eox-page img').css('height', window.innerHeight)
+      $('.eox-page img').css('height', window.innerHeight - 12)
       localStorage['isResized'] = 'true'
     else if resizeState == 'true'
       $('#eox-resize').attr('src', chrome.extension.getURL('img/resize_gray.png'))
@@ -107,32 +106,54 @@ setNavButton = (prev_uri, menu_uri, next_uri) ->
     $('#eox-next').click -> location.href = next_uri
     $('#eox-next').attr('src', chrome.extension.getURL('img/next.png'))
 
-
-
-setPicture()
-
-# Setting up resize state
-$('#eox-resize').click().click()
-
-# Binding hotkeys
-$(document).keydown (e) ->
-  switch e.which
-    when 37, 75 # left arrow, K
-      $(window).scrollTop($('img').filter( ->
-        return $(this).offset().top < $('html').offset().top * -1
-      ).last().offset().top)
-    when 39, 74 # right arrow, J
-      $(window).scrollTop($('img').filter( ->
-        return $(this).offset().top > $('html').offset().top * -1
-      ).first().offset().top)
-    when 72 # H
-      $('#eox-prev').click()
-    when 76 # L
-      $('#eox-next').click()
-    when 70 # F
-      $('#eox-resize').click()
-
-	  
-$(window).resize ->
-  $('.eox-page').css('width', window.innerWidth - 120)
+  # Setting up resize state
   $('#eox-resize').click().click()
+
+
+setHotkeyPanel = ->
+  $('body').append("
+    <div id='eox-panel'>
+      <h1>快捷鍵列表</h1>
+      <hr />
+      <ul>
+        <li><span>H</span> : 上一卷（話）
+        <li><span>L</span> : 下一卷（話）
+        <li><span>→</span> or <span>J</span> : 下一頁
+        <li><span>←</span> or <span>K</span> : 上一頁
+        <li><span>F</span> : 符合頁面
+        <li><span>?</span> : 打開/關閉此列表
+      </ul>
+    </div>
+  ")
+  $('#eox-panel').hide()
+
+
+bindListener = ->
+  # Binding hotkeys
+  $(document).keydown (e) ->
+    switch e.which
+      when 37, 75 # left arrow, K
+        $(window).scrollTop($('img').filter( ->
+          return $(this).offset().top < $('html').offset().top * -1
+        ).last().offset().top)
+      when 39, 74 # right arrow, J
+        $(window).scrollTop($('img').filter( ->
+          return $(this).offset().top > $('html').offset().top * -1
+        ).first().offset().top)
+      when 72 # H
+        $('#eox-prev').click()
+      when 76 # L
+        $('#eox-next').click()
+      when 70 # F
+        $('#eox-resize').click()
+      when 191
+        $('#eox-panel').fadeToggle("fast")
+
+  $(window).resize ->
+    $('.eox-page').css('width', window.innerWidth - 120)
+    $('#eox-resize').click().click()
+
+
+if isValidPath()
+  findUrl()
+  bindListener()
