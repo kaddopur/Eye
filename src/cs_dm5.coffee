@@ -3,7 +3,7 @@ prevUri = nextUri = menuUri = ''
 isValidPath = ->
   console.log 'isValidPath'
   
-  re_path = /\/m\d*.*/gi  
+  re_path = /\/m\d+.*/gi  
   if window.location.pathname.match(re_path) is null
     false
   else
@@ -12,12 +12,7 @@ isValidPath = ->
 
 
 findUrl = ->
-  re_path = /\/m\d*.*/gi
-  re_cid = /m(\d*)/
-
-  if window.location.pathname.match(re_path) is null
-  	return
-  console.log 'loading OK'
+  re_cid = /m(\d+)/
 
   cid = parseInt(window.location.pathname.match(re_cid)[1])
   max = $('select option').length
