@@ -20,6 +20,10 @@
   },
   
   // Add any of these that you need
+  "background": {
+    "scripts": ["js/jquery-1.7.1.min.js", "js/manager.js"],
+    "persistent": false
+  },
   "content_scripts": [
     {
         "matches": ["http://www.8comic.com/show/*"],
@@ -36,7 +40,9 @@
     "notifications",
     "tabs",
     "http://*/*",
-    "https://*/*"
+    "https://*/*",
+    "background",
+    "alarms"
   ],
   "web_accessible_resources": [
   	"img/sub_gray.png",
