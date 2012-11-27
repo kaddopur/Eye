@@ -13,25 +13,35 @@ startRequest = (params) ->
     dm5Url = 'http://tel.dm5.com'
     for target in $(res).find('.innr3 .red_lj')
       menuUrl = dm5Url + $(target).find('a:first-child').attr('href')
-      title = $(target).find('a:first-child').attr('title')
+      title = $(target).find('a:first-child').attr('title').trim()
       episodeUrl = dm5Url + $(target).find('a:last-child').attr('href')
-      episodeNumber = $(target).find('a:last-child').text()
+      episodeNumber = $(target).find('a:last-child').text().trim()
       checkUserSubscription 'site': 'dm5', 'menuUrl': menuUrl, 'title': title, 'episodeUrl': episodeUrl, 'episodeNumber': episodeNumber
 
   # for 8comic
-  # $.get 'http://www.8comic.com/comic/u-1.html', (res) ->
-  #   baComicUrl = 'http://www.8comic.com'
-  #   for target in $(res).find('td[height=30][nowrap] a')
-  #     menuUrl = baComicUrl + $(target).attr('href');
-  #     content = $(target).text()
-  #     re = /\[.*(\W*).*]/
-  #     console.log content.match(re)
+  $.get 'http://www.8comic.com/comic/u-1.html', (res) ->
+    baComicUrl = 'http://www.8comic.com'
+    for target in $(res).find('td[height=30][nowrap] a')
+      menuUrl = baComicUrl + $(target).attr('href');
+      find8comicOtherData(menuUrl)
 
-  #     console.log menuUrl, content
+find8comicOtherData = (menuUrl) ->
+  $.get menuUrl, (res) ->
+    title = $(res).find('#Comic font')[0].firstChild.data.trim()
+    
+    chapter = $(res).find('.Vol, .Ch')
+    episodeNumber = chapter[chapter.length-1].text.trim()
+    
+    callback = $(chapter[chapter.length-1]).attr('onclick')
+    re_callback = /'(.*)',(.*)\)/
+    params = callback.match(re_callback)
+    episodeUrl = cview(params[1], params[2])
+
+    checkUserSubscription 'site': '8comic', 'menuUrl': menuUrl, 'title': title, 'episodeUrl': episodeUrl, 'episodeNumber': episodeNumber
 
 scheduleRequest = ->
   console.log 'scheduleRequest'
-  delay = 1
+  delay = 15
   console.log "Scheduling for: #{delay} min" 
   chrome.alarms.create('refresh', {periodInMinutes: delay})
 
@@ -40,8 +50,10 @@ checkUserSubscription = (params) ->
   # console.log params
   switch params.site
     when 'dm5'
+      console.log 'check dm5'
       localStorage.userDm5List = checkList(localStorage.userDm5List, params)
     when '8comic'
+      console.log 'check 8comic'
       localStorage.user8comicList = checkList(localStorage.user8comicList, params)
     else
       console.log 'check nothing'
@@ -53,6 +65,7 @@ checkList = (ls_userList, params) ->
   userList = JSON.parse(ls_userList)
   
   for ele, i in userList
+    console.log ele, params
     isSubscriber = ele.menuUrl is params.menuUrl
     isNew = ele.episodeUrl isnt params.episodeUrl
     if isSubscriber and isNew
@@ -70,5 +83,25 @@ onAlarm = (alarm) ->
   console.log 'Got alarm'
   startRequest {scheduleRequest: true} if alarm? and alarm.name is 'refresh'
 
+cview = (url, catid) ->
+  baseurl = ''
+  catid = parseInt(catid)
+  switch catid
+    when 4, 6, 12, 22
+      baseurl = 'http://www.8comic.com/show/cool-'
+    when 1, 17, 19, 21
+      baseurl = 'http://www.8comic.com/show/cool-'
+    when 2, 5, 7, 9
+      baseurl = 'http://www.8comic.com/show/cool-'
+    when 10, 11, 13, 14
+      baseurl = 'http://www.8comic.com/show/best-manga-'
+    when 3, 8, 15, 16, 18, 20
+      baseurl = 'http://www.8comic.com/show/best-manga-'
+  
+  url = url.replace('.html','').replace('-','.html?ch=')
+  baseurl + url
+
 chrome.runtime.onInstalled.addListener onInit
 chrome.alarms.onAlarm.addListener onAlarm
+
+
