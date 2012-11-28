@@ -4,40 +4,72 @@ body
 div
   font-family 'Courier New', monospace
 
-
-
 .eox-page
   min-width 600px
   margin 0 auto 30px 25px
+  overflow auto
   img
-    padding-top 6px
     display block
     max-width 100%
+    width auto
     margin 0 auto
+    padding-top 6px
     -webkit-box-shadow: 0 6px 10px 0 rgba(0, 0, 0, .4)
 
-.eox-button
+nav
+  width 36px
+  height 100%
   position fixed
-  right 15px
-  opacity 0.4
-  -webkit-transition opacity 0.3s linear
-  &:hover
-    opacity 1
-
-#eox-sub
-  top 10px
+  top 0
+  right 20px
+  li
+    position absolute
+    display block
+    border-radius 8px
+    margin 16px 0 16px 4px
+    width 32px
+    height 32px
+    -webkit-box-shadow 1px 1px 2px 1px rgba(255, 255, 255, .5)
+    -webkit-transition all .3s ease-in-out
+    img
+      position relative
+      top 8px
+      display block
+      width 16px
+      margin 0 auto
+      opacity .5
+    &:hover
+      width 36px
+      margin 16px 0
 
 #eox-resize
-  top 10px
+  top 0px
 
-#eox-prev
-  bottom 90px
+#eox-like
+  top 48px
 
 #eox-menu
-  bottom 50px
+  top 96px
+  img
+    top 10px
+
+#eox-prev
+  bottom 48px
+  img
+    top 11px
 
 #eox-next
-  bottom 10px
+  bottom 0px
+  img
+    top 11px
+
+.function
+  background #FFB11B
+
+.no-function
+  background #B4A582
+  img
+    opacity 0.5
 
 #eox-panel
   font-family 'Courier New', monospace
@@ -48,7 +80,6 @@ div
   right 80px
   padding 20px 0 20px 80px
   -webkit-border-radius 8px
-  border-radius 8px
   background rgba(0, 0, 0, 0.6)
   -webkit-box-shadow: 0 6px 10px 0 rgba(0, 0, 0, .3)
   -webkit-transition all 0.3 ease-in-out
