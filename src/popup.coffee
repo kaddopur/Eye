@@ -12,13 +12,16 @@ refreshBadge = ->
       <header>
         <h1>目前沒有漫畫更新</h1>
       </header>
-      <section>
+      <section id='site'>
         <ul>
-          <li><a href='http://www.8comic.com/comic/' target='_blank'>8Comic</a>
+          <li><span id='eightComicLink'>8Comic.com 無限動漫</span>
+          <li><span id='dm5Link'>Dm5 动漫屋</span>
         </ul>
       </section>"
     
     $('.container').html(tempHtml)
+    $('#eightComicLink').click -> chrome.tabs.create {url: 'http://www.8comic.com/comic/'}
+    $('#dm5Link').click -> chrome.tabs.create {url: 'http://tel.dm5.com/'}
   else
     loadEpisode()
 

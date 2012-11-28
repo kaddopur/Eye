@@ -13,8 +13,18 @@ refreshBadge = function() {
     text: badgeText
   });
   if (unreadList.length === 0) {
-    tempHtml = "      <header>        <h1>目前沒有漫畫更新</h1>      </header>      <section>        <ul>          <li><a href='http://www.8comic.com/comic/' target='_blank'>8Comic</a>        </ul>      </section>";
-    return $('.container').html(tempHtml);
+    tempHtml = "      <header>        <h1>目前沒有漫畫更新</h1>      </header>      <section id='site'>        <ul>          <li><span id='eightComicLink'>8Comic.com 無限動漫</span>          <li><span id='dm5Link'>Dm5 动漫屋</span>        </ul>      </section>";
+    $('.container').html(tempHtml);
+    $('#eightComicLink').click(function() {
+      return chrome.tabs.create({
+        url: 'http://www.8comic.com/comic/'
+      });
+    });
+    return $('#dm5Link').click(function() {
+      return chrome.tabs.create({
+        url: 'http://tel.dm5.com/'
+      });
+    });
   } else {
     return loadEpisode();
   }

@@ -171,7 +171,7 @@ checkUserSubscription = function(params) {
 };
 
 checkList = function(ls_userList, params) {
-  var ele, i, isNew, isSubscriber, unreadList, userList, _i, _len;
+  var badgeText, ele, i, isNew, isSubscriber, unreadList, userList, _i, _len;
   if (!(localStorage.unreadList != null)) {
     localStorage.unreadList = JSON.stringify([]);
   }
@@ -196,6 +196,10 @@ checkList = function(ls_userList, params) {
       console.log('not matched');
     }
   }
+  badgeText = unreadList.length !== 0 ? '' + unreadList.length : '';
+  chrome.browserAction.setBadgeText({
+    text: badgeText
+  });
   return JSON.stringify(userList);
 };
 

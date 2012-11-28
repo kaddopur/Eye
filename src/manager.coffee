@@ -126,6 +126,10 @@ checkList = (ls_userList, params) ->
       console.log 'already updated'
     else
       console.log 'not matched'
+
+  badgeText = if unreadList.length isnt 0 then '' + unreadList.length else '' 
+  chrome.browserAction.setBadgeText {text: badgeText}
+
   JSON.stringify(userList)
 
 

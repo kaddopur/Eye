@@ -6,11 +6,6 @@
   float: left;
   width: 50%;
 }
-.column h1 {
-  text-transform: capitalize;
-  text-align: center;
-  font-size: 1.2em;
-}
 .column ul {
   margin: 10px;
   -webkit-box-shadow: 2px 2px 2px 1px rgba(255,255,255,0.5);
@@ -54,4 +49,31 @@ span.dismiss {
   height: 16px;
   margin: 7px 7px;
   opacity: 0.8;
+}
+h1 {
+  text-transform: capitalize;
+  text-align: center;
+  font-size: 1.2em;
+}
+#site {
+  margin-top: 10px;
+}
+#site span {
+  display: block;
+  float: left;
+  text-align: center;
+  border-radius: 5px;
+  width: 48%;
+  line-height: 30px;
+  font-size: 0.8em;
+  margin: 1%;
+  background: rgba(189,192,186,0.35);
+  -webkit-box-shadow: 2px 2px 2px 1px rgba(255,255,255,0.5);
+  -webkit-transition: all 0.3s ease-in-out;
+}
+#eightComicLink:hover {
+  background: rgba(51,166,184,0.35);
+}
+#dm5Link:hover {
+  background: rgba(232,48,21,0.35);
 }
