@@ -29,6 +29,10 @@ findUrl = ->
       target_code = c
       break
 
+  episodeNumber = $('font#lastchapter').text()
+  re_title = /\[(.*)<font/
+  title = $('font#lastchapter').parent().html().match(re_title)[1].trim()
+
   # get uri of all pictures
   $('body').html('')
   $('body').css('background', "url(#{chrome.extension.getURL('img/texture.png')}) repeat, #FCFAF2")
@@ -69,6 +73,7 @@ findUrl = ->
   menu_uri = "http://www.8comic.com/html/#{itemid}.html"
 
   setNavButton(prev_uri, menu_uri, next_uri)
+  setLikeButton 'site': '8comic', 'menuUrl': menu_uri, 'title': title, 'episodeUrl': location.href, 'episodeNumber': episodeNumber
   setHotkeyPanel()
 
 
@@ -177,6 +182,10 @@ bindListener = ->
   $(window).resize ->
     $('.eox-page').css('width', window.innerWidth - 120)
     $('#eox-resize').click().click()
+
+
+setLikeButton = (params)->
+  console.log params
 
 
 if isValidPath()
