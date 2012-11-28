@@ -37,7 +37,7 @@ nav li {
 }
 nav li img {
   position: relative;
-  top: 9px;
+  top: 8px;
   display: block;
   width: 16px;
   margin: 0 auto;
@@ -56,11 +56,20 @@ nav li:hover {
 #eox-menu {
   top: 96px;
 }
+#eox-menu img {
+  top: 10px;
+}
 #eox-prev {
   bottom: 48px;
 }
+#eox-prev img {
+  top: 11px;
+}
 #eox-next {
   bottom: 0px;
+}
+#eox-next img {
+  top: 11px;
 }
 .function {
   background: #ffb11b;

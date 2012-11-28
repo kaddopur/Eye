@@ -76,14 +76,14 @@ setNavButton = function(prev_uri, menu_uri, next_uri) {
   $('body').append("    <nav>      <ul>        <li id='eox-resize'><img src='" + (chrome.extension.getURL('img/fullscreen.png')) + "' alt='符合螢幕'></li>        <li id='eox-like'><img src='" + (chrome.extension.getURL('img/star.png')) + "' alt='訂閱更新'></li>        <li id='eox-prev'><img src='" + (chrome.extension.getURL('img/backward.png')) + "' alt='上一卷（話）'></li>        <li id='eox-menu'><img src='" + (chrome.extension.getURL('img/list.png')) + "' alt='全集列表'></li>        <li id='eox-next'><img src='" + (chrome.extension.getURL('img/forward.png')) + "' alr='下一卷（話）'></li>      </ul>    </nav>  ");
   isResized = localStorage.isResized != null ? localStorage.isResized : 'false';
   localStorage.isResized = isResized;
-  console.log(isResized);
   if (isResized === 'true') {
     $('#eox-resize').removeClass().addClass('function');
+    $('.eox-page img').css('height', window.innerHeight - 12);
   } else {
     $('#eox-resize').removeClass().addClass('no-function');
+    $('.eox-page img').css('height', '');
   }
   $('#eox-resize').click(function() {
-    console.log('click');
     isResized = localStorage.isResized != null ? localStorage.isResized : 'false';
     if (isResized === 'true') {
       $('#eox-resize').removeClass().addClass('no-function');

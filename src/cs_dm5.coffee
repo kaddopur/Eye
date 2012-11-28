@@ -74,14 +74,15 @@ setNavButton = ->
 
   isResized = if localStorage.isResized? then localStorage.isResized else 'false'
   localStorage.isResized = isResized
-  console.log isResized
+
   if isResized == 'true'
     $('#eox-resize').removeClass().addClass('function')
+    $('.eox-page img').css('height', window.innerHeight - 12)
   else
     $('#eox-resize').removeClass().addClass('no-function')
+    $('.eox-page img').css('height', '')
 
   $('#eox-resize').click ->
-    console.log 'click'
     isResized = if localStorage.isResized? then localStorage.isResized else 'false'
     if isResized == 'true'
       $('#eox-resize').removeClass().addClass('no-function')
@@ -116,8 +117,6 @@ setNavButton = ->
     $('#eox-like').removeClass().addClass('function')
   else
     $('#eox-like').removeClass().addClass('no-function')
-
-  $('#eox-resize').click().click()
 
 
 setHotkeyPanel = ->
