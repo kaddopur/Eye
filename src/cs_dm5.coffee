@@ -28,8 +28,8 @@ findUrl = ->
       $('#eox-prev').click -> location.href = prevUri
       $('#eox-prev').removeClass().addClass('function')
 
-  title = $('.bai_lj a:nth-child(3)').text().match(/(\S.*)漫画/)[1]
-  episodeNumber = $('.bai_lj a:nth-child(4)').text().replace(title, '').match(/(\S+)\s/)[1]
+  title = $('.bai_lj a:last-child').prev().text().match(/(\S.*)漫画/)[1]
+  episodeNumber = $('.bai_lj a:last-child').text().replace(title, '').match(/(\S+)\s/)[1]
   
   imageList = (' ' for i in [0..max])
   imageList[0] = 'head'

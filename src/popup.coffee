@@ -1,33 +1,84 @@
-ls = localStorage
-
-episodeList = if ls.episodeList? then JSON.parse(ls.episodeList) else []
-ls.episodeList = JSON.stringify episodeList
+unreadList = if localStorage.unreadList? then JSON.parse localStorage.unreadList else []
+localStorage.unreadList = JSON.stringify unreadList
 
 
 refreshBadge = ->
-  episodeList = if ls.episodeList? then JSON.parse(ls.episodeList) else []
-  badgeText = if episodeList.length != 0 then ''+episodeList.length else '' 
+  unreadList = if localStorage.unreadList? then JSON.parse localStorage.unreadList else []
+  badgeText = if unreadList.length isnt 0 then '' + unreadList.length else '' 
   chrome.browserAction.setBadgeText {text: badgeText}
   
-  if episodeList.length == 0
-    tempHtml = "<div class='episode'><div class='title title-noepi'>目前沒有漫畫更新</div></div><div class='episode'>"
-	#tempHtml += "<span class='label label-success'>99770</span>"
-	#tempHtml += "<span class='label label-warning'>SFACG</span>"
-    tempHtml += "<span class='label label-info'>8Comic</span></div>"
+  if unreadList.length is 0
+    tempHtml = "
+      <header>
+        <h1>目前沒有漫畫更新</h1>
+      </header>
+      <section>
+        <ul>
+          <li><a href='http://www.8comic.com/comic/' target='_blank'>8Comic</a>
+        </ul>
+      </section>"
     
     $('.container').html(tempHtml)
-	#$('.label-warning').click -> chrome.tabs.create {url: 'http://comic.sfacg.com/'}
-	#$('.label-success').click -> chrome.tabs.create {url: 'http://99770.cc/'}
-    $('.label-info').click -> chrome.tabs.create {url: 'http://www.8comic.com/comic/'}
   else
-    $('.container').html('')
     loadEpisode()
 
 
 loadEpisode = ->
-  for epi, i in episodeList
-    $('.container').append("<div class='episode'><div class='title'>#{epi.title}</div><img src='image/arrow_gray.png' id='go#{i}'></div></div>")
-    setPicture(i, epi.url)
+  $('.container').html('')
+  tempDm5List = (ele for ele in unreadList when ele.site is 'dm5')
+  temp8comicList = (ele for ele in unreadList when ele.site is '8comic')
+
+  console.log tempDm5List, temp8comicList
+
+  if tempDm5List.length isnt 0
+    $('.container').append("
+      <section id='dm5' class='column'>
+        <h1>dm5</h1>
+        <ul></ul>
+      </section>")
+    for ele, i in tempDm5List
+      $('#dm5 ul').append("
+        <li id='dm5-#{i}'>
+          <span class='info'>
+            <span class='title'>#{ele.title}</span>
+            <span class='number'>#{ele.episodeNumber}</span>
+          </span>
+          <span class='dismiss'></span>
+        </li>")
+      bind("#dm5-#{i}", ele)
+
+  if temp8comicList.length isnt 0
+    $('.container').append("
+      <section id='eightComic' class='column'>
+        <h1>8Comic</h1>
+        <ul></ul>
+      </section>")
+    for ele, i in temp8comicList
+      $('#eightComic ul').append("
+        <li id='eightComic-#{i}''>
+          <span class='info'>
+            <span class='title'>#{ele.title}</span>
+            <span class='number'>#{ele.episodeNumber}</span>
+          </span>
+          <span class='dismiss'></span>
+        </li>")
+      bind("#eightComic-#{i}", ele)
+
+  $('.dismiss').css('background', "url(#{chrome.extension.getURL('img/remove.png')}) no-repeat center center")
+  $('.dismiss').css('background-size', "12px 12px")
+
+
+bind = (target, params) ->
+  $(target).click ->
+    chrome.tabs.create {url: params.episodeUrl}
+
+  $(target).find('.dismiss').click ->
+    console.log 'params', params
+    unreadList = if localStorage.unreadList? then JSON.parse localStorage.unreadList else []
+    unreadList = (ele for ele in unreadList when ele.menuUrl isnt params.menuUrl)
+    localStorage.unreadList = JSON.stringify unreadList
+    $(target).remove()
+    refreshBadge()
 
 
 setPicture = (i, targetURL) ->
@@ -48,4 +99,5 @@ setPicture = (i, targetURL) ->
 
     
 $(document).ready ->
+  $('body').css('background', "url(#{chrome.extension.getURL('img/texture.png')}) repeat, #FCFAF2")
   refreshBadge()
