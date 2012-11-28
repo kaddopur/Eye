@@ -27,6 +27,10 @@ findUrl = ->
       $('#eox-prev').click -> location.href = prevUri
       $('#eox-prev').removeClass().addClass('function')
 
+  title = $('.bai_lj a:nth-child(3)').text().match(/(\S.*)漫画/)[1]
+  episodeNumber = $('.bai_lj a:nth-child(4)').text().replace(title, '').match(/(\S+)\s/)[1]
+  setLikeButton 'site': 'dm5', 'menuUrl': menuUri, 'title': title, 'episodeUrl': location.href, 'episodeNumber': episodeNumber
+
   imageList = (' ' for i in [0..max])
   imageList[0] = 'head'
   findEachUrl(i, cid, imageList) for i in [1..max]  
@@ -161,6 +165,10 @@ bindListener = ->
   $(window).resize ->
     $('.eox-page').css('width', window.innerWidth - 120)
     $('#eox-resize').click().click()
+
+
+setLikeButton = (params) ->
+  console.log params
 
 
 if isValidPath()

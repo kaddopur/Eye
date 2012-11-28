@@ -184,7 +184,7 @@ bindListener = ->
     $('#eox-resize').click().click()
 
 
-setLikeButton = (params)->
+setLikeButton = (params) ->
   console.log params
 
 
