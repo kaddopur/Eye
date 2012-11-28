@@ -185,7 +185,21 @@ bindListener = ->
 
 
 setLikeButton = (params) ->
-  console.log params
+  # console.log 'setLikeButton', params
+  chrome.extension.sendMessage {action: 'setLikeButton', params: params}, (res) ->
+    console.log res
+    if res.isFunction
+      $('#eox-like').removeClass().addClass('function')
+    else
+      $('#eox-like').removeClass().addClass('no-function')
+
+  $('#eox-like').click ->
+    # console.log 'clickLikeButton'
+    chrome.extension.sendMessage {action: 'clickLikeButton', params: params}, (res) ->
+      if res.isFunction
+        $('#eox-like').removeClass().addClass('function')
+      else
+        $('#eox-like').removeClass().addClass('no-function')
 
 
 if isValidPath()

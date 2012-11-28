@@ -1,8 +1,53 @@
+onLikeButton =  (request, sender, sendResponse) ->
+  console.log 'onMessage', request
+  targetList = []
+  switch request.params.site
+    when 'dm5' 
+      targetList = if localStorage.userDm5List? then JSON.parse localStorage.userDm5List else []
+    when '8comic' 
+      targetList = if localStorage.user8comicList? then JSON.parse localStorage.user8comicList else []
+  console.log 'targetList', targetList
+  
+  switch request.action
+    when 'setLikeButton'
+      console.log 'setLikeButton'
+      for ele in targetList
+        if ele.menuUrl is request.params.menuUrl
+          sendResponse {isFunction: true}
+          return
+      sendResponse {isFunction: false}
+    when 'clickLikeButton'
+      console.log 'clickLikeButton'
+      for ele, i in targetList
+        if ele.menuUrl is request.params.menuUrl
+          targetList = (e for e, j in targetList when i isnt j)
+          switch request.params.site
+            when 'dm5' 
+              localStorage.userDm5List = JSON.stringify targetList
+            when '8comic'
+              localStorage.user8comicList = JSON.stringify targetList
+          sendResponse {isFunction: false}
+          return
+      targetList.push(request.params)
+      switch request.params.site
+        when 'dm5' 
+          localStorage.userDm5List = JSON.stringify targetList
+        when '8comic'
+          localStorage.user8comicList = JSON.stringify targetList
+      sendResponse {isFunction: true}
+
+
+
+chrome.extension.onMessage.addListener onLikeButton
+
+
 onInit = ->
   console.log 'onInit'
   localStorage.userDm5List = '[]' if not localStorage.userDm5List?
   localStorage.user8comicList = '[]' if not localStorage.user8comicList?
+  
   startRequest {scheduleRequest: true}
+
 
 startRequest = (params) ->
   console.log 'startRequest'
@@ -25,6 +70,7 @@ startRequest = (params) ->
       menuUrl = baComicUrl + $(target).attr('href');
       find8comicOtherData(menuUrl)
 
+
 find8comicOtherData = (menuUrl) ->
   $.get menuUrl, (res) ->
     title = $(res).find('#Comic font')[0].firstChild.data.trim()
@@ -39,11 +85,13 @@ find8comicOtherData = (menuUrl) ->
 
     checkUserSubscription 'site': '8comic', 'menuUrl': menuUrl, 'title': title, 'episodeUrl': episodeUrl, 'episodeNumber': episodeNumber
 
+
 scheduleRequest = ->
   console.log 'scheduleRequest'
   delay = 15
   console.log "Scheduling for: #{delay} min" 
   chrome.alarms.create('refresh', {periodInMinutes: delay})
+
 
 checkUserSubscription = (params) ->
   console.log 'checkUserSubscription'
@@ -57,6 +105,7 @@ checkUserSubscription = (params) ->
       localStorage.user8comicList = checkList(localStorage.user8comicList, params)
     else
       console.log 'check nothing'
+
 
 checkList = (ls_userList, params) ->
   localStorage.unreadList = JSON.stringify([]) if not localStorage.unreadList?
@@ -79,9 +128,11 @@ checkList = (ls_userList, params) ->
       console.log 'not matched'
   JSON.stringify(userList)
 
+
 onAlarm = (alarm) ->
   console.log 'Got alarm'
   startRequest {scheduleRequest: true} if alarm? and alarm.name is 'refresh'
+
 
 cview = (url, catid) ->
   baseurl = ''
@@ -101,7 +152,11 @@ cview = (url, catid) ->
   url = url.replace('.html','').replace('-','.html?ch=')
   baseurl + url
 
+
 chrome.runtime.onInstalled.addListener onInit
 chrome.alarms.onAlarm.addListener onAlarm
+
+    
+
 
 

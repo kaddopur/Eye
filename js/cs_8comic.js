@@ -172,7 +172,29 @@ bindListener = function() {
 };
 
 setLikeButton = function(params) {
-  return console.log(params);
+  chrome.extension.sendMessage({
+    action: 'setLikeButton',
+    params: params
+  }, function(res) {
+    console.log(res);
+    if (res.isFunction) {
+      return $('#eox-like').removeClass().addClass('function');
+    } else {
+      return $('#eox-like').removeClass().addClass('no-function');
+    }
+  });
+  return $('#eox-like').click(function() {
+    return chrome.extension.sendMessage({
+      action: 'clickLikeButton',
+      params: params
+    }, function(res) {
+      if (res.isFunction) {
+        return $('#eox-like').removeClass().addClass('function');
+      } else {
+        return $('#eox-like').removeClass().addClass('no-function');
+      }
+    });
+  });
 };
 
 if (isValidPath()) {

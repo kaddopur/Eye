@@ -1,4 +1,5 @@
 prevUri = nextUri = menuUri = ''
+title = episodeNumber = ''
 
 isValidPath = ->
   console.log 'isValidPath'
@@ -29,8 +30,7 @@ findUrl = ->
 
   title = $('.bai_lj a:nth-child(3)').text().match(/(\S.*)漫画/)[1]
   episodeNumber = $('.bai_lj a:nth-child(4)').text().replace(title, '').match(/(\S+)\s/)[1]
-  setLikeButton 'site': 'dm5', 'menuUrl': menuUri, 'title': title, 'episodeUrl': location.href, 'episodeNumber': episodeNumber
-
+  
   imageList = (' ' for i in [0..max])
   imageList[0] = 'head'
   findEachUrl(i, cid, imageList) for i in [1..max]  
@@ -44,6 +44,8 @@ findEachUrl = (i, cid, imageList) ->
       setImage(imageList)
       setNavButton()
       setHotkeyPanel()
+      setLikeButton 'site': 'dm5', 'menuUrl': menuUri, 'title': title, 'episodeUrl': location.href, 'episodeNumber': episodeNumber
+
 
 
 setImage = (imageList) ->
@@ -116,12 +118,6 @@ setNavButton = ->
   else
     $('#eox-next').removeClass().addClass('no-function')
 
-  if false
-    # $('#eox-like').click -> location.href = next_uri
-    $('#eox-like').removeClass().addClass('function')
-  else
-    $('#eox-like').removeClass().addClass('no-function')
-
 
 setHotkeyPanel = ->
   $('body').append("
@@ -168,7 +164,21 @@ bindListener = ->
 
 
 setLikeButton = (params) ->
-  console.log params
+  # console.log 'setLikeButton', params
+  chrome.extension.sendMessage {action: 'setLikeButton', params: params}, (res) ->
+    console.log res
+    if res.isFunction
+      $('#eox-like').removeClass().addClass('function')
+    else
+      $('#eox-like').removeClass().addClass('no-function')
+
+  $('#eox-like').click ->
+    # console.log 'clickLikeButton'
+    chrome.extension.sendMessage {action: 'clickLikeButton', params: params}, (res) ->
+      if res.isFunction
+        $('#eox-like').removeClass().addClass('function')
+      else
+        $('#eox-like').removeClass().addClass('no-function')
 
 
 if isValidPath()

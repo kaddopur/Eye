@@ -22,7 +22,7 @@
   // Add any of these that you need
   "background": {
     "scripts": ["js/jquery-1.7.1.min.js", "js/manager.js"],
-    "persistent": false
+    "persistent": true
   },
   "content_scripts": [
     {
