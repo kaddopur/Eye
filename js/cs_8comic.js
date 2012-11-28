@@ -71,44 +71,65 @@ findUrl = function() {
 };
 
 setNavButton = function(prev_uri, menu_uri, next_uri) {
+  var isResized;
   console.log('setNavButton');
-  $('body').append("    <img id='eox-prev' class='eox-button' src='" + (chrome.extension.getURL('img/prev_gray.png')) + "'>    <img id='eox-menu' class='eox-button' src='" + (chrome.extension.getURL('img/menu_gray.png')) + "'>    <img id='eox-next' class='eox-button' src='" + (chrome.extension.getURL('img/next_gray.png')) + "'>    <img id='eox-resize' class='eox-button' src='" + (chrome.extension.getURL('img/resize_gray.png')) + "'>  ");
+  $('body').append("    <nav>      <ul>        <li id='eox-resize'><img src='" + (chrome.extension.getURL('img/fullscreen.png')) + "' alt='符合螢幕'></li>        <li id='eox-like'><img src='" + (chrome.extension.getURL('img/star.png')) + "' alt='訂閱更新'></li>        <li id='eox-prev'><img src='" + (chrome.extension.getURL('img/backward.png')) + "' alt='上一卷（話）'></li>        <li id='eox-menu'><img src='" + (chrome.extension.getURL('img/list.png')) + "' alt='全集列表'></li>        <li id='eox-next'><img src='" + (chrome.extension.getURL('img/forward.png')) + "' alr='下一卷（話）'></li>      </ul>    </nav>  ");
+  isResized = localStorage.isResized != null ? localStorage.isResized : 'false';
+  localStorage.isResized = isResized;
+  console.log(isResized);
+  if (isResized === 'true') {
+    $('#eox-resize').removeClass().addClass('function');
+  } else {
+    $('#eox-resize').removeClass().addClass('no-function');
+  }
   $('#eox-resize').click(function() {
-    var resizeState;
-    resizeState = localStorage['isResized'] != null ? localStorage['isResized'] : 'false';
-    if (resizeState === 'false') {
-      $('#eox-resize').attr('src', chrome.extension.getURL('img/resize.png'));
-      $('.eox-page img').css('height', window.innerHeight - 12);
-      return localStorage['isResized'] = 'true';
-    } else if (resizeState === 'true') {
-      $('#eox-resize').attr('src', chrome.extension.getURL('img/resize_gray.png'));
+    console.log('click');
+    isResized = localStorage.isResized != null ? localStorage.isResized : 'false';
+    if (isResized === 'true') {
+      $('#eox-resize').removeClass().addClass('no-function');
       $('.eox-page img').css('height', '');
-      return localStorage['isResized'] = 'false';
+      isResized = 'false';
+    } else {
+      $('#eox-resize').removeClass().addClass('function');
+      $('.eox-page img').css('height', window.innerHeight - 12);
+      isResized = 'true';
     }
+    return localStorage.isResized = isResized;
   });
   if (prev_uri) {
     $('#eox-prev').click(function() {
       return location.href = prev_uri;
     });
-    $('#eox-prev').attr('src', chrome.extension.getURL('img/prev.png'));
+    $('#eox-prev').removeClass().addClass('function');
+  } else {
+    $('#eox-prev').removeClass().addClass('no-function');
   }
   if (menu_uri) {
     $('#eox-menu').click(function() {
       return location.href = menu_uri;
     });
-    $('#eox-menu').attr('src', chrome.extension.getURL('img/menu.png'));
+    $('#eox-menu').removeClass().addClass('function');
+  } else {
+    $('#eox-menu').removeClass().addClass('no-function');
   }
   if (next_uri) {
     $('#eox-next').click(function() {
       return location.href = next_uri;
     });
-    $('#eox-next').attr('src', chrome.extension.getURL('img/next.png'));
+    $('#eox-next').removeClass().addClass('function');
+  } else {
+    $('#eox-next').removeClass().addClass('no-function');
+  }
+  if (false) {
+    $('#eox-like').removeClass().addClass('function');
+  } else {
+    $('#eox-like').removeClass().addClass('no-function');
   }
   return $('#eox-resize').click().click();
 };
 
 setHotkeyPanel = function() {
-  $('body').append("    <div id='eox-panel'>      <h1>快捷鍵列表</h1>      <hr />      <ul>        <li><span>H</span> : 上一卷（話）        <li><span>L</span> : 下一卷（話）        <li><span>→</span> or <span>J</span> : 下一頁        <li><span>←</span> or <span>K</span> : 上一頁        <li><span>F</span> : 符合頁面        <li><span>?</span> : 打開/關閉此列表      </ul>    </div>  ");
+  $('body').append("    <div id='eox-panel'>      <h1>快捷鍵列表</h1>      <hr />      <ul>        <li><span>H</span> : 上一卷（話）        <li><span>L</span> : 下一卷（話）        <li><span>→</span> or <span>J</span> : 下一頁        <li><span>←</span> or <span>K</span> : 上一頁        <li><span>F</span> : 符合螢幕        <li><span>?</span> : 打開/關閉此列表      </ul>    </div>  ");
   return $('#eox-panel').hide();
 };
 

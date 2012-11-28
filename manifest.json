@@ -45,17 +45,11 @@
     "alarms"
   ],
   "web_accessible_resources": [
-  	"img/sub_gray.png",
-  	"img/prev_gray.png",
-  	"img/menu_gray.png",
-  	"img/next_gray.png",
-  	"img/prev.png",
-  	"img/menu.png",
-  	"img/next.png",
-  	"img/resize.png",
-  	"img/resize_gray.png",
-  	"img/texture.png",
-    "css/viewer.css",
-    "css/reset.css"
+  	"img/forward.png",
+    "img/backward.png",
+    "img/fullscreen.png",
+    "img/star.png",
+    "img/list.png",
+    "img/texture.png"
   ]
 }
