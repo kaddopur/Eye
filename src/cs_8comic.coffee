@@ -108,7 +108,6 @@ setNavButton = (prev_uri, menu_uri, next_uri) ->
       $('.eox-page img').css('height', window.innerHeight - 12)
       isResized = 'true'
     localStorage.isResized = isResized
-    
 
   if prev_uri
     $('#eox-prev').click -> location.href = prev_uri
@@ -133,10 +132,7 @@ setNavButton = (prev_uri, menu_uri, next_uri) ->
     $('#eox-like').removeClass().addClass('function')
   else
     $('#eox-like').removeClass().addClass('no-function')
-
-  # Setting up resize state
-  $('#eox-resize').click().click()
-
+    
 
 setHotkeyPanel = ->
   $('body').append("

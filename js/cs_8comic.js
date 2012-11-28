@@ -121,11 +121,10 @@ setNavButton = function(prev_uri, menu_uri, next_uri) {
     $('#eox-next').removeClass().addClass('no-function');
   }
   if (false) {
-    $('#eox-like').removeClass().addClass('function');
+    return $('#eox-like').removeClass().addClass('function');
   } else {
-    $('#eox-like').removeClass().addClass('no-function');
+    return $('#eox-like').removeClass().addClass('no-function');
   }
-  return $('#eox-resize').click().click();
 };
 
 setHotkeyPanel = function() {

@@ -32,7 +32,7 @@ findUrl = function() {
       $('#eox-prev').click(function() {
         return location.href = prevUri;
       });
-      return $('#eox-prev').attr('src', chrome.extension.getURL('img/prev.png'));
+      return $('#eox-prev').removeClass().addClass('function');
     }
   });
   imageList = (function() {
@@ -81,38 +81,59 @@ setImage = function(imageList) {
 };
 
 setNavButton = function() {
+  var isResized;
   console.log('setNavButton');
-  $('body').append("    <img id='eox-prev' class='eox-button' src='" + (chrome.extension.getURL('img/prev_gray.png')) + "'>    <img id='eox-menu' class='eox-button' src='" + (chrome.extension.getURL('img/menu_gray.png')) + "'>    <img id='eox-next' class='eox-button' src='" + (chrome.extension.getURL('img/next_gray.png')) + "'>    <img id='eox-resize' class='eox-button' src='" + (chrome.extension.getURL('img/resize_gray.png')) + "'>  ");
+  $('body').append("    <nav>      <ul>        <li id='eox-resize'><img src='" + (chrome.extension.getURL('img/fullscreen.png')) + "' alt='符合螢幕'></li>        <li id='eox-like'><img src='" + (chrome.extension.getURL('img/star.png')) + "' alt='訂閱更新'></li>        <li id='eox-prev'><img src='" + (chrome.extension.getURL('img/backward.png')) + "' alt='上一卷（話）'></li>        <li id='eox-menu'><img src='" + (chrome.extension.getURL('img/list.png')) + "' alt='全集列表'></li>        <li id='eox-next'><img src='" + (chrome.extension.getURL('img/forward.png')) + "' alr='下一卷（話）'></li>      </ul>    </nav>  ");
+  isResized = localStorage.isResized != null ? localStorage.isResized : 'false';
+  localStorage.isResized = isResized;
+  console.log(isResized);
+  if (isResized === 'true') {
+    $('#eox-resize').removeClass().addClass('function');
+  } else {
+    $('#eox-resize').removeClass().addClass('no-function');
+  }
   $('#eox-resize').click(function() {
-    var resizeState;
-    resizeState = localStorage['isResized'] != null ? localStorage['isResized'] : 'false';
-    if (resizeState === 'false') {
-      $('#eox-resize').attr('src', chrome.extension.getURL('img/resize.png'));
-      $('.eox-page img').css('height', window.innerHeight - 12);
-      return localStorage['isResized'] = 'true';
-    } else if (resizeState === 'true') {
-      $('#eox-resize').attr('src', chrome.extension.getURL('img/resize_gray.png'));
+    console.log('click');
+    isResized = localStorage.isResized != null ? localStorage.isResized : 'false';
+    if (isResized === 'true') {
+      $('#eox-resize').removeClass().addClass('no-function');
       $('.eox-page img').css('height', '');
-      return localStorage['isResized'] = 'false';
+      isResized = 'false';
+    } else {
+      $('#eox-resize').removeClass().addClass('function');
+      $('.eox-page img').css('height', window.innerHeight - 12);
+      isResized = 'true';
     }
+    return localStorage.isResized = isResized;
   });
   if (prevUri) {
     $('#eox-prev').click(function() {
       return location.href = prevUri;
     });
-    $('#eox-prev').attr('src', chrome.extension.getURL('img/prev.png'));
+    $('#eox-prev').removeClass().addClass('function');
+  } else {
+    $('#eox-prev').removeClass().addClass('no-function');
   }
   if (menuUri) {
     $('#eox-menu').click(function() {
       return location.href = menuUri;
     });
-    $('#eox-menu').attr('src', chrome.extension.getURL('img/menu.png'));
+    $('#eox-menu').removeClass().addClass('function');
+  } else {
+    $('#eox-menu').removeClass().addClass('no-function');
   }
   if (nextUri) {
     $('#eox-next').click(function() {
       return location.href = nextUri;
     });
-    $('#eox-next').attr('src', chrome.extension.getURL('img/next.png'));
+    $('#eox-next').removeClass().addClass('function');
+  } else {
+    $('#eox-next').removeClass().addClass('no-function');
+  }
+  if (false) {
+    $('#eox-like').removeClass().addClass('function');
+  } else {
+    $('#eox-like').removeClass().addClass('no-function');
   }
   return $('#eox-resize').click().click();
 };

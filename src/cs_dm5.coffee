@@ -25,7 +25,7 @@ findUrl = ->
     if prevUri
       prevUri = location.origin + prevUri
       $('#eox-prev').click -> location.href = prevUri
-      $('#eox-prev').attr('src', chrome.extension.getURL('img/prev.png'))
+      $('#eox-prev').removeClass().addClass('function')
 
   imageList = (' ' for i in [0..max])
   imageList[0] = 'head'
@@ -61,36 +61,62 @@ setNavButton = ->
 
   # initialize
   $('body').append("
-    <img id='eox-prev' class='eox-button' src='#{chrome.extension.getURL('img/prev_gray.png')}'>
-    <img id='eox-menu' class='eox-button' src='#{chrome.extension.getURL('img/menu_gray.png')}'>
-    <img id='eox-next' class='eox-button' src='#{chrome.extension.getURL('img/next_gray.png')}'>
-    <img id='eox-resize' class='eox-button' src='#{chrome.extension.getURL('img/resize_gray.png')}'>
+    <nav>
+      <ul>
+        <li id='eox-resize'><img src='#{chrome.extension.getURL('img/fullscreen.png')}' alt='符合螢幕'></li>
+        <li id='eox-like'><img src='#{chrome.extension.getURL('img/star.png')}' alt='訂閱更新'></li>
+        <li id='eox-prev'><img src='#{chrome.extension.getURL('img/backward.png')}' alt='上一卷（話）'></li>
+        <li id='eox-menu'><img src='#{chrome.extension.getURL('img/list.png')}' alt='全集列表'></li>
+        <li id='eox-next'><img src='#{chrome.extension.getURL('img/forward.png')}' alr='下一卷（話）'></li>
+      </ul>
+    </nav>
   ")
 
+  isResized = if localStorage.isResized? then localStorage.isResized else 'false'
+  localStorage.isResized = isResized
+  console.log isResized
+  if isResized == 'true'
+    $('#eox-resize').removeClass().addClass('function')
+  else
+    $('#eox-resize').removeClass().addClass('no-function')
+
   $('#eox-resize').click ->
-    resizeState = if localStorage['isResized']? then localStorage['isResized'] else 'false'
-    if resizeState == 'false'
-      $('#eox-resize').attr('src', chrome.extension.getURL('img/resize.png'))
-      $('.eox-page img').css('height', window.innerHeight - 12)
-      localStorage['isResized'] = 'true'
-    else if resizeState == 'true'
-      $('#eox-resize').attr('src', chrome.extension.getURL('img/resize_gray.png'))
+    console.log 'click'
+    isResized = if localStorage.isResized? then localStorage.isResized else 'false'
+    if isResized == 'true'
+      $('#eox-resize').removeClass().addClass('no-function')
       $('.eox-page img').css('height', '')
-      localStorage['isResized'] = 'false'
+      isResized = 'false'
+    else
+      $('#eox-resize').removeClass().addClass('function')
+      $('.eox-page img').css('height', window.innerHeight - 12)
+      isResized = 'true'
+    localStorage.isResized = isResized
 
   if prevUri
     $('#eox-prev').click -> location.href = prevUri
-    $('#eox-prev').attr('src', chrome.extension.getURL('img/prev.png'))
+    $('#eox-prev').removeClass().addClass('function')
+  else
+    $('#eox-prev').removeClass().addClass('no-function')
 
   if menuUri
     $('#eox-menu').click -> location.href = menuUri
-    $('#eox-menu').attr('src', chrome.extension.getURL('img/menu.png'))
+    $('#eox-menu').removeClass().addClass('function')
+  else
+    $('#eox-menu').removeClass().addClass('no-function')
 
   if nextUri
     $('#eox-next').click -> location.href = nextUri
-    $('#eox-next').attr('src', chrome.extension.getURL('img/next.png'))
+    $('#eox-next').removeClass().addClass('function')
+  else
+    $('#eox-next').removeClass().addClass('no-function')
 
-  # Setting up resize state
+  if false
+    # $('#eox-like').click -> location.href = next_uri
+    $('#eox-like').removeClass().addClass('function')
+  else
+    $('#eox-like').removeClass().addClass('no-function')
+
   $('#eox-resize').click().click()
 
 

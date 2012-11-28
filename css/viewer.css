@@ -8,10 +8,12 @@ div {
 .eox-page {
   min-width: 600px;
   margin: 0 auto 30px 25px;
+  overflow: auto;
 }
 .eox-page img {
   display: block;
   max-width: 100%;
+  width: auto;
   margin: 0 auto;
   padding-top: 6px;
   -webkit-box-shadow: 0 6px 10px 0 rgba(0,0,0,0.4);
