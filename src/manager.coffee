@@ -12,6 +12,11 @@ onLikeButton =  (request, sender, sendResponse) ->
           ele.episodeUrl = request.params.episodeUrl
           ele.episodeNumber = request.params.episodeNumber
           ele.isNew = false
+
+          newCount = (ele for ele in userList when ele.isNew).length
+          badgeText = if newCount isnt 0 then '' + newCount else '' 
+          chrome.browserAction.setBadgeText {text: badgeText}
+          
           localStorage.userList = JSON.stringify userList
           sendResponse {isFunction: true}
           return

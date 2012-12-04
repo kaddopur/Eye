@@ -47,7 +47,7 @@ loadEpisode = ->
           <input type='button' value='續看'>
         </li>")
       $("#eightComic-#{i} .new").css('display', 'none') unless ele.isNew
-      # bind("#eightComic-#{i}", ele)
+      bind("#eightComic-#{i}", ele)
 
   if userDm5List?
     $('.container').append("
@@ -69,36 +69,12 @@ loadEpisode = ->
           <input type='button' value='續看'>
         </li>")
       $("#dm5-#{i} .new").css('display', 'none') unless ele.isNew
-      # bind("#dm5-#{i}", ele)
+      bind("#dm5-#{i}", ele)
+
 
 bind = (target, params) ->
-  $(target).click ->
+  $("#{target} input").click ->
     chrome.tabs.create {url: params.episodeUrl}
-
-  $(target).find('.dismiss').click ->
-    console.log 'params', params
-    unreadList = if localStorage.unreadList? then JSON.parse localStorage.unreadList else []
-    unreadList = (ele for ele in unreadList when ele.menuUrl isnt params.menuUrl)
-    localStorage.unreadList = JSON.stringify unreadList
-    $(target).remove()
-    refreshBadge()
-
-
-setPicture = (i, targetURL) ->
-  target_id = "#go#{i}"
-
-  $(target_id).attr('src', 'image/arrow.png')
-  $(target_id).click =>
-    chrome.tabs.create {url: targetURL}
-    $(target_id).parent().remove()
-
-    # refresh episode list
-    newEpisodeList = []
-    for epi in episodeList
-      if epi.url != targetURL
-        newEpisodeList.push epi
-    ls.episodeList = JSON.stringify newEpisodeList
-    refreshBadge()
 
     
 $(document).ready ->

@@ -1,4 +1,5 @@
 @import "global";
+
 $total_width: 600px;
 $column_width: 290px;
 $gitter: $total_width - 2 * $column_width;
@@ -23,9 +24,7 @@ $li_height: 72px;
     line-height: $item_height;
     text-align: center;
     font-size: 1.2em;
-    &:last-child{
-      margin-right: 0;
-    }
+    &:last-child { margin-right: 0; }
     #eightComicLink:hover {
       background: rgba($color_8comic, 0.5);
       border-radius: $radius;
@@ -37,15 +36,11 @@ $li_height: 72px;
   }
 }
 
-
-
 .column {
   width: $column_width;
   margin: 0 $gitter 16px 0;
   float: left;
-  &:last-child {
-    margin-right: 0;
-  }
+  &:last-child { margin-right: 0; }
   ul {
     border-radius: $radius;
     box-shadow: 1px 1px 1px rgba(white, 0.8);
@@ -56,9 +51,7 @@ $li_height: 72px;
     background: rgba(black, 0.1);
     position: relative;
     overflow: hidden;
-    &:nth-child(even) {
-      background: rgba(black, 0.15);
-    }
+    &:nth-child(even) { background: rgba(black, 0.15); }
     &:first-child {
       border-top-left-radius: $radius;
       border-top-right-radius: $radius;
@@ -67,11 +60,7 @@ $li_height: 72px;
       border-bottom-left-radius: $radius;
       border-bottom-right-radius: $radius;
     }
-
-    &:hover {
-      background: rgba(yellow, 0.15);
-    }
-
+    &:hover { background: rgba(yellow, 0.15); }
   }
 }
 
@@ -86,17 +75,17 @@ $li_height: 72px;
   top: 5px;
   right: -32px;
   -webkit-transform: rotate(35deg);
-  box-shadow: 0 1px 3px rgba(black, 0.2);
+  box-shadow: 0 1px 4px rgba(black, 0.2);
 }
 
 .cover {
   float: left;
   height: $li_height;
   width: 20%;
-  box-shadow: 0 1px 1px rgba(white, 0.8);
+  overflow: hidden;
   img {
-    height: 100%;
-    width: auto;
+    height: auto;
+    width: 100%;
   }
 }
 
@@ -107,14 +96,14 @@ $li_height: 72px;
   .title {
     font-size: 1.2em;
     line-height: 1.6em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
-  .episode {
+  .episode, .edge {
+    @extend .title;
     font-size: 0.8em;
-    line-height: 1.6em;
     color: rgba(black, 0.4);
-  }
-  .edge {
-    @extend .episode;
   }
 }
 
@@ -123,9 +112,6 @@ input {
   width: 15%;
   margin-top: 25px;
 }
-
-
-
 
 .clearfix {
   display: inline-block;
@@ -139,10 +125,6 @@ input {
   }
 }
  
-html[xmlns] .clearfix {
-  display: block;
-}
+html[xmlns] .clearfix { display: block; }
  
-* html .clearfix {
-  height: 1%;
-}
+* html .clearfix { height: 1%; }

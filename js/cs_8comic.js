@@ -6,7 +6,7 @@ isValidPath = function() {
 };
 
 findUrl = function() {
-  var c, ch, code, code_info, did, edgeNumber, edgeUrl, episodeNumber, i, img_uri, m, menu_uri, next_id, next_uri, num, p, page, page_info, pic, prev_id, prev_uri, r, re_title, sid, target_code, target_id, title, _i, _j, _len;
+  var c, ch, code, code_info, did, edgeId, edgeNumber, edgeUrl, episodeId, i, img_uri, m, menu_uri, next_id, next_uri, num, p, page, page_info, pic, prev_id, prev_uri, r, re_title, sid, target_code, target_id, title, _i, _j, _len;
   console.log('findUrl');
   pic = edgeUrl = edgeNumber = '';
   page_info = $('script:contains(ch=request)').html();
@@ -35,11 +35,11 @@ findUrl = function() {
       break;
     }
   }
-  episodeNumber = $('font#lastchapter').text();
+  episodeId = $('font#lastchapter').text();
   re_title = /\[(.*)<font/;
   title = $('font#lastchapter').parent().html().match(re_title)[1].trim();
-  edgeNumber = $('#lastvol b').text().match(/(\S*)\s*]$/)[1];
-  edgeUrl = location.origin + location.pathname + '?ch=' + edgeNumber;
+  edgeId = $('#lastvol b').text().match(/(\S*)\s*]$/)[1];
+  edgeUrl = location.origin + location.pathname + '?ch=' + edgeId;
   $('body').html('');
   $('body').css('background', "url(" + (chrome.extension.getURL('img/texture.png')) + ") repeat, #FCFAF2");
   code_info = target_code.split(' ');
@@ -75,8 +75,11 @@ findUrl = function() {
   setNavButton(prev_uri, menu_uri, next_uri);
   setHotkeyPanel();
   return $.get(menu_uri, function(res) {
-    var likeBundle;
+    var chapter, episodeNumber, likeBundle;
     pic = 'http://www.8comic.com' + $(res).find('td[bgcolor=f8f8f8] img').attr('src');
+    chapter = $(res).find('.Vol, .Ch');
+    edgeNumber = chapter[chapter.length - 1].text.trim();
+    episodeNumber = $(res).find("[id*='" + episodeId + "']").text();
     likeBundle = {
       site: '8comic',
       menuUrl: menu_uri,
@@ -88,6 +91,7 @@ findUrl = function() {
       edgeNumber: edgeNumber,
       isNew: false
     };
+    console.log(likeBundle);
     return setLikeButton(likeBundle);
   });
 };

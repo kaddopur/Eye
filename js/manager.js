@@ -2,7 +2,7 @@
 var checkList, cview, find8comicOtherData, onAlarm, onInit, onLikeButton, scheduleRequest, startRequest;
 
 onLikeButton = function(request, sender, sendResponse) {
-  var e, ele, i, j, userList, _i, _j, _len, _len1;
+  var badgeText, e, ele, i, j, newCount, userList, _i, _j, _len, _len1;
   console.log('onMessage', request);
   userList = JSON.parse(localStorage.userList);
   console.log('userList', userList);
@@ -15,6 +15,21 @@ onLikeButton = function(request, sender, sendResponse) {
           ele.episodeUrl = request.params.episodeUrl;
           ele.episodeNumber = request.params.episodeNumber;
           ele.isNew = false;
+          newCount = ((function() {
+            var _j, _len1, _results;
+            _results = [];
+            for (_j = 0, _len1 = userList.length; _j < _len1; _j++) {
+              ele = userList[_j];
+              if (ele.isNew) {
+                _results.push(ele);
+              }
+            }
+            return _results;
+          })()).length;
+          badgeText = newCount !== 0 ? '' + newCount : '';
+          chrome.browserAction.setBadgeText({
+            text: badgeText
+          });
           localStorage.userList = JSON.stringify(userList);
           sendResponse({
             isFunction: true

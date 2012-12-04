@@ -61,27 +61,29 @@
   top: 5px;
   right: -32px;
   -webkit-transform: rotate(35deg);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); }
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2); }
 
 .cover {
   float: left;
   height: 72px;
   width: 20%;
-  box-shadow: 0 1px 1px rgba(255, 255, 255, 0.8); }
+  overflow: hidden; }
   .cover img {
-    height: 100%;
-    width: auto; }
+    height: auto;
+    width: 100%; }
 
 .info {
   float: left;
   width: 60%;
   margin-left: 5%; }
-  .info .title {
+  .info .title, .info .episode, .info .edge {
     font-size: 1.2em;
-    line-height: 1.6em; }
+    line-height: 1.6em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
   .info .episode, .info .edge {
     font-size: 0.8em;
-    line-height: 1.6em;
     color: rgba(0, 0, 0, 0.4); }
 
 input {
