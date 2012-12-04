@@ -8,11 +8,11 @@ $li_height: 72px;
 
 .container {
   width: 600px;
-  padding: 10px;
+  padding: 16px;
 }
 
 #site {
-  margin: 16px 0;
+  margin-bottom: 16px;
   li {
     background: rgba(black, 0.1);
     border-radius: $radius;
@@ -111,6 +111,7 @@ input {
   float: left;
   width: 15%;
   margin-top: 25px;
+  font-size: 2.5em;
 }
 
 .clearfix {

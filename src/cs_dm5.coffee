@@ -32,14 +32,14 @@ findUrl = ->
       $('#eox-prev').click -> location.href = prevUri
       $('#eox-prev').removeClass().addClass('function')
 
-  title = $('.bai_lj a:last-child').prev().text().match(/(\S.*)漫画/)[1]
-  episodeNumber = $('.bai_lj a:last-child').text().replace(title, '').match(/(\S+)\s/)[1]
-  edgeUrl = location.origin + $('.innr41 li:first-child a').attr('href')
-  edgeNumber = $('.innr41 li:first-child').html().match(/title\S*\s*(\S*)">/)[1]
-  
-  imageList = (' ' for i in [0..max])
-  imageList[0] = 'head'
-  findEachUrl(i, cid, imageList) for i in [1..max]  
+    title = $('.bai_lj a:last-child').prev().text().match(/(\S.*)漫画/)[1]
+    episodeNumber = $('.bai_lj a:last-child').text().replace(title, '').match(/(\S+)\s/)[1]
+    edgeUrl = location.origin + $('.innr41 li:first-child a').attr('href')
+    edgeNumber = $('.innr41 li:first-child').html().match(/title\S*\s*(\S*)">/)[1]
+    
+    imageList = (' ' for i in [0..max])
+    imageList[0] = 'head'
+    findEachUrl(i, cid, imageList) for i in [1..max]  
 
 
 findEachUrl = (i, cid, imageList) ->

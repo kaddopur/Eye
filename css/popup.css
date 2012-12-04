@@ -1,9 +1,9 @@
 .container {
   width: 600px;
-  padding: 10px; }
+  padding: 16px; }
 
 #site {
-  margin: 16px 0; }
+  margin-bottom: 16px; }
   #site li {
     background: rgba(0, 0, 0, 0.1);
     border-radius: 8px;
@@ -89,7 +89,8 @@
 input {
   float: left;
   width: 15%;
-  margin-top: 25px; }
+  margin-top: 25px;
+  font-size: 2.5em; }
 
 .clearfix {
   display: inline-block; }
