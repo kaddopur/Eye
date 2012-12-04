@@ -33,27 +33,10 @@ loadEpisode = ->
 
   console.log tempDm5List, temp8comicList
 
-  if tempDm5List.length isnt 0
-    $('.container').append("
-      <section id='dm5' class='column'>
-        <h1>dm5</h1>
-        <ul></ul>
-      </section>")
-    for ele, i in tempDm5List
-      $('#dm5 ul').append("
-        <li id='dm5-#{i}'>
-          <span class='info'>
-            <span class='title'>#{ele.title}</span>
-            <span class='number'>#{ele.episodeNumber}</span>
-          </span>
-          <span class='dismiss'></span>
-        </li>")
-      bind("#dm5-#{i}", ele)
-
   if temp8comicList.length isnt 0
     $('.container').append("
       <section id='eightComic' class='column'>
-        <h1>8Comic</h1>
+        <h1>8Comic.com 無限動漫</h1>
         <ul></ul>
       </section>")
     for ele, i in temp8comicList
@@ -66,6 +49,23 @@ loadEpisode = ->
           <span class='dismiss'></span>
         </li>")
       bind("#eightComic-#{i}", ele)
+
+  if tempDm5List.length isnt 0
+    $('.container').append("
+      <section id='dm5' class='column'>
+        <h1>Dm5 动漫屋</h1>
+        <ul></ul>
+      </section>")
+    for ele, i in tempDm5List
+      $('#dm5 ul').append("
+        <li id='dm5-#{i}'>
+          <span class='info'>
+            <span class='title'>#{ele.title}</span>
+            <span class='number'>#{ele.episodeNumber}</span>
+          </span>
+          <span class='dismiss'></span>
+        </li>")
+      bind("#dm5-#{i}", ele)
 
   $('.dismiss').css('background', "url(#{chrome.extension.getURL('img/remove.png')}) no-repeat center center")
   $('.dismiss').css('background-size', "12px 12px")
