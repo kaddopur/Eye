@@ -24,6 +24,7 @@ findUrl = ->
     nextUri = $('.innr8 a.redzia')[1].href
   $.get menuUri, (res) ->
     prevUri = $(res).find("a[href='#{location.pathname}']").parent().parent().next().find('a').attr('href')
+    console.log $(res).find('.innr91 img').attr('src')
     pic = $(res).find('.innr91 img').attr('src')
     edgeUrl = location.origin + $(res).find('#chapter_1 tr:first-child a').attr('href')
     if prevUri

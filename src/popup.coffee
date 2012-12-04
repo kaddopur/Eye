@@ -1,75 +1,75 @@
-unreadList = if localStorage.unreadList? then JSON.parse localStorage.unreadList else []
-localStorage.unreadList = JSON.stringify unreadList
-
+userList = if localStorage.userList? then JSON.parse localStorage.userList else []
+localStorage.userList = JSON.stringify userList
+console.log userList
 
 refreshBadge = ->
-  unreadList = if localStorage.unreadList? then JSON.parse localStorage.unreadList else []
-  badgeText = if unreadList.length isnt 0 then '' + unreadList.length else '' 
+  newCount = (ele for ele in userList when ele.isNew).length
+  badgeText = if newCount isnt 0 then '' + newCount else '' 
   chrome.browserAction.setBadgeText {text: badgeText}
+
+  unreadList = (ele for ele in userList when ele.isNew) || []
   
-  if unreadList.length is 0
-    tempHtml = "
-      <header>
-        <h1>目前沒有漫畫更新</h1>
-      </header>
-      <section id='site'>
-        <ul>
-          <li><span id='eightComicLink'>8Comic.com 無限動漫</span>
-          <li><span id='dm5Link'>Dm5 动漫屋</span>
-        </ul>
-      </section>"
-    
-    $('.container').html(tempHtml)
-    $('#eightComicLink').click -> chrome.tabs.create {url: 'http://www.8comic.com/comic/'}
-    $('#dm5Link').click -> chrome.tabs.create {url: 'http://tel.dm5.com/'}
-  else
-    loadEpisode()
+  tempHtml = "
+    <section id='site' class='clearfix'>
+      <ul>
+        <li><div id='eightComicLink'>8Comic.com 無限動漫</div>
+        <li><div id='dm5Link'>Dm5 动漫屋</div>
+      </ul>
+    </section>"
+  
+  $('.container').html(tempHtml)
+  $('#eightComicLink').click -> chrome.tabs.create {url: 'http://www.8comic.com/comic/'}
+  $('#dm5Link').click -> chrome.tabs.create {url: 'http://tel.dm5.com/'}
+  loadEpisode()
 
 
 loadEpisode = ->
-  $('.container').html('')
-  tempDm5List = (ele for ele in unreadList when ele.site is 'dm5')
-  temp8comicList = (ele for ele in unreadList when ele.site is '8comic')
+  userDm5List = (ele for ele in userList when ele.site is 'dm5') || []
+  user8comicList = (ele for ele in userList when ele.site is '8comic') || []
 
-  console.log tempDm5List, temp8comicList
-
-  if temp8comicList.length isnt 0
+  if user8comicList?
     $('.container').append("
       <section id='eightComic' class='column'>
-        <h1>8Comic.com 無限動漫</h1>
         <ul></ul>
       </section>")
-    for ele, i in temp8comicList
+    for ele, i in user8comicList
       $('#eightComic ul').append("
-        <li id='eightComic-#{i}''>
-          <span class='info'>
-            <span class='title'>#{ele.title}</span>
-            <span class='number'>#{ele.episodeNumber}</span>
-          </span>
-          <span class='dismiss'></span>
+        <li id='eightComic-#{i}'>
+          <div class='new'>NEW</div>
+          <div class='cover'>
+            <img src='#{ele.pic}'>
+          </div>
+          <div class='info'>
+            <div class='title'>#{ele.title}</div>
+            <div class='episode'>看到 #{ele.episodeNumber}</div>
+            <div class='edge'>更新到 #{ele.edgeNumber}</div>
+          </div>
+          <input type='button' value='續看'>
         </li>")
-      bind("#eightComic-#{i}", ele)
+      $("#eightComic-#{i} .new").css('display', 'none') unless ele.isNew
+      # bind("#eightComic-#{i}", ele)
 
-  if tempDm5List.length isnt 0
+  if userDm5List?
     $('.container').append("
       <section id='dm5' class='column'>
-        <h1>Dm5 动漫屋</h1>
         <ul></ul>
       </section>")
-    for ele, i in tempDm5List
+    for ele, i in userDm5List
       $('#dm5 ul').append("
         <li id='dm5-#{i}'>
-          <span class='info'>
-            <span class='title'>#{ele.title}</span>
-            <span class='number'>#{ele.episodeNumber}</span>
-          </span>
-          <span class='dismiss'></span>
+          <div class='new'>NEW</div>
+          <div class='cover'>
+            <img src='#{ele.pic}'>
+          </div>
+          <div class='info'>
+            <div class='title'>#{ele.title}</div>
+            <div class='episode'>看到 #{ele.episodeNumber}</div>
+            <div class='edge'>更新到 #{ele.edgeNumber}</div>
+          </div>
+          <input type='button' value='續看'>
         </li>")
-      bind("#dm5-#{i}", ele)
-
-  $('.dismiss').css('background', "url(#{chrome.extension.getURL('img/remove.png')}) no-repeat center center")
-  $('.dismiss').css('background-size', "12px 12px")
-
+      $("#dm5-#{i} .new").css('display', 'none') unless ele.isNew
+      # bind("#dm5-#{i}", ele)
 
 bind = (target, params) ->
   $(target).click ->
