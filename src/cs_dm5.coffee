@@ -66,7 +66,7 @@ findEachUrl = (i, cid, imageList) ->
 
 
 setImage = (imageList) ->
-  # $('body').html('')
+  $('body').html('')
   $('body').css('background', "url(#{chrome.extension.getURL('img/texture.png')}) repeat, #FCFAF2")
   
   imageList.shift()

@@ -4,6 +4,8 @@ isValidPath = ->
 
 findUrl = ->
   console.log 'findUrl'
+
+  pic = edgeUrl = edgeNumber = ''
   
   # get codes
   page_info = $('script:contains(ch=request)').html()
@@ -32,6 +34,8 @@ findUrl = ->
   episodeNumber = $('font#lastchapter').text()
   re_title = /\[(.*)<font/
   title = $('font#lastchapter').parent().html().match(re_title)[1].trim()
+  edgeNumber = $('#lastvol b').text().match(/(\S*)\s*]$/)[1]
+  edgeUrl = location.origin + location.pathname + '?ch=' + edgeNumber
 
   # get uri of all pictures
   $('body').html('')
@@ -73,8 +77,22 @@ findUrl = ->
   menu_uri = "http://www.8comic.com/html/#{itemid}.html"
 
   setNavButton(prev_uri, menu_uri, next_uri)
-  setLikeButton 'site': '8comic', 'menuUrl': menu_uri, 'title': title, 'episodeUrl': location.href, 'episodeNumber': episodeNumber
   setHotkeyPanel()
+  $.get menu_uri, (res) ->
+    pic = 'http://www.8comic.com' + $(res).find('td[bgcolor=f8f8f8] img').attr('src')
+    likeBundle = {
+      site: '8comic',
+      menuUrl: menu_uri,
+      title: title,
+      pic: pic,
+      episodeUrl: location.href,
+      episodeNumber: episodeNumber,
+      edgeUrl: edgeUrl,
+      edgeNumber: edgeNumber,
+      isNew: false
+    }
+    setLikeButton likeBundle
+  
 
 
 setNavButton = (prev_uri, menu_uri, next_uri) ->

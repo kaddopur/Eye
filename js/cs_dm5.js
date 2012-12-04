@@ -93,6 +93,7 @@ findEachUrl = function(i, cid, imageList) {
 
 setImage = function(imageList) {
   var ele, _i, _len;
+  $('body').html('');
   $('body').css('background', "url(" + (chrome.extension.getURL('img/texture.png')) + ") repeat, #FCFAF2");
   imageList.shift();
   for (_i = 0, _len = imageList.length; _i < _len; _i++) {
