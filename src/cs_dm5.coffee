@@ -1,5 +1,6 @@
 prevUri = nextUri = menuUri = ''
 title = episodeNumber = ''
+pic = edgeUrl = edgeNumber = ''
 
 isValidPath = ->
   console.log 'isValidPath'
@@ -23,6 +24,9 @@ findUrl = ->
     nextUri = $('.innr8 a.redzia')[1].href
   $.get menuUri, (res) ->
     prevUri = $(res).find("a[href='#{location.pathname}']").parent().parent().next().find('a').attr('href')
+    console.log $(res).find('.innr91 img').attr('src')
+    pic = $(res).find('.innr91 img').attr('src')
+    edgeUrl = location.origin + $(res).find('#chapter_1 tr:first-child a').attr('href')
     if prevUri
       prevUri = location.origin + prevUri
       $('#eox-prev').click -> location.href = prevUri
@@ -30,6 +34,8 @@ findUrl = ->
 
   title = $('.bai_lj a:last-child').prev().text().match(/(\S.*)漫画/)[1]
   episodeNumber = $('.bai_lj a:last-child').text().replace(title, '').match(/(\S+)\s/)[1]
+  edgeUrl = location.origin + $('.innr41 li:first-child a').attr('href')
+  edgeNumber = $('.innr41 li:first-child').html().match(/title\S*\s*(\S*)">/)[1]
   
   imageList = (' ' for i in [0..max])
   imageList[0] = 'head'
@@ -44,7 +50,19 @@ findEachUrl = (i, cid, imageList) ->
       setImage(imageList)
       setNavButton()
       setHotkeyPanel()
-      setLikeButton 'site': 'dm5', 'menuUrl': menuUri, 'title': title, 'episodeUrl': location.href, 'episodeNumber': episodeNumber
+
+      likeBundle = {
+        site: 'dm5',
+        menuUrl: menuUri,
+        title: title,
+        pic: pic,
+        episodeUrl: location.href,
+        episodeNumber: episodeNumber,
+        edgeUrl: edgeUrl,
+        edgeNumber: edgeNumber,
+        isNew: false
+      }
+      setLikeButton likeBundle
 
 
 
