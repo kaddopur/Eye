@@ -1,0 +1,104 @@
+@import "global";
+
+div { font-family: 'Courier New', monospace; }
+
+body {
+	@extend div;
+  background: #dfdfdf;
+}
+
+.eox-page {
+  margin: 0 auto 30px 25px;
+  min-width: 600px;
+  overflow: auto;
+  img {
+    -webkit-box-shadow: 0 6px 10px 0 rgba(black, .4);
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    padding-top: 6px;
+    width: auto;
+  }
+}
+
+nav {
+  height: 100%;
+  position: fixed;
+  right: 20px;
+  top: 0;
+  width: 36px;
+  li {
+    -webkit-box-shadow: 1px 1px 2px 1px rgba(white, .5);
+    -webkit-transition: all .3s ease-in-out;
+    border-radius: $radius;
+    display: block;
+    height: 32px;
+    margin: 16px 0 16px 4px;
+    position: absolute;
+    width: 32px;
+    &:hover {
+      margin: 16px 0;
+      width: 36px;
+    }
+    img {
+      display: block;
+      margin: 0 auto;
+      opacity: .5;
+      position: relative;
+      top: 8px;
+      width: 16px;
+    }
+  }
+}
+
+#eox-resize { top: 0; }
+#eox-like { top: 48px; }
+#eox-menu {
+  top: 96px;
+  img { top: 10px; }
+}
+#eox-prev {
+  bottom: 48px;
+  img { top: 11px; }
+}
+#eox-next { 
+  bottom: 0;
+  img { top: 11px; }
+}
+
+.function { background: #FFB11B; }
+.no-function {
+  background: #B4A582;
+  img { opacity: 0.5; }
+}
+
+#eox-panel {
+  -webkit-border-radius: 8px;
+  -webkit-box-shadow: 0 6px 10px 0 rgba(black, .3);
+  -webkit-transition: all 0.3 ease-in-out;
+  background: rgba(black, 0.6);
+  bottom: 10px;
+  color: white;
+  font-family: 'Courier New', monospace;
+  font-size: 10pt;
+  padding: 20px 0 20px 80px;
+  position: fixed;
+  right: 80px;
+  h1 {
+    color: white;
+    font-size: 10pt;
+  }
+  li {
+    font-family: 'Courier New', monospace;
+    padding-bottom: 2px;
+    span {
+      color: #EFBB24;
+      font-family: 'Courier New', monospace;
+    }
+  }
+  li:nth-child(3), li:nth-child(4), hr {
+    left: -40px;
+    position: relative;
+  }
+  hr { width: 170px; }
+}

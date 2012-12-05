@@ -1,11 +1,11 @@
 ﻿{
   // Required
   "name":"鄉民之眼",
-  "version":"1.9",
+  "version":"2.0",
   "manifest_version": 2,
   
   // Recommanded
-  "description": "用來看漫畫的",
+  "description": "看漫畫的擴充套件，支援8Comic, Dm5",
   "icons":{
     "16":"icon16.png",
     "48":"icon48.png",
@@ -15,11 +15,15 @@
   // Pick one (or none)
   "browser_action": {
     "default_icon": "icon.png", 
-    "default_title": "訂閱漫畫更新", 
+    "default_title": "漫畫列表", 
     "default_popup": "popup.html" 
   },
   
   // Add any of these that you need
+  "background": {
+    "scripts": ["js/jquery-1.7.1.min.js", "js/manager.js"],
+    "persistent": false
+  },
   "content_scripts": [
     {
         "matches": ["http://www.8comic.com/show/*"],
@@ -36,20 +40,17 @@
     "notifications",
     "tabs",
     "http://*/*",
-    "https://*/*"
+    "https://*/*",
+    "background",
+    "alarms"
   ],
   "web_accessible_resources": [
-  	"img/sub_gray.png",
-  	"img/prev_gray.png",
-  	"img/menu_gray.png",
-  	"img/next_gray.png",
-  	"img/prev.png",
-  	"img/menu.png",
-  	"img/next.png",
-  	"img/resize.png",
-  	"img/resize_gray.png",
-  	"img/texture.png",
-    "css/viewer.css",
-    "css/reset.css"
+  	"img/forward.png",
+    "img/backward.png",
+    "img/fullscreen.png",
+    "img/star.png",
+    "img/list.png",
+    "img/texture.png",
+    "img/remove.png"
   ]
 }

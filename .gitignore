@@ -2,3 +2,6 @@
 /*.zip
 *.swp
 play
+.DS_Store
+src/.sass-cache/
+
