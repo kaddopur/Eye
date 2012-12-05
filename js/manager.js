@@ -3,12 +3,9 @@ var checkList, cview, find8comicOtherData, onAlarm, onInit, onLikeButton, schedu
 
 onLikeButton = function(request, sender, sendResponse) {
   var badgeText, e, ele, i, j, newCount, userList, _i, _j, _len, _len1;
-  console.log('onMessage', request);
   userList = JSON.parse(localStorage.userList);
-  console.log('userList', userList);
   switch (request.action) {
     case 'setLikeButton':
-      console.log('setLikeButton');
       for (_i = 0, _len = userList.length; _i < _len; _i++) {
         ele = userList[_i];
         if (ele.menuUrl === request.params.menuUrl) {
@@ -41,7 +38,6 @@ onLikeButton = function(request, sender, sendResponse) {
         isFunction: false
       });
     case 'clickLikeButton':
-      console.log('clickLikeButton');
       for (i = _j = 0, _len1 = userList.length; _j < _len1; i = ++_j) {
         ele = userList[i];
         if (ele.menuUrl === request.params.menuUrl) {
@@ -74,7 +70,6 @@ onLikeButton = function(request, sender, sendResponse) {
 chrome.extension.onMessage.addListener(onLikeButton);
 
 onInit = function() {
-  console.log('onInit');
   localStorage.userList = localStorage.userList || '[]';
   return startRequest({
     scheduleRequest: true
@@ -82,7 +77,6 @@ onInit = function() {
 };
 
 startRequest = function(params) {
-  console.log('startRequest');
   if ((params != null) && params.scheduleRequest) {
     scheduleRequest();
   }
@@ -139,16 +133,13 @@ find8comicOtherData = function(menuUrl) {
       edgeUrl: edgeUrl,
       edgeNumber: edgeNumber
     };
-    console.log(newBundle);
     return checkList(newBundle);
   });
 };
 
 scheduleRequest = function() {
   var delay;
-  console.log('scheduleRequest');
-  delay = 15;
-  console.log("Scheduling for: " + delay + " min");
+  delay = 30;
   return chrome.alarms.create('refresh', {
     periodInMinutes: delay
   });
@@ -157,22 +148,20 @@ scheduleRequest = function() {
 checkList = function(params) {
   var badgeText, ele, i, isNew, isSubscriber, newCount, userList, _i, _len;
   userList = JSON.parse(localStorage.userList || []);
-  console.log(params);
   for (i = _i = 0, _len = userList.length; _i < _len; i = ++_i) {
     ele = userList[i];
     isSubscriber = ele.menuUrl === params.menuUrl;
     isNew = ele.edgeUrl !== params.edgeUrl;
     if (isSubscriber && isNew) {
-      console.log('just updated');
       ele.isNew = isNew;
       ele.edgeUrl = params.edgeUrl;
       ele.edgeNumber = params.edgeNumber;
       localStorage.userList = JSON.stringify(userList);
       break;
     } else if (isSubscriber) {
-      console.log('already updated');
+
     } else {
-      console.log('not matched');
+
     }
   }
   newCount = ((function() {
@@ -193,7 +182,6 @@ checkList = function(params) {
 };
 
 onAlarm = function(alarm) {
-  console.log('Got alarm');
   if ((alarm != null) && alarm.name === 'refresh') {
     return startRequest({
       scheduleRequest: true

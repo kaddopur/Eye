@@ -1,6 +1,6 @@
 userList = if localStorage.userList? then JSON.parse localStorage.userList else []
 localStorage.userList = JSON.stringify userList
-console.log userList
+
 
 refreshBadge = ->
   newCount = (ele for ele in userList when ele.isNew).length
@@ -27,7 +27,8 @@ loadEpisode = ->
   priorityList = (ele for ele in userList when ele.isNew)
   priorityList = priorityList.concat (ele for ele in userList when ele.episodeUrl isnt ele.edgeUrl and not ele.isNew)
   priorityList = priorityList.concat (ele for ele in userList when ele.episodeUrl is ele.edgeUrl and not ele.isNew)
-  console.log priorityList
+
+  
   userDm5List = (ele for ele in priorityList when ele.site is 'dm5') || []
   user8comicList = (ele for ele in priorityList when ele.site is '8comic') || []
 

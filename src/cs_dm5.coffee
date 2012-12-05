@@ -3,13 +3,13 @@ title = episodeNumber = ''
 pic = edgeUrl = edgeNumber = ''
 
 isValidPath = ->
-  console.log 'isValidPath'
+  # console.log 'isValidPath'
   
   re_path = /\/m\d+.*/gi  
   if window.location.pathname.match(re_path) is null
     false
   else
-    console.log 'loading OK'
+    # console.log 'loading OK'
     true
 
 
@@ -27,10 +27,8 @@ findUrl = ->
     tg = $(res).find("[id*='chapter_'] .tg")
     for ele, i in tg
       if ele.pathname is location.pathname and i+1 < tg.length
-        console.log ele, i, tg.length, location, tg
         prevUri = tg[i+1].href
         break
-    console.log 'prevUri', prevUri
     pic = $(res).find('.innr91 img').attr('src')
     edgeUrl = location.origin + $(res).find('#chapter_1 tr:first-child a').attr('href')
     if prevUri
@@ -70,7 +68,6 @@ findEachUrl = (i, cid, imageList) ->
       setLikeButton likeBundle
 
 
-
 setImage = (imageList) ->
   $('body').html('')
   $('body').css('background', "url(#{chrome.extension.getURL('img/texture.png')}) repeat, #FCFAF2")
@@ -86,7 +83,7 @@ setImage = (imageList) ->
 
 
 setNavButton = ->
-  console.log 'setNavButton'
+  # console.log 'setNavButton'
 
   # initialize
   $('body').append("
@@ -189,7 +186,7 @@ bindListener = ->
 setLikeButton = (params) ->
   # console.log 'setLikeButton', params
   chrome.extension.sendMessage {action: 'setLikeButton', params: params}, (res) ->
-    console.log res
+    # console.log res
     if res.isFunction
       $('#eox-like').removeClass().addClass('function')
     else

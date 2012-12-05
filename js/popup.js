@@ -5,8 +5,6 @@ userList = localStorage.userList != null ? JSON.parse(localStorage.userList) : [
 
 localStorage.userList = JSON.stringify(userList);
 
-console.log(userList);
-
 refreshBadge = function() {
   var badgeText, ele, newCount, tempHtml, unreadList;
   newCount = ((function() {
@@ -85,7 +83,6 @@ loadEpisode = function() {
     }
     return _results;
   })());
-  console.log(priorityList);
   userDm5List = ((function() {
     var _i, _len, _results;
     _results = [];
