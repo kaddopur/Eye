@@ -1,11 +1,11 @@
 ﻿{
   // Required
   "name":"鄉民之眼",
-  "version":"1.9",
+  "version":"2.0",
   "manifest_version": 2,
   
   // Recommanded
-  "description": "用來看漫畫的",
+  "description": "看漫畫的擴充套件，支援8Comic, Dm5",
   "icons":{
     "16":"icon16.png",
     "48":"icon48.png",
