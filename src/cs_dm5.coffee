@@ -23,23 +23,28 @@ findUrl = ->
   if $('.innr8 a.redzia').length >= 2
     nextUri = $('.innr8 a.redzia')[1].href
   $.get menuUri, (res) ->
-    prevUri = $(res).find("a[href='#{location.pathname}']").parent().parent().next().find('a').attr('href')
-    console.log $(res).find('.innr91 img').attr('src')
+    # tg: target episode list
+    tg = $(res).find("[id*='chapter_'] .tg")
+    for ele, i in tg
+      if ele.pathname is location.pathname and i+1 < tg.length
+        console.log ele, i, tg.length, location, tg
+        prevUri = tg[i+1].href
+        break
+    console.log 'prevUri', prevUri
     pic = $(res).find('.innr91 img').attr('src')
     edgeUrl = location.origin + $(res).find('#chapter_1 tr:first-child a').attr('href')
     if prevUri
-      prevUri = location.origin + prevUri
       $('#eox-prev').click -> location.href = prevUri
       $('#eox-prev').removeClass().addClass('function')
 
-  title = $('.bai_lj a:last-child').prev().text().match(/(\S.*)漫画/)[1]
-  episodeNumber = $('.bai_lj a:last-child').text().replace(title, '').match(/(\S+)\s/)[1]
-  edgeUrl = location.origin + $('.innr41 li:first-child a').attr('href')
-  edgeNumber = $('.innr41 li:first-child').html().match(/title\S*\s*(\S*)">/)[1]
-  
-  imageList = (' ' for i in [0..max])
-  imageList[0] = 'head'
-  findEachUrl(i, cid, imageList) for i in [1..max]  
+    title = $('.bai_lj a:last-child').prev().text().match(/(\S.*)漫画/)[1]
+    episodeNumber = $('.bai_lj a:last-child').text().replace(title, '').match(/(\S+)\s/)[1]
+    edgeUrl = location.origin + $('.innr41 li:first-child a').attr('href')
+    edgeNumber = $('.innr41 li:first-child').html().match(/title\S*\s*(\S*)">/)[1]
+    
+    imageList = (' ' for i in [0..max])
+    imageList[0] = 'head'
+    findEachUrl(i, cid, imageList) for i in [1..max]  
 
 
 findEachUrl = (i, cid, imageList) ->

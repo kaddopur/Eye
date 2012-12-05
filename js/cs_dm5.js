@@ -21,7 +21,7 @@ isValidPath = function() {
 };
 
 findUrl = function() {
-  var cid, i, imageList, max, re_cid, _i, _results;
+  var cid, max, re_cid;
   re_cid = /m(\d+)/;
   cid = parseInt(window.location.pathname.match(re_cid)[1]);
   max = $('select option').length;
@@ -29,37 +29,45 @@ findUrl = function() {
   if ($('.innr8 a.redzia').length >= 2) {
     nextUri = $('.innr8 a.redzia')[1].href;
   }
-  $.get(menuUri, function(res) {
-    prevUri = $(res).find("a[href='" + location.pathname + "']").parent().parent().next().find('a').attr('href');
-    console.log($(res).find('.innr91 img').attr('src'));
+  return $.get(menuUri, function(res) {
+    var ele, i, imageList, tg, _i, _j, _len, _results;
+    tg = $(res).find("[id*='chapter_'] .tg");
+    for (i = _i = 0, _len = tg.length; _i < _len; i = ++_i) {
+      ele = tg[i];
+      if (ele.pathname === location.pathname && i + 1 < tg.length) {
+        console.log(ele, i, tg.length, location, tg);
+        prevUri = tg[i + 1].href;
+        break;
+      }
+    }
+    console.log('prevUri', prevUri);
     pic = $(res).find('.innr91 img').attr('src');
     edgeUrl = location.origin + $(res).find('#chapter_1 tr:first-child a').attr('href');
     if (prevUri) {
-      prevUri = location.origin + prevUri;
       $('#eox-prev').click(function() {
         return location.href = prevUri;
       });
-      return $('#eox-prev').removeClass().addClass('function');
+      $('#eox-prev').removeClass().addClass('function');
     }
-  });
-  title = $('.bai_lj a:last-child').prev().text().match(/(\S.*)漫画/)[1];
-  episodeNumber = $('.bai_lj a:last-child').text().replace(title, '').match(/(\S+)\s/)[1];
-  edgeUrl = location.origin + $('.innr41 li:first-child a').attr('href');
-  edgeNumber = $('.innr41 li:first-child').html().match(/title\S*\s*(\S*)">/)[1];
-  imageList = (function() {
-    var _i, _results;
+    title = $('.bai_lj a:last-child').prev().text().match(/(\S.*)漫画/)[1];
+    episodeNumber = $('.bai_lj a:last-child').text().replace(title, '').match(/(\S+)\s/)[1];
+    edgeUrl = location.origin + $('.innr41 li:first-child a').attr('href');
+    edgeNumber = $('.innr41 li:first-child').html().match(/title\S*\s*(\S*)">/)[1];
+    imageList = (function() {
+      var _j, _results;
+      _results = [];
+      for (i = _j = 0; 0 <= max ? _j <= max : _j >= max; i = 0 <= max ? ++_j : --_j) {
+        _results.push(' ');
+      }
+      return _results;
+    })();
+    imageList[0] = 'head';
     _results = [];
-    for (i = _i = 0; 0 <= max ? _i <= max : _i >= max; i = 0 <= max ? ++_i : --_i) {
-      _results.push(' ');
+    for (i = _j = 1; 1 <= max ? _j <= max : _j >= max; i = 1 <= max ? ++_j : --_j) {
+      _results.push(findEachUrl(i, cid, imageList));
     }
     return _results;
-  })();
-  imageList[0] = 'head';
-  _results = [];
-  for (i = _i = 1; 1 <= max ? _i <= max : _i >= max; i = 1 <= max ? ++_i : --_i) {
-    _results.push(findEachUrl(i, cid, imageList));
-  }
-  return _results;
+  });
 };
 
 findEachUrl = function(i, cid, imageList) {

@@ -79,7 +79,7 @@ findUrl = function() {
     pic = 'http://www.8comic.com' + $(res).find('td[bgcolor=f8f8f8] img').attr('src');
     chapter = $(res).find('.Vol, .Ch');
     edgeNumber = chapter[chapter.length - 1].text.trim();
-    episodeNumber = $(res).find("[id*='" + episodeId + "']").text();
+    episodeNumber = $(res).find("#c" + episodeId).text();
     likeBundle = {
       site: '8comic',
       menuUrl: menu_uri,

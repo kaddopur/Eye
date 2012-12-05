@@ -1,9 +1,9 @@
 .container {
   width: 600px;
-  padding: 10px; }
+  padding: 16px; }
 
 #site {
-  margin: 16px 0; }
+  margin-bottom: 16px; }
   #site li {
     background: rgba(0, 0, 0, 0.1);
     border-radius: 8px;
@@ -50,7 +50,7 @@
     .column li:hover {
       background: rgba(255, 255, 0, 0.15); }
 
-.new {
+.new, .read {
   background: #cb1b45;
   color: white;
   width: 100px;
@@ -62,6 +62,10 @@
   right: -32px;
   -webkit-transform: rotate(35deg);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2); }
+
+.read {
+  background: #f7c242;
+  top: 7px; }
 
 .cover {
   float: left;
@@ -89,7 +93,8 @@
 input {
   float: left;
   width: 15%;
-  margin-top: 25px; }
+  margin-top: 25px;
+  font-size: 2.5em; }
 
 .clearfix {
   display: inline-block; }
