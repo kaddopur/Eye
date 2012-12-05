@@ -3,7 +3,7 @@ isValidPath = ->
 
 
 findUrl = ->
-  console.log 'findUrl'
+  # console.log 'findUrl'
 
   pic = edgeUrl = edgeNumber = ''
   
@@ -95,13 +95,12 @@ findUrl = ->
       edgeNumber: edgeNumber,
       isNew: false
     }
-    console.log likeBundle
+    # console.log likeBundle
     setLikeButton likeBundle
   
 
-
 setNavButton = (prev_uri, menu_uri, next_uri) ->
-  console.log 'setNavButton'
+  # console.log 'setNavButton'
 
   # initialize
   $('body').append("
@@ -210,7 +209,7 @@ bindListener = ->
 setLikeButton = (params) ->
   # console.log 'setLikeButton', params
   chrome.extension.sendMessage {action: 'setLikeButton', params: params}, (res) ->
-    console.log res
+    # console.log res
     if res.isFunction
       $('#eox-like').removeClass().addClass('function')
     else

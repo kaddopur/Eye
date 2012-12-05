@@ -1,8 +1,6 @@
 @import "global";
 
-div {
-  font-family: 'Courier New', monospace;
-}
+div { font-family: 'Courier New', monospace; }
 
 body {
 	@extend div;
@@ -10,45 +8,45 @@ body {
 }
 
 .eox-page {
-  min-width: 600px;
   margin: 0 auto 30px 25px;
+  min-width: 600px;
   overflow: auto;
   img {
-    display: block;
-    max-width: 100%;
-    width: auto;
-    margin: 0 auto;
-    padding-top: 6px;
     -webkit-box-shadow: 0 6px 10px 0 rgba(black, .4);
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    padding-top: 6px;
+    width: auto;
   }
 }
 
 nav {
-  width: 36px;
   height: 100%;
   position: fixed;
-  top: 0;
   right: 20px;
+  top: 0;
+  width: 36px;
   li {
-    position: absolute;
-    display: block;
-    border-radius: $radius;
-    margin: 16px 0 16px 4px;
-    width: 32px;
-    height: 32px;
     -webkit-box-shadow: 1px 1px 2px 1px rgba(white, .5);
     -webkit-transition: all .3s ease-in-out;
+    border-radius: $radius;
+    display: block;
+    height: 32px;
+    margin: 16px 0 16px 4px;
+    position: absolute;
+    width: 32px;
+    &:hover {
+      margin: 16px 0;
+      width: 36px;
+    }
     img {
-      position: relative;
-      top: 8px;
       display: block;
-      width: 16px;
       margin: 0 auto;
       opacity: .5;
-    }
-    &:hover {
-      width: 36px;
-      margin: 16px 0;
+      position: relative;
+      top: 8px;
+      width: 16px;
     }
   }
 }
@@ -75,32 +73,32 @@ nav {
 }
 
 #eox-panel {
-  font-family: 'Courier New', monospace;
-  font-size: 10pt;
-  color: white;
-  position: fixed;
-  bottom: 10px;
-  right: 80px;
-  padding: 20px 0 20px 80px;
   -webkit-border-radius: 8px;
-  background: rgba(black, 0.6);
   -webkit-box-shadow: 0 6px 10px 0 rgba(black, .3);
   -webkit-transition: all 0.3 ease-in-out;
+  background: rgba(black, 0.6);
+  bottom: 10px;
+  color: white;
+  font-family: 'Courier New', monospace;
+  font-size: 10pt;
+  padding: 20px 0 20px 80px;
+  position: fixed;
+  right: 80px;
   h1 {
     color: white;
     font-size: 10pt;
   }
   li {
-    padding-bottom: 2px;
     font-family: 'Courier New', monospace;
+    padding-bottom: 2px;
     span {
       color: #EFBB24;
       font-family: 'Courier New', monospace;
     }
   }
   li:nth-child(3), li:nth-child(4), hr {
-    position: relative;
     left: -40px;
+    position: relative;
   }
   hr { width: 170px; }
 }

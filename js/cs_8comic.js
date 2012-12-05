@@ -7,7 +7,6 @@ isValidPath = function() {
 
 findUrl = function() {
   var c, ch, code, code_info, did, edgeId, edgeNumber, edgeUrl, episodeId, i, img_uri, m, menu_uri, next_id, next_uri, num, p, page, page_info, pic, prev_id, prev_uri, r, re_title, sid, target_code, target_id, title, _i, _j, _len;
-  console.log('findUrl');
   pic = edgeUrl = edgeNumber = '';
   page_info = $('script:contains(ch=request)').html();
   r = /var codes="[^;]*;/;
@@ -91,14 +90,12 @@ findUrl = function() {
       edgeNumber: edgeNumber,
       isNew: false
     };
-    console.log(likeBundle);
     return setLikeButton(likeBundle);
   });
 };
 
 setNavButton = function(prev_uri, menu_uri, next_uri) {
   var isResized;
-  console.log('setNavButton');
   $('body').append("    <nav>      <ul>        <li id='eox-resize'><img src='" + (chrome.extension.getURL('img/fullscreen.png')) + "' alt='符合螢幕'></li>        <li id='eox-like'><img src='" + (chrome.extension.getURL('img/star.png')) + "' alt='訂閱更新'></li>        <li id='eox-prev'><img src='" + (chrome.extension.getURL('img/backward.png')) + "' alt='上一卷（話）'></li>        <li id='eox-menu'><img src='" + (chrome.extension.getURL('img/list.png')) + "' alt='全集列表'></li>        <li id='eox-next'><img src='" + (chrome.extension.getURL('img/forward.png')) + "' alr='下一卷（話）'></li>      </ul>    </nav>  ");
   isResized = localStorage.isResized != null ? localStorage.isResized : 'false';
   localStorage.isResized = isResized;
@@ -192,7 +189,6 @@ setLikeButton = function(params) {
     action: 'setLikeButton',
     params: params
   }, function(res) {
-    console.log(res);
     if (res.isFunction) {
       return $('#eox-like').removeClass().addClass('function');
     } else {
