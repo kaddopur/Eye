@@ -51,12 +51,46 @@ refreshBadge = function() {
 };
 
 loadEpisode = function() {
-  var ele, i, user8comicList, userDm5List, _i, _j, _len, _len1, _results;
-  userDm5List = ((function() {
+  var ele, i, priorityList, user8comicList, userDm5List, _i, _j, _len, _len1, _results;
+  priorityList = (function() {
     var _i, _len, _results;
     _results = [];
     for (_i = 0, _len = userList.length; _i < _len; _i++) {
       ele = userList[_i];
+      if (ele.isNew) {
+        _results.push(ele);
+      }
+    }
+    return _results;
+  })();
+  priorityList = priorityList.concat((function() {
+    var _i, _len, _results;
+    _results = [];
+    for (_i = 0, _len = userList.length; _i < _len; _i++) {
+      ele = userList[_i];
+      if (ele.episodeUrl !== ele.edgeUrl && !ele.isNew) {
+        _results.push(ele);
+      }
+    }
+    return _results;
+  })());
+  priorityList = priorityList.concat((function() {
+    var _i, _len, _results;
+    _results = [];
+    for (_i = 0, _len = userList.length; _i < _len; _i++) {
+      ele = userList[_i];
+      if (ele.episodeUrl === ele.edgeUrl && !ele.isNew) {
+        _results.push(ele);
+      }
+    }
+    return _results;
+  })());
+  console.log(priorityList);
+  userDm5List = ((function() {
+    var _i, _len, _results;
+    _results = [];
+    for (_i = 0, _len = priorityList.length; _i < _len; _i++) {
+      ele = priorityList[_i];
       if (ele.site === 'dm5') {
         _results.push(ele);
       }
@@ -66,8 +100,8 @@ loadEpisode = function() {
   user8comicList = ((function() {
     var _i, _len, _results;
     _results = [];
-    for (_i = 0, _len = userList.length; _i < _len; _i++) {
-      ele = userList[_i];
+    for (_i = 0, _len = priorityList.length; _i < _len; _i++) {
+      ele = priorityList[_i];
       if (ele.site === '8comic') {
         _results.push(ele);
       }
@@ -78,9 +112,12 @@ loadEpisode = function() {
     $('.container').append("      <section id='eightComic' class='column'>        <ul></ul>      </section>");
     for (i = _i = 0, _len = user8comicList.length; _i < _len; i = ++_i) {
       ele = user8comicList[i];
-      $('#eightComic ul').append("        <li id='eightComic-" + i + "'>          <div class='new'>NEW</div>          <div class='cover'>            <img src='" + ele.pic + "'>          </div>          <div class='info'>            <div class='title'>" + ele.title + "</div>            <div class='episode'>看到 " + ele.episodeNumber + "</div>            <div class='edge'>更新到 " + ele.edgeNumber + "</div>          </div>          <input type='button' value='續看'>        </li>");
+      $('#eightComic ul').append("        <li id='eightComic-" + i + "'>          <div class='new'>NEW</div>          <div class='read'>READ</div>          <div class='cover'>            <img src='" + ele.pic + "'>          </div>          <div class='info'>            <div class='title'>" + ele.title + "</div>            <div class='episode'>看到 " + ele.episodeNumber + "</div>            <div class='edge'>更新到 " + ele.edgeNumber + "</div>          </div>          <input type='button' value='續看'>        </li>");
       if (!ele.isNew) {
         $("#eightComic-" + i + " .new").css('display', 'none');
+      }
+      if (!(ele.episodeUrl !== ele.edgeUrl && !ele.isNew)) {
+        $("#eightComic-" + i + " .read").css('display', 'none');
       }
       bind("#eightComic-" + i, ele);
     }
@@ -90,9 +127,12 @@ loadEpisode = function() {
     _results = [];
     for (i = _j = 0, _len1 = userDm5List.length; _j < _len1; i = ++_j) {
       ele = userDm5List[i];
-      $('#dm5 ul').append("        <li id='dm5-" + i + "'>          <div class='new'>NEW</div>          <div class='cover'>            <img src='" + ele.pic + "'>          </div>          <div class='info'>            <div class='title'>" + ele.title + "</div>            <div class='episode'>看到 " + ele.episodeNumber + "</div>            <div class='edge'>更新到 " + ele.edgeNumber + "</div>          </div>          <input type='button' value='續看'>        </li>");
+      $('#dm5 ul').append("        <li id='dm5-" + i + "'>          <div class='new'>NEW</div>          <div class='read'>READ</div>          <div class='cover'>            <img src='" + ele.pic + "'>          </div>          <div class='info'>            <div class='title'>" + ele.title + "</div>            <div class='episode'>看到 " + ele.episodeNumber + "</div>            <div class='edge'>更新到 " + ele.edgeNumber + "</div>          </div>          <input type='button' value='續看'>        </li>");
       if (!ele.isNew) {
         $("#dm5-" + i + " .new").css('display', 'none');
+      }
+      if (!(ele.episodeUrl !== ele.edgeUrl && !ele.isNew)) {
+        $("#dm5-" + i + " .read").css('display', 'none');
       }
       _results.push(bind("#dm5-" + i, ele));
     }

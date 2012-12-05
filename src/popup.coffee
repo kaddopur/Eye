@@ -24,8 +24,12 @@ refreshBadge = ->
 
 
 loadEpisode = ->
-  userDm5List = (ele for ele in userList when ele.site is 'dm5') || []
-  user8comicList = (ele for ele in userList when ele.site is '8comic') || []
+  priorityList = (ele for ele in userList when ele.isNew)
+  priorityList = priorityList.concat (ele for ele in userList when ele.episodeUrl isnt ele.edgeUrl and not ele.isNew)
+  priorityList = priorityList.concat (ele for ele in userList when ele.episodeUrl is ele.edgeUrl and not ele.isNew)
+  console.log priorityList
+  userDm5List = (ele for ele in priorityList when ele.site is 'dm5') || []
+  user8comicList = (ele for ele in priorityList when ele.site is '8comic') || []
 
   if user8comicList?
     $('.container').append("
@@ -36,6 +40,7 @@ loadEpisode = ->
       $('#eightComic ul').append("
         <li id='eightComic-#{i}'>
           <div class='new'>NEW</div>
+          <div class='read'>READ</div>
           <div class='cover'>
             <img src='#{ele.pic}'>
           </div>
@@ -47,6 +52,7 @@ loadEpisode = ->
           <input type='button' value='續看'>
         </li>")
       $("#eightComic-#{i} .new").css('display', 'none') unless ele.isNew
+      $("#eightComic-#{i} .read").css('display', 'none') unless (ele.episodeUrl isnt ele.edgeUrl and not ele.isNew)
       bind("#eightComic-#{i}", ele)
 
   if userDm5List?
@@ -58,6 +64,7 @@ loadEpisode = ->
       $('#dm5 ul').append("
         <li id='dm5-#{i}'>
           <div class='new'>NEW</div>
+          <div class='read'>READ</div>
           <div class='cover'>
             <img src='#{ele.pic}'>
           </div>
@@ -69,6 +76,7 @@ loadEpisode = ->
           <input type='button' value='續看'>
         </li>")
       $("#dm5-#{i} .new").css('display', 'none') unless ele.isNew
+      $("#dm5-#{i} .read").css('display', 'none') unless (ele.episodeUrl isnt ele.edgeUrl and not ele.isNew)
       bind("#dm5-#{i}", ele)
 
 
