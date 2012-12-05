@@ -92,8 +92,9 @@
 
 input {
   float: left;
-  font-size: 2.5em;
-  margin-top: 25px;
+  font-size: .8em;
+  margin-top: 20px;
+  padding: 8px 3px;
   width: 15%; }
 
 .clearfix {

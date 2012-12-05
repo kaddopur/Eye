@@ -12,7 +12,7 @@ refreshBadge = ->
   tempHtml = "
     <section id='site' class='clearfix'>
       <ul>
-        <li><div id='eightComicLink'>8Comic.com 無限動漫</div>
+        <li><div id='eightComicLink'>8Comic 無限動漫</div>
         <li><div id='dm5Link'>Dm5 动漫屋</div>
       </ul>
     </section>"
