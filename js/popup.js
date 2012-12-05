@@ -33,7 +33,7 @@ refreshBadge = function() {
     }
     return _results;
   })()) || [];
-  tempHtml = "    <section id='site' class='clearfix'>      <ul>        <li><div id='eightComicLink'>8Comic.com 無限動漫</div>        <li><div id='dm5Link'>Dm5 动漫屋</div>      </ul>    </section>";
+  tempHtml = "    <section id='site' class='clearfix'>      <ul>        <li><div id='eightComicLink'>8Comic 無限動漫</div>        <li><div id='dm5Link'>Dm5 动漫屋</div>      </ul>    </section>";
   $('.container').html(tempHtml);
   $('#eightComicLink').click(function() {
     return chrome.tabs.create({
