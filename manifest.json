@@ -29,7 +29,7 @@
         "js": ["js/jquery-1.7.1.min.js", "js/cs_dm5.js"]
     },
     {
-        "matches": ["http://coldpic.sfacg.com/AllComic/*"],
+        "matches": ["http://*.sfacg.com/AllComic/*"],
         "css": ["css/reset.css", "css/viewer.css"],
         "js": ["js/jquery-1.7.1.min.js", "js/cs_sfacg.js"]
     }

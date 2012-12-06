@@ -77,6 +77,8 @@
     width: 100%; }
     #sfacg .cover img {
       height: 100%;
+      left: -50%;
+      position: relative;
       width: auto; }
 
 .info {
