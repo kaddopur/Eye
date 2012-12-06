@@ -1,7 +1,6 @@
 userList = if localStorage.userList? then JSON.parse localStorage.userList else []
 localStorage.userList = JSON.stringify userList
 
-
 refreshBadge = ->
   newCount = (ele for ele in userList when ele.isNew).length
   badgeText = if newCount isnt 0 then '' + newCount else '' 
@@ -96,8 +95,10 @@ bindListener = ->
     $(this).addClass('active')
     $('.tab.tab-show').removeClass('tab-show')
     $($(this).data('tab')).addClass('tab-show')
+    localStorage.lastTab = $(this).data('no')
 
-  $('nav li:first').click()
+  lastTab = if localStorage.lastTab? then localStorage.lastTab else '1'
+  $("nav li:nth-child(#{lastTab})").click()
 
     
 $(document).ready ->

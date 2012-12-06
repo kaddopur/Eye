@@ -156,6 +156,7 @@ bind = function(target, params) {
 };
 
 bindListener = function() {
+  var lastTab;
   $('#eightComic header').click(function() {
     return chrome.tabs.create({
       url: 'http://www.8comic.com/comic/'
@@ -175,9 +176,11 @@ bindListener = function() {
     $('nav li.active').removeClass('active');
     $(this).addClass('active');
     $('.tab.tab-show').removeClass('tab-show');
-    return $($(this).data('tab')).addClass('tab-show');
+    $($(this).data('tab')).addClass('tab-show');
+    return localStorage.lastTab = $(this).data('no');
   });
-  return $('nav li:first').click();
+  lastTab = localStorage.lastTab != null ? localStorage.lastTab : '1';
+  return $("nav li:nth-child(" + lastTab + ")").click();
 };
 
 $(document).ready(function() {
