@@ -1,49 +1,36 @@
 @import "global";
 
-$column_width: 290px;
-$total_width: 900px;
-$gitter: ($total_width - 3 * $column_width) / 2;
-$item_height: 36px;
 $li_height: 72px;
+$header_height: 36px;
 
 .container {
-  padding: 16px;
-  width: $total_width;
+  border-top: solid 6px $color_green;
+  padding: 0 18px;
+  width: 300px;
 }
 
-#site {
-  margin-bottom: 16px;
+nav {
   li {
-    background: rgba(black, 0.1);
-    border-radius: $radius;
-    box-shadow: 1px 1px 1px rgba(white, 0.8);
-    float: left;
-    font-size: 1.2em;
-    height: $item_height;  
-    line-height: $item_height;
-    margin-right: $gitter;
-    text-align: center;
-    width: $column_width;
-    &:last-child { margin-right: 0; }
-    #eightComicLink:hover {
-      background: rgba($color_8comic, 0.5);
-      border-radius: $radius;
-    }
-    #dm5Link:hover {
-      background: rgba($color_dm5, 0.5);
-      border-radius: $radius;
+    border-radius: 0 0 $radius*2 0;
+    box-shadow: 0 2px 2px rgba(black, 0.2);
+    display: inline-block;
+    padding: 24px 0 8px 8px;
+    width: 29%;
+    &.active {
+      background: $color_green;
+      color: white;
     }
   }
 }
 
-.column {
+.tab {
   float: left;
-  margin: 0 $gitter 16px 0;
-  width: $column_width;
+  width: 100%;
   &:last-child { margin-right: 0; }
   ul {
     border-radius: $radius;
     box-shadow: 1px 1px 1px rgba(white, 0.8);
+    margin: 18px 0;
   }
   li {
     background: rgba(black, 0.1);
@@ -62,6 +49,24 @@ $li_height: 72px;
     }
     &:hover { background: rgba(yellow, 0.15); }
   }
+  header {
+    @extend ul;
+    background: rgba(black, 0.1);
+    color: rgba(black, 0.4);
+    font-size: 1em;
+    height: $header_height;
+    line-height: $header_height;
+    text-align: center;
+  }
+}
+
+.tab-hide { display: none; }
+.tab-show { display: inherit; }
+
+header {
+  #eightComic &:hover { background: rgba($color_8comic, 0.5); }
+  #dm5 &:hover { background: rgba($color_dm5, 0.5); }
+  #sfacg &:hover { background: rgba($color_sfacg, 0.5); }
 }
 
 .new {
@@ -126,19 +131,3 @@ input {
   padding: 8px 3px;
   width: 15%;
 }
-
-.clearfix {
-  display: inline-block;
-  &:after {
-    clear: both;
-    content: ".";
-    display: block;
-    height: 0;
-    line-height: 0;
-    visibility: hidden;
-  }
-}
- 
-html[xmlns] .clearfix { display: block; }
- 
-* html .clearfix { height: 1%; }

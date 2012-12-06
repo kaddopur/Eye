@@ -3,15 +3,33 @@
   <head lang="zh_TW">
     <meta charset="UTF-8">
     <!-- Script-->
-    <script src="js/jquery-ui.js"></script>
     <script src="js/jquery-1.7.1.min.js"></script>
     <script src="js/popup.js"></script>
     <!-- Style-->
-    <link rel="stylesheet" href="css/jquery-ui.css">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/popup.css">
   </head>
   <body>
-    <div class="container"></div>
+    <div class="container">
+      <nav id="site">
+        <ul>
+          <li data-tab="#eightComic">8Comic</li>
+          <li data-tab="#dm5">Dm5</li>
+          <li data-tab="#sfacg">SFACG</li>
+        </ul>
+      </nav>
+      <section id="eightComic" class="tab tab-hide">
+        <header>前往 8Comic 無限動漫</header>
+        <ul></ul>
+      </section>
+      <section id="dm5" class="tab tab-hide">
+        <header>前往 Dm5 动漫屋</header>
+        <ul></ul>
+      </section>
+      <section id="sfacg" class="tab tab-hide">
+        <header>前往 SFACG SF在线漫画</header>
+        <ul></ul>
+      </section>
+    </div>
   </body>
-</html>
+</html>​
