@@ -1,25 +1,18 @@
 ﻿{
-  // Required
   "name":"鄉民之眼",
   "version":"2.0.1",
   "manifest_version": 2,
-  
-  // Recommanded
   "description": "看漫畫的擴充套件，支援8Comic, Dm5",
   "icons":{
     "16":"icon16.png",
     "48":"icon48.png",
     "128":"icon128.png"
   },
-
-  // Pick one (or none)
   "browser_action": {
     "default_icon": "icon.png", 
     "default_title": "漫畫列表", 
     "default_popup": "popup.html" 
   },
-  
-  // Add any of these that you need
   "background": {
     "scripts": ["js/jquery-1.7.1.min.js", "js/manager.js"],
     "persistent": false
@@ -34,6 +27,11 @@
         "matches": ["http://tel.dm5.com/m*/"],
         "css": ["css/reset.css", "css/viewer.css"],
         "js": ["js/jquery-1.7.1.min.js", "js/cs_dm5.js"]
+    },
+    {
+        "matches": ["http://coldpic.sfacg.com/AllComic/*"],
+        "css": ["css/reset.css", "css/viewer.css"],
+        "js": ["js/jquery-1.7.1.min.js", "js/cs_sfacg.js"]
     }
   ],
   "permissions":[

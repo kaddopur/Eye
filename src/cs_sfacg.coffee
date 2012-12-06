@@ -1,108 +1,61 @@
-isValidPath = ->
-  true
-
-
 findUrl = ->
-  # console.log 'findUrl'
+  targetScriptUrl = location.origin + $('script:last-child').attr('src')
+  $.get targetScriptUrl, (response) ->
+    eval(response)
+    
+    menuUrl = $("[href*='HTML']").attr('href') || ''
+    nextUrl = if nextVolume.indexOf('http') is 0 then nextVolume else ''
+    prevUrl = if preVolume.indexOf('http') is 0 then preVolume else ''
 
-  pic = edgeUrl = edgeNumber = ''
-  
-  # get codes
-  page_info = $('script:contains(ch=request)').html()
-  r = /var codes="[^;]*;/
-  eval r.exec(page_info)[0]
-  
-  r = /var itemid=[^;]*;/
-  eval r.exec(page_info)[0]
+    navBundle = {
+      menuUrl: menuUrl,
+      nextUrl: nextUrl,
+      prevUrl: prevUrl
+    }
+    setImage picAy 
+    setNavButton navBundle
+    setHotkeyPanel()
 
-  # decide which chapter to display
-  r = /ch=(\d+)/
-  try
-    ch = r.exec(location.search)[1]
-  catch e
-    location.href += '?ch=1'
+    $.get menuUrl, (response) ->
+      episodeUrl = location.href
+      episodeNumber = $(response).find("a[href='#{episodeUrl}']").text()
+      edge = $(response).find('.serialise_list:last li:first-child')
+      edgeNumber = edge.text()
+      edgeUrl = edge.find('a').attr('href')
+      pic = $(response).find('.comic_cover img').attr('src')
 
-  prev_id = next_id = target_id = -1
-  for c, i in codes
-    if c.split(' ')[0] == ch
-      if i > 0 then prev_id = i-1
-      if i < (codes.length - 1) then next_id = i+1
-      target_id = i
-      target_code = c
-      break
+      likeBundle = {
+        edgeNumber: edgeNumber,
+        edgeUrl: edgeUrl,
+        episodeNumber: episodeNumber,
+        episodeUrl: episodeUrl,
+        isNew: false
+        menuUrl: menuUrl,
+        pic: pic,
+        site: 'sfacg',
+        title: comicName,
+      }
+      
+      setLikeButton likeBundle
 
-  episodeId = $('font#lastchapter').text()
-  re_title = /\[(.*)<font/
-  title = $('font#lastchapter').parent().html().match(re_title)[1].trim()
-  edgeId = $('#lastvol b').text().match(/(\S*)\s*]$/)[1]
-  edgeUrl = location.origin + location.pathname + '?ch=' + edgeId
 
-  # get uri of all pictures
+setImage = (imageList) ->
   $('html').html('<body></body>')
   $('body').css('background', "url(#{chrome.extension.getURL('img/texture.png')}) repeat, #FCFAF2")
+  $('body').css('overflow', 'auto')
   
-  code_info = target_code.split(' ')
-  num = code_info[0]
-  sid = code_info[1]
-  did = code_info[2]
-  page = code_info[3]
-  code = code_info[4]
-
-  for p in [1..page]
-    img_uri = ''
-    if p < 10 then img_uri = '00' + p
-    else if p < 100 then img_uri = '0' + p
-    else img_uri = '' + p
-    
-    m = parseInt(((p-1)/10)%10)+(p-1)%10*3
-    img_uri += '_' + code.substring(m, m+3)
-
+  for ele in imageList
     $('body').append("
       <div class='eox-page'>
-        <img src='http://img#{sid}.8comic.com/#{did}/#{itemid}/#{num}/#{img_uri}.jpg'>
+        <img src=#{ele}>
       </div>
     ")
-  
   $('.eox-page').css('width', window.innerWidth - 120)
 
-  prev_uri = menu_uri = next_uri = ''
-  if prev_id isnt -1
-    prev_uri = location.href + ''
-    prev_uri = prev_uri.substring(0, prev_uri.indexOf('=')+1) + codes[prev_id].split(' ')[0]
 
-  if next_id isnt -1
-    next_uri = location.href + ''
-    next_uri = next_uri.substring(0, next_uri.indexOf('=')+1) + codes[next_id].split(' ')[0]
-
-  menu_uri = "http://www.8comic.com/html/#{itemid}.html"
-
-  setNavButton(prev_uri, menu_uri, next_uri)
-  setHotkeyPanel()
-  $.get menu_uri, (res) ->
-    pic = 'http://www.8comic.com' + $(res).find('td[bgcolor=f8f8f8] img').attr('src')
-    chapter = $(res).find('.Vol, .Ch')
-    edgeNumber = chapter[chapter.length-1].text.trim()
-    episodeNumber = $(res).find("#c#{episodeId}").text()
-
-    likeBundle = {
-      site: '8comic',
-      menuUrl: menu_uri,
-      title: title,
-      pic: pic,
-      episodeUrl: location.href,
-      episodeNumber: episodeNumber,
-      edgeUrl: edgeUrl,
-      edgeNumber: edgeNumber,
-      isNew: false
-    }
-    # console.log likeBundle
-    setLikeButton likeBundle
-  
-
-setNavButton = (prev_uri, menu_uri, next_uri) ->
+setNavButton = (params)->
   # console.log 'setNavButton'
 
-  # initialize
   $('body').append("
     <nav>
       <ul>
@@ -137,29 +90,23 @@ setNavButton = (prev_uri, menu_uri, next_uri) ->
       isResized = 'true'
     localStorage.isResized = isResized
 
-  if prev_uri
-    $('#eox-prev').click -> location.href = prev_uri
+  if params.prevUrl
+    $('#eox-prev').click -> location.href = params.prevUrl
     $('#eox-prev').removeClass().addClass('function')
   else
     $('#eox-prev').removeClass().addClass('no-function')
 
-  if menu_uri
-    $('#eox-menu').click -> location.href = menu_uri
+  if params.menuUrl
+    $('#eox-menu').click -> location.href = params.menuUrl
     $('#eox-menu').removeClass().addClass('function')
   else
     $('#eox-menu').removeClass().addClass('no-function')
 
-  if next_uri
-    $('#eox-next').click -> location.href = next_uri
+  if params.nextUrl
+    $('#eox-next').click -> location.href = params.nextUrl
     $('#eox-next').removeClass().addClass('function')
   else
     $('#eox-next').removeClass().addClass('no-function')
-
-  if false
-    # $('#eox-like').click -> location.href = next_uri
-    $('#eox-like').removeClass().addClass('function')
-  else
-    $('#eox-like').removeClass().addClass('no-function')
 
 
 setHotkeyPanel = ->
@@ -172,7 +119,7 @@ setHotkeyPanel = ->
         <li><span>L</span> : 下一卷（話）
         <li><span>→</span> or <span>J</span> : 下一頁
         <li><span>←</span> or <span>K</span> : 上一頁
-        <li><span>F</span> : 符合螢幕
+        <li><span>F</span> : 符合頁面
         <li><span>?</span> : 打開/關閉此列表
       </ul>
     </div>
@@ -200,7 +147,7 @@ bindListener = ->
         $('#eox-resize').click()
       when 191
         $('#eox-panel').fadeToggle("fast")
-
+      
   $(window).resize ->
     $('.eox-page').css('width', window.innerWidth - 120)
     $('#eox-resize').click().click()
@@ -224,6 +171,7 @@ setLikeButton = (params) ->
         $('#eox-like').removeClass().addClass('no-function')
 
 
-if isValidPath()
+$ ->
+  # console.log 'Hello SFACG'
   findUrl()
   bindListener()

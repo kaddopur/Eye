@@ -69,7 +69,7 @@ findEachUrl = (i, cid, imageList) ->
 
 
 setImage = (imageList) ->
-  $('body').html('')
+  $('html').html('<body></body>')
   $('body').css('background', "url(#{chrome.extension.getURL('img/texture.png')}) repeat, #FCFAF2")
   
   imageList.shift()
@@ -162,11 +162,11 @@ bindListener = ->
   $(document).keydown (e) ->
     switch e.which
       when 37, 75 # left arrow, K
-        $(window).scrollTop($('img').filter( ->
+        $(window).scrollTop($('.eox-page').filter( ->
           return $(this).offset().top < $('html').offset().top * -1
         ).last().offset().top)
       when 39, 74 # right arrow, J
-        $(window).scrollTop($('img').filter( ->
+        $(window).scrollTop($('.eox-page').filter( ->
           return $(this).offset().top > $('html').offset().top * -1
         ).first().offset().top)
       when 72 # H
