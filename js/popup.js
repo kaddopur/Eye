@@ -33,7 +33,7 @@ refreshBadge = function() {
     }
     return _results;
   })()) || [];
-  tempHtml = "    <section id='site' class='clearfix'>      <ul>        <li><div id='eightComicLink'>8Comic 無限動漫</div>        <li><div id='dm5Link'>Dm5 动漫屋</div>      </ul>    </section>";
+  tempHtml = "    <section id='site' class='clearfix'>      <ul>        <li><div id='eightComicLink'>8Comic 無限動漫</div>        <li><div id='dm5Link'>Dm5 动漫屋</div>        <li><div id='sfacgLink'>SFACG SF在线漫画</div>      </ul>    </section>";
   $('.container').html(tempHtml);
   $('#eightComicLink').click(function() {
     return chrome.tabs.create({
@@ -49,7 +49,7 @@ refreshBadge = function() {
 };
 
 loadEpisode = function() {
-  var ele, i, priorityList, user8comicList, userDm5List, _i, _j, _len, _len1, _results;
+  var ele, i, priorityList, user8comicList, userDm5List, userSfacgList, _i, _j, _k, _len, _len1, _len2, _results;
   priorityList = (function() {
     var _i, _len, _results;
     _results = [];
@@ -105,6 +105,17 @@ loadEpisode = function() {
     }
     return _results;
   })()) || [];
+  userSfacgList = ((function() {
+    var _i, _len, _results;
+    _results = [];
+    for (_i = 0, _len = priorityList.length; _i < _len; _i++) {
+      ele = priorityList[_i];
+      if (ele.site === 'sfacg') {
+        _results.push(ele);
+      }
+    }
+    return _results;
+  })()) || [];
   if (user8comicList != null) {
     $('.container').append("      <section id='eightComic' class='column'>        <ul></ul>      </section>");
     for (i = _i = 0, _len = user8comicList.length; _i < _len; i = ++_i) {
@@ -121,7 +132,6 @@ loadEpisode = function() {
   }
   if (userDm5List != null) {
     $('.container').append("      <section id='dm5' class='column'>        <ul></ul>      </section>");
-    _results = [];
     for (i = _j = 0, _len1 = userDm5List.length; _j < _len1; i = ++_j) {
       ele = userDm5List[i];
       $('#dm5 ul').append("        <li id='dm5-" + i + "'>          <div class='new'>NEW</div>          <div class='read'>READ</div>          <div class='cover'>            <img src='" + ele.pic + "'>          </div>          <div class='info'>            <div class='title'>" + ele.title + "</div>            <div class='episode'>看到 " + ele.episodeNumber + "</div>            <div class='edge'>更新到 " + ele.edgeNumber + "</div>          </div>          <input type='button' value='續看'>        </li>");
@@ -131,7 +141,22 @@ loadEpisode = function() {
       if (!(ele.episodeUrl !== ele.edgeUrl && !ele.isNew)) {
         $("#dm5-" + i + " .read").css('display', 'none');
       }
-      _results.push(bind("#dm5-" + i, ele));
+      bind("#dm5-" + i, ele);
+    }
+  }
+  if (userSfacgList != null) {
+    $('.container').append("      <section id='sfacg' class='column'>        <ul></ul>      </section>");
+    _results = [];
+    for (i = _k = 0, _len2 = userSfacgList.length; _k < _len2; i = ++_k) {
+      ele = userSfacgList[i];
+      $('#sfacg ul').append("        <li id='sfacg-" + i + "'>          <div class='new'>NEW</div>          <div class='read'>READ</div>          <div class='cover'>            <img src='" + ele.pic + "'>          </div>          <div class='info'>            <div class='title'>" + ele.title + "</div>            <div class='episode'>看到 " + ele.episodeNumber + "</div>            <div class='edge'>更新到 " + ele.edgeNumber + "</div>          </div>          <input type='button' value='續看'>        </li>");
+      if (!ele.isNew) {
+        $("#sfacg-" + i + " .new").css('display', 'none');
+      }
+      if (!(ele.episodeUrl !== ele.edgeUrl && !ele.isNew)) {
+        $("#sfacg-" + i + " .read").css('display', 'none');
+      }
+      _results.push(bind("#sfacg-" + i, ele));
     }
     return _results;
   }

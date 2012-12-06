@@ -1,14 +1,14 @@
 @import "global";
 
 $column_width: 290px;
-$total_width: 600px;
-$gitter: $total_width - 2 * $column_width;
+$total_width: 900px;
+$gitter: ($total_width - 3 * $column_width) / 2;
 $item_height: 36px;
 $li_height: 72px;
 
 .container {
   padding: 16px;
-  width: 600px;
+  width: $total_width;
 }
 
 #site {
@@ -92,6 +92,10 @@ $li_height: 72px;
   img {
     height: auto;
     width: 100%;
+    #sfacg & {
+      height: 100%;
+      width: auto;
+    }
   }
 }
 

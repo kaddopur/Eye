@@ -14,6 +14,7 @@ refreshBadge = ->
       <ul>
         <li><div id='eightComicLink'>8Comic 無限動漫</div>
         <li><div id='dm5Link'>Dm5 动漫屋</div>
+        <li><div id='sfacgLink'>SFACG SF在线漫画</div>
       </ul>
     </section>"
   
@@ -31,6 +32,7 @@ loadEpisode = ->
   
   userDm5List = (ele for ele in priorityList when ele.site is 'dm5') || []
   user8comicList = (ele for ele in priorityList when ele.site is '8comic') || []
+  userSfacgList = (ele for ele in priorityList when ele.site is 'sfacg') || []
 
   if user8comicList?
     $('.container').append("
@@ -79,6 +81,30 @@ loadEpisode = ->
       $("#dm5-#{i} .new").css('display', 'none') unless ele.isNew
       $("#dm5-#{i} .read").css('display', 'none') unless (ele.episodeUrl isnt ele.edgeUrl and not ele.isNew)
       bind("#dm5-#{i}", ele)
+
+  if userSfacgList?
+    $('.container').append("
+      <section id='sfacg' class='column'>
+        <ul></ul>
+      </section>")
+    for ele, i in userSfacgList
+      $('#sfacg ul').append("
+        <li id='sfacg-#{i}'>
+          <div class='new'>NEW</div>
+          <div class='read'>READ</div>
+          <div class='cover'>
+            <img src='#{ele.pic}'>
+          </div>
+          <div class='info'>
+            <div class='title'>#{ele.title}</div>
+            <div class='episode'>看到 #{ele.episodeNumber}</div>
+            <div class='edge'>更新到 #{ele.edgeNumber}</div>
+          </div>
+          <input type='button' value='續看'>
+        </li>")
+      $("#sfacg-#{i} .new").css('display', 'none') unless ele.isNew
+      $("#sfacg-#{i} .read").css('display', 'none') unless (ele.episodeUrl isnt ele.edgeUrl and not ele.isNew)
+      bind("#sfacg-#{i}", ele)
 
 
 bind = (target, params) ->

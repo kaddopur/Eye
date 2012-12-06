@@ -1,6 +1,6 @@
 .container {
   padding: 16px;
-  width: 600px; }
+  width: 900px; }
 
 #site {
   margin-bottom: 16px; }
@@ -12,7 +12,7 @@
     font-size: 1.2em;
     height: 36px;
     line-height: 36px;
-    margin-right: 20px;
+    margin-right: 15px;
     text-align: center;
     width: 290px; }
     #site li:last-child {
@@ -26,7 +26,7 @@
 
 .column {
   float: left;
-  margin: 0 20px 16px 0;
+  margin: 0 15px 16px 0;
   width: 290px; }
   .column:last-child {
     margin-right: 0; }
@@ -75,6 +75,9 @@
   .cover img {
     height: auto;
     width: 100%; }
+    #sfacg .cover img {
+      height: 100%;
+      width: auto; }
 
 .info {
   float: left;
