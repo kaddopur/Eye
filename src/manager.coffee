@@ -16,6 +16,7 @@ onLikeButton =  (request, sender, sendResponse) ->
           chrome.browserAction.setBadgeText {text: badgeText}
           
           localStorage.userList = JSON.stringify userList
+          sync()
           sendResponse {isFunction: true}
           return
       sendResponse {isFunction: false}
@@ -26,12 +27,14 @@ onLikeButton =  (request, sender, sendResponse) ->
         if ele.menuUrl is request.params.menuUrl
           userList = (e for e, j in userList when i isnt j)
           localStorage.userList = JSON.stringify userList
+          sync()
           sendResponse {isFunction: false}
           return
     
       # not in userList, so add to userList
       userList.push(request.params)
       localStorage.userList = JSON.stringify userList
+      sync()
       sendResponse {isFunction: true}
 
 
@@ -40,8 +43,10 @@ chrome.extension.onMessage.addListener onLikeButton
 
 onInit = ->
   # console.log 'onInit'
+  localStorage.timestamp = '0'
   localStorage.userList = localStorage.userList || '[]'
-
+  sync()
+  chrome.tabs.create {url: chrome.extension.getURL('options.html')}
   startRequest {scheduleRequest: true}
 
 
@@ -58,20 +63,45 @@ startRequest = (params) ->
       edgeUrl = dm5Url + $(target).find('a:last-child').attr('href')
       edgeNumber = $(target).find('a:last-child').text().trim()
       newBundle = {
-        site: 'dm5',
+        edgeNumber: edgeNumber,
+        edgeUrl: edgeUrl,
         menuUrl: menuUrl,
-        title: title, 
-        edgeUrl: edgeUrl, 
-        edgeNumber: edgeNumber
+        site: 'dm5',
+        title: title
       }
       checkList newBundle
 
-  # for 8comic
+  # for 8Comic
   $.get 'http://www.8comic.com/comic/u-1.html', (res) ->
     baComicUrl = 'http://www.8comic.com'
     for target in $(res).find('td[height=30][nowrap] a')
       menuUrl = baComicUrl + $(target).attr('href');
       find8comicOtherData(menuUrl)
+
+  # for SFACG
+  $.get 'http://comic.sfacg.com/WeeklyUpdate/', (response) ->
+    for target in $(response).find('#Day0 .gray_frame a, #Day1 .gray_frame a')
+      menuUrl = $(target).attr('href')
+      findSfacgOtherData menuUrl + '/'
+
+
+findSfacgOtherData = (menuUrl) ->
+  $.get menuUrl, (response) ->
+    episodeUrl = location.href
+    episodeNumber = $(response).find("a[href='#{episodeUrl}']").text()
+    edge = $(response).find('.serialise_list:last li:first-child')
+    edgeNumber = edge.text()
+    edgeUrl = edge.find('a').attr('href')
+    title = $(response).find('b.F14PX').text()
+
+    newBundle = {
+      edgeNumber: edgeNumber,
+      edgeUrl: edgeUrl,
+      menuUrl: menuUrl,
+      site: 'sfacg',
+      title: title
+    }
+    checkList newBundle
 
 
 find8comicOtherData = (menuUrl) ->
@@ -87,11 +117,11 @@ find8comicOtherData = (menuUrl) ->
     edgeUrl = cview(params[1], params[2])
 
     newBundle = {
-      site: '8comic',
+      edgeNumber: edgeNumber,
+      edgeUrl: edgeUrl,
       menuUrl: menuUrl,
-      title: title, 
-      edgeUrl: edgeUrl, 
-      edgeNumber: edgeNumber
+      site: '8comic',
+      title: title
     }
     checkList newBundle
 
@@ -116,6 +146,7 @@ checkList = (params) ->
       ele.edgeNumber = params.edgeNumber
 
       localStorage.userList = JSON.stringify userList
+      sync()
       break
     else if isSubscriber
       # console.log 'already updated'
@@ -150,6 +181,31 @@ cview = (url, catid) ->
   url = url.replace('.html','').replace('-','.html?ch=')
   baseurl + url
 
+
+sync = ->
+  if localStorage.isSync is 'true'
+    t = new Date()
+    timestamp = localStorage.timestamp = ''+Math.round(t.getTime() / 1000)
+
+    bundle = {
+      account: localStorage.account,
+      password: localStorage.password,
+      userlist: localStorage.userList,
+      timestamp: localStorage.timestamp
+    }
+
+    $.post 'http://xzysite.appspot.com/bookmark', bundle, (response) ->
+      # console.log response
+      switch response.status
+        when 'updated'
+          # console.log 'updated'
+        when 'overwrite'
+          # console.log 'overwrite'
+          localStorage.userList = response.userlist
+          localStorage.timestamp = response.timestamp
+        when 'error'
+          # console.log 'error'
+      # console.log 'synced'
 
 chrome.runtime.onInstalled.addListener onInit
 chrome.alarms.onAlarm.addListener onAlarm

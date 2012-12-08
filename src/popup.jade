@@ -6,12 +6,25 @@ html
     // Script
     script(src='js/jquery-1.7.1.min.js')
     script(src='js/popup.js')
-    //- script(src='js/bootstrap.min.js')
     
     // Style
-    //- link(rel='stylesheet', href='css/bootstrap.min.css')
     link(rel='stylesheet', href='css/reset.css')
     link(rel='stylesheet', href='css/popup.css')
    
   body
     .container
+      nav#site
+        ul
+          li(data-tab='#eightComic', data-no='1') 8Comic
+          li(data-tab='#dm5', data-no='2') Dm5
+          li(data-tab='#sfacg', data-no='3') SFACG
+      section#eightComic.tab.tab-hide
+        header 前往 8Comic 無限動漫
+        ul
+      section#dm5.tab.tab-hide
+        header 前往 Dm5 动漫屋
+        ul
+      section#sfacg.tab.tab-hide
+        header 前往 SFACG SF在线漫画
+        ul
+​

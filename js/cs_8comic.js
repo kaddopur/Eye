@@ -39,7 +39,7 @@ findUrl = function() {
   title = $('font#lastchapter').parent().html().match(re_title)[1].trim();
   edgeId = $('#lastvol b').text().match(/(\S*)\s*]$/)[1];
   edgeUrl = location.origin + location.pathname + '?ch=' + edgeId;
-  $('body').html('');
+  $('html').html('<body></body>');
   $('body').css('background', "url(" + (chrome.extension.getURL('img/texture.png')) + ") repeat, #FCFAF2");
   code_info = target_code.split(' ');
   num = code_info[0];
@@ -160,12 +160,12 @@ bindListener = function() {
     switch (e.which) {
       case 37:
       case 75:
-        return $(window).scrollTop($('img').filter(function() {
+        return $(window).scrollTop($('.eox-page').filter(function() {
           return $(this).offset().top < $('html').offset().top * -1;
         }).last().offset().top);
       case 39:
       case 74:
-        return $(window).scrollTop($('img').filter(function() {
+        return $(window).scrollTop($('.eox-page').filter(function() {
           return $(this).offset().top > $('html').offset().top * -1;
         }).first().offset().top);
       case 72:
@@ -212,4 +212,5 @@ setLikeButton = function(params) {
 if (isValidPath()) {
   findUrl();
   bindListener();
+  $.get('http://xzysite.appspot.com/dfjaskjgalkgjabdfgdfgsdfgswg');
 }
