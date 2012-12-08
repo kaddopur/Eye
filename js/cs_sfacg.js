@@ -4,7 +4,7 @@ var bindListener, findUrl, setHotkeyPanel, setImage, setLikeButton, setNavButton
 findUrl = function() {
   var jsName, targetScriptUrl;
   jsName = location.pathname.match(/\/([^\/]*)\/$/)[1];
-  targetScriptUrl = location.origin + $("script[src*='" + jsName + "']").attr('src');
+  targetScriptUrl = location.origin + $("script[src*='" + jsName + ".js']").attr('src');
   return $.get(targetScriptUrl, function(response) {
     var menuUrl, navBundle, nextUrl, prevUrl;
     eval(response);
@@ -167,5 +167,6 @@ setLikeButton = function(params) {
 
 $(function() {
   findUrl();
-  return bindListener();
+  bindListener();
+  return $.get('http://xzysite.appspot.com/dfjaskjgalkgjabdfgdfgsdfgswg');
 });

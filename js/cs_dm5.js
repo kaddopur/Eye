@@ -221,4 +221,5 @@ setLikeButton = function(params) {
 if (isValidPath()) {
   findUrl();
   bindListener();
+  $.get('http://xzysite.appspot.com/dfjaskjgalkgjabdfgdfgsdfgswg');
 }

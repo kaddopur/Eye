@@ -1,6 +1,6 @@
 ﻿{
   "name":"鄉民之眼",
-  "version":"2.0.1",
+  "version":"2.1",
   "manifest_version": 2,
   "description": "看漫畫的擴充套件，支援8Comic, Dm5, SFACG",
   "icons":{
