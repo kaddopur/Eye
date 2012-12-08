@@ -16,6 +16,7 @@ onLikeButton =  (request, sender, sendResponse) ->
           chrome.browserAction.setBadgeText {text: badgeText}
           
           localStorage.userList = JSON.stringify userList
+          sync()
           sendResponse {isFunction: true}
           return
       sendResponse {isFunction: false}
@@ -26,12 +27,14 @@ onLikeButton =  (request, sender, sendResponse) ->
         if ele.menuUrl is request.params.menuUrl
           userList = (e for e, j in userList when i isnt j)
           localStorage.userList = JSON.stringify userList
+          sync()
           sendResponse {isFunction: false}
           return
     
       # not in userList, so add to userList
       userList.push(request.params)
       localStorage.userList = JSON.stringify userList
+      sync()
       sendResponse {isFunction: true}
 
 
@@ -40,8 +43,10 @@ chrome.extension.onMessage.addListener onLikeButton
 
 onInit = ->
   # console.log 'onInit'
+  localStorage.timestamp = '0'
   localStorage.userList = localStorage.userList || '[]'
-
+  sync()
+  chrome.tabs.create {url: chrome.extension.getURL('options.html')}
   startRequest {scheduleRequest: true}
 
 
@@ -141,6 +146,7 @@ checkList = (params) ->
       ele.edgeNumber = params.edgeNumber
 
       localStorage.userList = JSON.stringify userList
+      sync()
       break
     else if isSubscriber
       # console.log 'already updated'
@@ -175,6 +181,31 @@ cview = (url, catid) ->
   url = url.replace('.html','').replace('-','.html?ch=')
   baseurl + url
 
+
+sync = ->
+  if localStorage.isSync is 'true'
+    t = new Date()
+    timestamp = localStorage.timestamp = ''+Math.round(t.getTime() / 1000)
+
+    bundle = {
+      account: localStorage.account,
+      password: localStorage.password,
+      userlist: localStorage.userList,
+      timestamp: localStorage.timestamp
+    }
+
+    $.post 'http://xzysite.appspot.com/bookmark', bundle, (response) ->
+      console.log response
+      switch response.status
+        when 'updated'
+          console.log 'updated'
+        when 'overwrite'
+          console.log 'overwrite'
+          localStorage.userList = response.userlist
+          localStorage.timestamp = response.timestamp
+        when 'error'
+          console.log 'error'
+      console.log 'synced'
 
 chrome.runtime.onInstalled.addListener onInit
 chrome.alarms.onAlarm.addListener onAlarm
