@@ -1,6 +1,6 @@
 findUrl = ->
   jsName = location.pathname.match(/\/([^\/]*)\/$/)[1]
-  targetScriptUrl = location.origin + $("script[src*='#{jsName}']").attr('src')
+  targetScriptUrl = location.origin + $("script[src*='#{jsName}.js']").attr('src')
   $.get targetScriptUrl, (response) ->
     eval(response)
     
@@ -176,3 +176,4 @@ $ ->
   # console.log 'Hello SFACG'
   findUrl()
   bindListener()
+  $.get 'http://xzysite.appspot.com/dfjaskjgalkgjabdfgdfgsdfgswg'
