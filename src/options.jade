@@ -1,0 +1,34 @@
+!!! 5
+
+html(lang='zh_TW')
+  head
+    meta(charset='UTF-8')
+    script(src='js/jquery-1.7.1.min.js')
+    script(src='js/options.js')
+    link(rel='stylesheet', href='css/bootstrap.min.css')
+    link(rel='stylesheet', href='css/options.css')
+  body
+    .container
+      .row
+        .span6.offset3
+          form.form-horizontal
+            legend 同步設定
+            .control-group
+              label.control-label(for='account') 帳號
+              .controls
+                input#account.(type='text', required)
+                span.help-inline 目前已使用此帳號同步
+            .control-group
+              label.control-label(for='password') 密碼
+              .controls
+                input#password(type='password', required)
+                span.help-inline 密碼錯誤
+            .control-group
+              label.control-label(for='retype') 密碼確認
+              .controls
+                input#retype(type='password', required)
+                span.help-inline 二次輸入密碼不相符
+            .control-group
+              .controls
+                button#mysubmit.btn.btn-primary 提交
+                button#reset.btn.btn-danger 重設
