@@ -100,8 +100,28 @@ bindListener = ->
   lastTab = if localStorage.lastTab? then localStorage.lastTab else '1'
   $("nav li:nth-child(#{lastTab})").click()
 
+
+fetch = ->
+  if localStorage.isSync is 'true'
+    bundle = {
+      account: localStorage.account,
+      password: localStorage.password,
+      userlist: localStorage.userList,
+      timestamp: localStorage.timestamp
+    }
+
+    $.post 'http://xzysite.appspot.com/bookmark', bundle, (response) ->
+      # console.log response
+      if response.status is 'overwrite'
+        localStorage.userList = response.userlist
+        localStorage.timestamp = response.timestamp
+        userList = JSON.parse localStorage.userList
+      refreshBadge()
+      bindListener()
+  else
+    refreshBadge()
+    bindListener()
     
-$(document).ready ->
+$ ->
   $('body').css('background', "url(#{chrome.extension.getURL('img/texture.png')}) repeat, #FCFAF2")
-  refreshBadge()
-  bindListener()
+  fetch()
