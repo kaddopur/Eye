@@ -196,16 +196,10 @@ sync = ->
 
     $.post 'http://xzysite.appspot.com/bookmark', bundle, (response) ->
       # console.log response
-      switch response.status
-        when 'updated'
-          # console.log 'updated'
-        when 'overwrite'
-          # console.log 'overwrite'
-          localStorage.userList = response.userlist
-          localStorage.timestamp = response.timestamp
-        when 'error'
-          # console.log 'error'
-      # console.log 'synced'
+      if response.status is 'overwrite'
+        localStorage.userList = response.userlist
+        localStorage.timestamp = response.timestamp
+
 
 chrome.runtime.onInstalled.addListener onInit
 chrome.alarms.onAlarm.addListener onAlarm

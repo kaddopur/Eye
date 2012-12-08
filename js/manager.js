@@ -282,20 +282,10 @@ sync = function() {
       timestamp: localStorage.timestamp
     };
     return $.post('http://xzysite.appspot.com/bookmark', bundle, function(response) {
-      console.log(response);
-      switch (response.status) {
-        case 'updated':
-          console.log('updated');
-          break;
-        case 'overwrite':
-          console.log('overwrite');
-          localStorage.userList = response.userlist;
-          localStorage.timestamp = response.timestamp;
-          break;
-        case 'error':
-          console.log('error');
+      if (response.status === 'overwrite') {
+        localStorage.userList = response.userlist;
+        return localStorage.timestamp = response.timestamp;
       }
-      return console.log('synced');
     });
   }
 };
