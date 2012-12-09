@@ -1,5 +1,5 @@
 body {
-	padding-top: 60px;
+  padding-top: 40px;
 }
 
 .uneditable-input {
@@ -7,4 +7,12 @@ body {
   -khtml-user-select: none; 
   -webkit-user-select: none; 
   -o-user-select: none;
+}
+
+header {
+  font-size: 2.4em;
+  margin-bottom: 40px;
+  span {
+    margin-left: 20px;
+  }
 }

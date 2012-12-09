@@ -3,6 +3,8 @@ var bind, bindListener, fetch, loadEpisode, refreshBadge, userList;
 
 userList = localStorage.userList != null ? JSON.parse(localStorage.userList) : [];
 
+localStorage.timestamp = userList === [] ? '0' : void 0;
+
 localStorage.userList = JSON.stringify(userList);
 
 refreshBadge = function() {

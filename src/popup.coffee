@@ -1,4 +1,5 @@
 userList = if localStorage.userList? then JSON.parse localStorage.userList else []
+localStorage.timestamp = if userList is [] then '0'
 localStorage.userList = JSON.stringify userList
 
 refreshBadge = ->
