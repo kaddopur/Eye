@@ -103,8 +103,6 @@ bindListener = ->
 
 fetch = ->
   if localStorage.isSync is 'true'
-    addSpinner()
-
     bundle = {
       account: localStorage.account,
       password: localStorage.password,
@@ -112,16 +110,32 @@ fetch = ->
       timestamp: localStorage.timestamp
     }
 
-    $.post 'http://xzysite.appspot.com/bookmark', bundle, (response) ->
-      removeSpinner()
-      console.log response
-      if response.status is 'overwrite'
-        localStorage.userList = response.userlist
-        localStorage.timestamp = response.timestamp
-        userList = JSON.parse localStorage.userList
-      refreshBadge()
-      bindListener()
+    $.ajax {
+      type: 'POST',
+      url: 'http://xzysite.appspot.com/bookmark',
+      data: bundle,
+      timeout: 10000,
+      beforeSend: addSpinner,
+      success: ((response) ->
+        # console.log response
+        removeSpinner()
+        if response.status is 'overwrite'
+          localStorage.userList = response.userlist
+          localStorage.timestamp = response.timestamp
+          userList = JSON.parse localStorage.userList
+        refreshBadge()
+        bindListener()
+      ),
+      error: ((response) ->
+        # console.log 'error'
+        $('#spinner header').text('同步失敗').css('color', 'red').delay(2000).fadeOut 'slow', ->
+          $('section ul').css('border', 'solid 1px red')
+          refreshBadge()
+          bindListener()
+      )
+    }
   else
+    removeSpinner()
     refreshBadge()
     bindListener()
 

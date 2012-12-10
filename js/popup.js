@@ -186,25 +186,38 @@ bindListener = function() {
 fetch = function() {
   var bundle;
   if (localStorage.isSync === 'true') {
-    addSpinner();
     bundle = {
       account: localStorage.account,
       password: localStorage.password,
       userlist: localStorage.userList,
       timestamp: localStorage.timestamp
     };
-    return $.post('http://xzysite.appspot.com/bookmark', bundle, function(response) {
-      removeSpinner();
-      console.log(response);
-      if (response.status === 'overwrite') {
-        localStorage.userList = response.userlist;
-        localStorage.timestamp = response.timestamp;
-        userList = JSON.parse(localStorage.userList);
-      }
-      refreshBadge();
-      return bindListener();
+    return $.ajax({
+      type: 'POST',
+      url: 'http://xzysite.appspot.com/bookmark',
+      data: bundle,
+      timeout: 10000,
+      beforeSend: addSpinner,
+      success: (function(response) {
+        removeSpinner();
+        if (response.status === 'overwrite') {
+          localStorage.userList = response.userlist;
+          localStorage.timestamp = response.timestamp;
+          userList = JSON.parse(localStorage.userList);
+        }
+        refreshBadge();
+        return bindListener();
+      }),
+      error: (function(response) {
+        return $('#spinner header').text('同步失敗').css('color', 'red').delay(2000).fadeOut('slow', function() {
+          $('section ul').css('border', 'solid 1px red');
+          refreshBadge();
+          return bindListener();
+        });
+      })
     });
   } else {
+    removeSpinner();
     refreshBadge();
     return bindListener();
   }
