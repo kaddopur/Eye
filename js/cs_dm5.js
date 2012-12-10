@@ -19,50 +19,48 @@ isValidPath = function() {
 };
 
 findUrl = function() {
-  var cid, max, re_cid;
+  var cid, max, mid, re_cid;
   re_cid = /m(\d+)/;
   cid = parseInt(window.location.pathname.match(re_cid)[1]);
+  mid = $('head').html().match(/DM5_MID=(\d*)/)[1];
   max = $('select option').length;
   menuUri = window.location.origin + $('a#btnFavorite + a').attr('href');
-  if ($('.innr8 a.redzia').length >= 2) {
-    nextUri = $('.innr8 a.redzia')[1].href;
-  }
+  title = $('.bai_lj a:last-child').prev().text().match(/(\S.*)漫画/)[1];
+  episodeNumber = $('.bai_lj a:last-child').text().replace(title, '').match(/(\S+)\s/)[1];
   return $.get(menuUri, function(res) {
-    var ele, i, imageList, tg, _i, _j, _len, _results;
-    tg = $(res).find("[id*='chapter_'] .tg");
-    for (i = _i = 0, _len = tg.length; _i < _len; i = ++_i) {
-      ele = tg[i];
-      if (ele.pathname === location.pathname && i + 1 < tg.length) {
-        prevUri = tg[i + 1].href;
-        break;
-      }
-    }
     pic = $(res).find('.innr91 img').attr('src');
-    edgeUrl = location.origin + $(res).find('#chapter_1 tr:first-child a').attr('href');
-    if (prevUri) {
-      $('#eox-prev').click(function() {
-        return location.href = prevUri;
-      });
-      $('#eox-prev').removeClass().addClass('function');
-    }
-    title = $('.bai_lj a:last-child').prev().text().match(/(\S.*)漫画/)[1];
-    episodeNumber = $('.bai_lj a:last-child').text().replace(title, '').match(/(\S+)\s/)[1];
-    edgeUrl = location.origin + $('.innr41 li:first-child a').attr('href');
-    edgeNumber = $('.innr41 li:first-child a').attr('title').match(/.*[ \)x](\S*)$/)[1];
-    imageList = (function() {
-      var _j, _results;
+    return $.get("http://tel.dm5.com/template-" + mid + "/?language=1", function(res) {
+      var ele, i, imageList, tg, _i, _j, _len, _results;
+      tg = $(res).find(".c_chapter .tg");
+      for (i = _i = 0, _len = tg.length; _i < _len; i = ++_i) {
+        ele = tg[i];
+        if (ele.pathname === location.pathname) {
+          if (i !== 0) {
+            nextUri = tg[i - 1].href;
+          }
+          if (i + 1 < tg.length) {
+            prevUri = tg[i + 1].href;
+          }
+          break;
+        }
+      }
+      edgeUrl = location.origin + $(res).find('#chapter_1 tr:first-child a').attr('href');
+      edgeNumber = $(res).find('#chapter_1 tr:first-child a').attr('title').match(/.*[ \)x](\S*)$/)[1];
+      imageList = (function() {
+        var _j, _results;
+        _results = [];
+        for (i = _j = 0; 0 <= max ? _j <= max : _j >= max; i = 0 <= max ? ++_j : --_j) {
+          _results.push(' ');
+        }
+        return _results;
+      })();
+      imageList[0] = 'head';
       _results = [];
-      for (i = _j = 0; 0 <= max ? _j <= max : _j >= max; i = 0 <= max ? ++_j : --_j) {
-        _results.push(' ');
+      for (i = _j = 1; 1 <= max ? _j <= max : _j >= max; i = 1 <= max ? ++_j : --_j) {
+        _results.push(findEachUrl(i, cid, imageList));
       }
       return _results;
-    })();
-    imageList[0] = 'head';
-    _results = [];
-    for (i = _j = 1; 1 <= max ? _j <= max : _j >= max; i = 1 <= max ? ++_j : --_j) {
-      _results.push(findEachUrl(i, cid, imageList));
-    }
-    return _results;
+    });
   });
 };
 

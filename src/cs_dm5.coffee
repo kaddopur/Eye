@@ -17,32 +17,28 @@ findUrl = ->
   re_cid = /m(\d+)/
 
   cid = parseInt(window.location.pathname.match(re_cid)[1])
+  mid = $('head').html().match(/DM5_MID=(\d*)/)[1]
   max = $('select option').length
 
   menuUri = window.location.origin + $('a#btnFavorite + a').attr('href')
-  if $('.innr8 a.redzia').length >= 2
-    nextUri = $('.innr8 a.redzia')[1].href
+  title = $('.bai_lj a:last-child').prev().text().match(/(\S.*)漫画/)[1]
+  episodeNumber = $('.bai_lj a:last-child').text().replace(title, '').match(/(\S+)\s/)[1]
+
   $.get menuUri, (res) ->
-    # tg: target episode list
-    tg = $(res).find("[id*='chapter_'] .tg")
-    for ele, i in tg
-      if ele.pathname is location.pathname and i+1 < tg.length
-        prevUri = tg[i+1].href
-        break
     pic = $(res).find('.innr91 img').attr('src')
-    edgeUrl = location.origin + $(res).find('#chapter_1 tr:first-child a').attr('href')
-    if prevUri
-      $('#eox-prev').click -> location.href = prevUri
-      $('#eox-prev').removeClass().addClass('function')
+    $.get "http://tel.dm5.com/template-#{mid}/?language=1", (res) ->
+      tg = $(res).find(".c_chapter .tg")
+      for ele, i in tg
+        if ele.pathname is location.pathname
+          nextUri = tg[i-1].href if i isnt 0
+          prevUri = tg[i+1].href if i+1 < tg.length
+          break
+      edgeUrl = location.origin + $(res).find('#chapter_1 tr:first-child a').attr('href')
+      edgeNumber = $(res).find('#chapter_1 tr:first-child a').attr('title').match(/.*[ \)x](\S*)$/)[1]
 
-    title = $('.bai_lj a:last-child').prev().text().match(/(\S.*)漫画/)[1]
-    episodeNumber = $('.bai_lj a:last-child').text().replace(title, '').match(/(\S+)\s/)[1]
-    edgeUrl = location.origin + $('.innr41 li:first-child a').attr('href')
-    edgeNumber = $('.innr41 li:first-child a').attr('title').match(/.*[ \)x](\S*)$/)[1]
-
-    imageList = (' ' for i in [0..max])
-    imageList[0] = 'head'
-    findEachUrl(i, cid, imageList) for i in [1..max]  
+      imageList = (' ' for i in [0..max])
+      imageList[0] = 'head'
+      findEachUrl(i, cid, imageList) for i in [1..max]  
 
 
 findEachUrl = (i, cid, imageList) ->
