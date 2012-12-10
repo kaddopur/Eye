@@ -15,7 +15,6 @@ checkValue = function(e) {
   haveData = account !== '' && password !== '' && retype !== '';
   samePassword = password === retype;
   if (haveData && samePassword) {
-    console.log('start sync');
     if (!(localStorage.timestamp != null)) {
       t = new Date();
       timestamp = localStorage.timestamp = '' + Math.round(t.getTime() / 1000);
@@ -27,21 +26,17 @@ checkValue = function(e) {
       timestamp: localStorage.timestamp
     };
     return $.post('http://xzysite.appspot.com/bookmark', bundle, function(response) {
-      console.log(response);
       switch (response.status) {
         case 'updated':
-          startSync(account, password);
-          break;
+          return startSync(account, password);
         case 'overwrite':
           startSync(account, password);
           localStorage.userList = response.userlist;
-          localStorage.timestamp = response.timestamp;
-          break;
+          return localStorage.timestamp = response.timestamp;
         case 'error':
           wrongPassword();
-          stopSync();
+          return stopSync();
       }
-      return console.log('processed');
     });
   } else if (!haveData) {
     return console.log('please fill data');

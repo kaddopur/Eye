@@ -12,7 +12,7 @@ checkValue = (e) ->
   samePassword = password is retype
 
   if haveData and samePassword
-    console.log 'start sync'
+    # console.log 'start sync'
     if not localStorage.timestamp?
       t = new Date()
       timestamp = localStorage.timestamp = ''+Math.round(t.getTime() / 1000)
@@ -25,7 +25,7 @@ checkValue = (e) ->
     }
 
     $.post 'http://xzysite.appspot.com/bookmark', bundle, (response) ->
-      console.log response
+      # console.log response
       switch response.status
         when 'updated'
           startSync(account, password)
@@ -36,7 +36,7 @@ checkValue = (e) ->
         when 'error'
           wrongPassword()
           stopSync()
-      console.log 'processed'
+      # console.log 'processed'
   else if not haveData
     console.log 'please fill data'
   else if not samePassword

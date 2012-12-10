@@ -143,7 +143,7 @@ removeSpinner = ->
   $('#spinner').remove()
 
 addSpinner = ->
-  console.log 'addSpinner'
+  # console.log 'addSpinner'
   opts = {
     lines: 13,
     length: 7,
