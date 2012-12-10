@@ -38,9 +38,9 @@ checkValue = (e) ->
           stopSync()
       # console.log 'processed'
   else if not haveData
-    # console.log 'please fill data'
+    console.log 'please fill data'
   else if not samePassword
-    # console.log 'passwords are not the same'
+    console.log 'passwords are not the same'
     notSamePassword()
     stopSync()
 
@@ -75,6 +75,7 @@ stopSync = ->
   localStorage.account = ''
   localStorage.password = ''
   localStorage.isSync = 'false'
+  localStorage.timestamp = '0'
   $('.uneditable-input').removeClass('uneditable-input')
 
 checkSync = ->

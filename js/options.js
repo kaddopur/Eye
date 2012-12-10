@@ -39,8 +39,9 @@ checkValue = function(e) {
       }
     });
   } else if (!haveData) {
-
+    return console.log('please fill data');
   } else if (!samePassword) {
+    console.log('passwords are not the same');
     notSamePassword();
     return stopSync();
   }
@@ -80,6 +81,7 @@ stopSync = function() {
   localStorage.account = '';
   localStorage.password = '';
   localStorage.isSync = 'false';
+  localStorage.timestamp = '0';
   return $('.uneditable-input').removeClass('uneditable-input');
 };
 

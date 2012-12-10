@@ -1,10 +1,10 @@
 onLikeButton =  (request, sender, sendResponse) ->
-  # console.log 'onMessage', request
+  console.log 'onMessage', request
   userList = JSON.parse localStorage.userList
   
   switch request.action
     when 'setLikeButton'
-      # console.log 'setLikeButton'
+      console.log 'setLikeButton'
       for ele in userList
         if ele.menuUrl is request.params.menuUrl
           ele.episodeUrl = request.params.episodeUrl
@@ -21,7 +21,7 @@ onLikeButton =  (request, sender, sendResponse) ->
           return
       sendResponse {isFunction: false}
     when 'clickLikeButton'
-      # console.log 'clickLikeButton'
+      console.log 'clickLikeButton'
       for ele, i in userList
         # already in userList, so remove it
         if ele.menuUrl is request.params.menuUrl
@@ -42,7 +42,7 @@ chrome.extension.onMessage.addListener onLikeButton
 
 
 onInit = ->
-  # console.log 'onInit'
+  console.log 'onInit'
   localStorage.timestamp = '0'
   localStorage.userList = localStorage.userList || '[]'
   sync()
@@ -51,7 +51,7 @@ onInit = ->
 
 
 startRequest = (params) ->
-  # console.log 'startRequest'
+  console.log 'startRequest'
   scheduleRequest() if params? and params.scheduleRequest
   
   # for dm5
@@ -127,9 +127,9 @@ find8comicOtherData = (menuUrl) ->
 
 
 scheduleRequest = ->
-  # console.log 'scheduleRequest'
+  console.log 'scheduleRequest'
   delay = 30
-  # console.log "Scheduling for: #{delay} min" 
+  console.log "Scheduling for: #{delay} min" 
   chrome.alarms.create('refresh', {periodInMinutes: delay})
 
 
@@ -140,7 +140,7 @@ checkList = (params) ->
     isSubscriber = ele.menuUrl is params.menuUrl
     isNew = ele.edgeUrl isnt params.edgeUrl
     if isSubscriber and isNew
-      # console.log 'just updated'
+      console.log 'just updated'
       ele.isNew = isNew
       ele.edgeUrl = params.edgeUrl
       ele.edgeNumber = params.edgeNumber
@@ -149,9 +149,9 @@ checkList = (params) ->
       sync()
       break
     else if isSubscriber
-      # console.log 'already updated'
+      console.log 'already updated'
     else
-      # console.log 'not matched'
+      console.log 'not matched'
 
   newCount = (ele for ele in userList when ele.isNew).length
   badgeText = if newCount isnt 0 then '' + newCount else '' 
@@ -159,7 +159,7 @@ checkList = (params) ->
 
 
 onAlarm = (alarm) ->
-  # console.log 'Got alarm'
+  console.log 'Got alarm'
   startRequest {scheduleRequest: true} if alarm? and alarm.name is 'refresh'
 
 
@@ -195,7 +195,7 @@ sync = ->
     }
 
     $.post 'http://xzysite.appspot.com/bookmark', bundle, (response) ->
-      # console.log response
+      console.log response
       if response.status is 'overwrite'
         localStorage.userList = response.userlist
         localStorage.timestamp = response.timestamp
