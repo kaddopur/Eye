@@ -229,7 +229,6 @@ removeSpinner = function() {
 
 addSpinner = function() {
   var opts, spinner, target;
-  console.log('addSpinner');
   opts = {
     lines: 13,
     length: 7,
