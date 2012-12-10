@@ -3,8 +3,6 @@ var bind, bindListener, fetch, loadEpisode, refreshBadge, userList;
 
 userList = localStorage.userList != null ? JSON.parse(localStorage.userList) : [];
 
-localStorage.timestamp = userList === [] ? '0' : void 0;
-
 localStorage.userList = JSON.stringify(userList);
 
 refreshBadge = function() {
@@ -195,6 +193,7 @@ fetch = function() {
       timestamp: localStorage.timestamp
     };
     return $.post('http://xzysite.appspot.com/bookmark', bundle, function(response) {
+      console.log(response);
       if (response.status === 'overwrite') {
         localStorage.userList = response.userlist;
         localStorage.timestamp = response.timestamp;

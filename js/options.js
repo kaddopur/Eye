@@ -15,6 +15,7 @@ checkValue = function(e) {
   haveData = account !== '' && password !== '' && retype !== '';
   samePassword = password === retype;
   if (haveData && samePassword) {
+    console.log('start sync');
     if (!(localStorage.timestamp != null)) {
       t = new Date();
       timestamp = localStorage.timestamp = '' + Math.round(t.getTime() / 1000);
@@ -26,21 +27,26 @@ checkValue = function(e) {
       timestamp: localStorage.timestamp
     };
     return $.post('http://xzysite.appspot.com/bookmark', bundle, function(response) {
+      console.log(response);
       switch (response.status) {
         case 'updated':
-          return startSync(account, password);
+          startSync(account, password);
+          break;
         case 'overwrite':
           startSync(account, password);
           localStorage.userList = response.userlist;
-          return localStorage.timestamp = response.timestamp;
+          localStorage.timestamp = response.timestamp;
+          break;
         case 'error':
           wrongPassword();
-          return stopSync();
+          stopSync();
       }
+      return console.log('processed');
     });
   } else if (!haveData) {
-
+    return console.log('please fill data');
   } else if (!samePassword) {
+    console.log('passwords are not the same');
     notSamePassword();
     return stopSync();
   }
@@ -80,6 +86,7 @@ stopSync = function() {
   localStorage.account = '';
   localStorage.password = '';
   localStorage.isSync = 'false';
+  localStorage.timestamp = '0';
   return $('.uneditable-input').removeClass('uneditable-input');
 };
 

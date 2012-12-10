@@ -1,5 +1,4 @@
 userList = if localStorage.userList? then JSON.parse localStorage.userList else []
-localStorage.timestamp = if userList is [] then '0'
 localStorage.userList = JSON.stringify userList
 
 refreshBadge = ->
@@ -112,7 +111,7 @@ fetch = ->
     }
 
     $.post 'http://xzysite.appspot.com/bookmark', bundle, (response) ->
-      # console.log response
+      console.log response
       if response.status is 'overwrite'
         localStorage.userList = response.userlist
         localStorage.timestamp = response.timestamp

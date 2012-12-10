@@ -3,9 +3,11 @@ var checkList, cview, find8comicOtherData, findSfacgOtherData, onAlarm, onInit, 
 
 onLikeButton = function(request, sender, sendResponse) {
   var badgeText, e, ele, i, j, newCount, userList, _i, _j, _len, _len1;
+  console.log('onMessage', request);
   userList = JSON.parse(localStorage.userList);
   switch (request.action) {
     case 'setLikeButton':
+      console.log('setLikeButton');
       for (_i = 0, _len = userList.length; _i < _len; _i++) {
         ele = userList[_i];
         if (ele.menuUrl === request.params.menuUrl) {
@@ -39,6 +41,7 @@ onLikeButton = function(request, sender, sendResponse) {
         isFunction: false
       });
     case 'clickLikeButton':
+      console.log('clickLikeButton');
       for (i = _j = 0, _len1 = userList.length; _j < _len1; i = ++_j) {
         ele = userList[i];
         if (ele.menuUrl === request.params.menuUrl) {
@@ -73,6 +76,7 @@ onLikeButton = function(request, sender, sendResponse) {
 chrome.extension.onMessage.addListener(onLikeButton);
 
 onInit = function() {
+  console.log('onInit');
   localStorage.timestamp = '0';
   localStorage.userList = localStorage.userList || '[]';
   sync();
@@ -85,6 +89,7 @@ onInit = function() {
 };
 
 startRequest = function(params) {
+  console.log('startRequest');
   if ((params != null) && params.scheduleRequest) {
     scheduleRequest();
   }
@@ -178,7 +183,9 @@ find8comicOtherData = function(menuUrl) {
 
 scheduleRequest = function() {
   var delay;
+  console.log('scheduleRequest');
   delay = 30;
+  console.log("Scheduling for: " + delay + " min");
   return chrome.alarms.create('refresh', {
     periodInMinutes: delay
   });
@@ -192,6 +199,7 @@ checkList = function(params) {
     isSubscriber = ele.menuUrl === params.menuUrl;
     isNew = ele.edgeUrl !== params.edgeUrl;
     if (isSubscriber && isNew) {
+      console.log('just updated');
       ele.isNew = isNew;
       ele.edgeUrl = params.edgeUrl;
       ele.edgeNumber = params.edgeNumber;
@@ -199,9 +207,9 @@ checkList = function(params) {
       sync();
       break;
     } else if (isSubscriber) {
-
+      console.log('already updated');
     } else {
-
+      console.log('not matched');
     }
   }
   newCount = ((function() {
@@ -222,6 +230,7 @@ checkList = function(params) {
 };
 
 onAlarm = function(alarm) {
+  console.log('Got alarm');
   if ((alarm != null) && alarm.name === 'refresh') {
     return startRequest({
       scheduleRequest: true
@@ -282,6 +291,7 @@ sync = function() {
       timestamp: localStorage.timestamp
     };
     return $.post('http://xzysite.appspot.com/bookmark', bundle, function(response) {
+      console.log(response);
       if (response.status === 'overwrite') {
         localStorage.userList = response.userlist;
         return localStorage.timestamp = response.timestamp;
