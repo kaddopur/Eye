@@ -48,7 +48,7 @@ findUrl = function() {
     title = $('.bai_lj a:last-child').prev().text().match(/(\S.*)漫画/)[1];
     episodeNumber = $('.bai_lj a:last-child').text().replace(title, '').match(/(\S+)\s/)[1];
     edgeUrl = location.origin + $('.innr41 li:first-child a').attr('href');
-    edgeNumber = $('.innr41 li:first-child').html().match(/title\S*\s*(\S*)">/)[1];
+    edgeNumber = $('.innr41 li:first-child a').attr('title').match(/.*[ \)x](\S*)$/)[1];
     imageList = (function() {
       var _j, _results;
       _results = [];
