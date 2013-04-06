@@ -84,6 +84,29 @@ startRequest = (params) ->
       menuUrl = $(target).attr('href')
       findSfacgOtherData menuUrl + '/'
 
+  # for 99770
+  $.get 'http://mh.99770.cc/comicupdate/', (res) ->
+    for target in $(res).find('.cpitem')
+      menuUrl = $(target).find('.t2 a').attr('href')
+      find99770OtherData menuUrl
+
+
+find99770OtherData = (menuUrl) ->
+  $.get menuUrl, (response) ->
+    edge = $(response).find(".cVol a[href*='http']").first()
+    edgeNumber = edge.text()
+    edgeUrl = edge.attr('href')
+    comicName = $(response).find("a[href*='#{menuUrl}']").last().text().trim()
+
+    newBundle = {
+      edgeNumber: edgeNumber,
+      edgeUrl: edgeUrl,
+      menuUrl: menuUrl,
+      site: '99770',
+      title: comicName
+    }
+    checkList newBundle
+
 
 findSfacgOtherData = (menuUrl) ->
   $.get menuUrl, (response) ->
