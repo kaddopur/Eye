@@ -33,6 +33,11 @@
         "matches": ["http://*.sfacg.com/AllComic/*"],
         "css": ["css/reset.css", "css/viewer.css"],
         "js": ["js/jquery-1.7.1.min.js", "js/cs_sfacg.js"]
+    },
+    {
+        "matches": ["http://mh.99770.cc/comic/*"],
+        "css": ["css/reset.css", "css/viewer.css"],
+        "js": ["js/jquery-1.7.1.min.js", "js/cs_99770.js"]
     }
   ],
   "permissions":[
