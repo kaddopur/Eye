@@ -64,9 +64,12 @@ nav {
 .tab-show { display: inherit; }
 
 header {
-  #eightComic &:hover { background: rgba($color_8comic, 0.5); }
-  #dm5 &:hover { background: rgba($color_dm5, 0.5); }
-  #sfacg &:hover { background: rgba($color_sfacg, 0.5); }
+  #eightComic &:hover,
+  #dm5 &:hover,
+  #sfacg &:hover,
+  #ninety-nine &:hover {
+    background: rgba(yellow, 0.15);
+  }
 }
 
 .new {
