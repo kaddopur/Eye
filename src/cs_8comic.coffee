@@ -8,9 +8,10 @@ findUrl = ->
   pic = edgeUrl = edgeNumber = ''
   
   # get codes
-  page_info = $('script:contains(ch=request)').html()
-  r = /var codes="[^;]*;/
+  page_info = $('#Form1 > script').text()
+  r = /var allcodes="[^;]*;/
   eval r.exec(page_info)[0]
+  allcodes = allcodes.split('|')
   
   r = /var itemid=[^;]*;/
   eval r.exec(page_info)[0]
@@ -23,13 +24,14 @@ findUrl = ->
     location.href += '?ch=1'
 
   prev_id = next_id = target_id = -1
-  for c, i in codes
+  for c, i in allcodes
     if c.split(' ')[0] == ch
       if i > 0 then prev_id = i-1
-      if i < (codes.length - 1) then next_id = i+1
+      if i < (allcodes.length - 1) then next_id = i+1
       target_id = i
       target_code = c
       break
+      
 
   episodeId = $('font#lastchapter').text()
   re_title = /\[(.*)<font/
@@ -68,11 +70,11 @@ findUrl = ->
   prev_uri = menu_uri = next_uri = ''
   if prev_id isnt -1
     prev_uri = location.href + ''
-    prev_uri = prev_uri.substring(0, prev_uri.indexOf('=')+1) + codes[prev_id].split(' ')[0]
+    prev_uri = prev_uri.substring(0, prev_uri.indexOf('=')+1) + allcodes[prev_id].split(' ')[0]
 
   if next_id isnt -1
     next_uri = location.href + ''
-    next_uri = next_uri.substring(0, next_uri.indexOf('=')+1) + codes[next_id].split(' ')[0]
+    next_uri = next_uri.substring(0, next_uri.indexOf('=')+1) + allcodes[next_id].split(' ')[0]
 
   menu_uri = "http://www.8comic.com/html/#{itemid}.html"
 

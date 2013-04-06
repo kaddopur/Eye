@@ -6,11 +6,12 @@ isValidPath = function() {
 };
 
 findUrl = function() {
-  var c, ch, code, code_info, did, edgeId, edgeNumber, edgeUrl, episodeId, i, img_uri, m, menu_uri, next_id, next_uri, num, p, page, page_info, pic, prev_id, prev_uri, r, re_title, sid, target_code, target_id, title, _i, _j, _len;
+  var allcodes, c, ch, code, code_info, did, edgeId, edgeNumber, edgeUrl, episodeId, i, img_uri, m, menu_uri, next_id, next_uri, num, p, page, page_info, pic, prev_id, prev_uri, r, re_title, sid, target_code, target_id, title, _i, _j, _len;
   pic = edgeUrl = edgeNumber = '';
-  page_info = $('script:contains(ch=request)').html();
-  r = /var codes="[^;]*;/;
+  page_info = $('#Form1 > script').text();
+  r = /var allcodes="[^;]*;/;
   eval(r.exec(page_info)[0]);
+  allcodes = allcodes.split('|');
   r = /var itemid=[^;]*;/;
   eval(r.exec(page_info)[0]);
   r = /ch=(\d+)/;
@@ -20,13 +21,13 @@ findUrl = function() {
     location.href += '?ch=1';
   }
   prev_id = next_id = target_id = -1;
-  for (i = _i = 0, _len = codes.length; _i < _len; i = ++_i) {
-    c = codes[i];
+  for (i = _i = 0, _len = allcodes.length; _i < _len; i = ++_i) {
+    c = allcodes[i];
     if (c.split(' ')[0] === ch) {
       if (i > 0) {
         prev_id = i - 1;
       }
-      if (i < (codes.length - 1)) {
+      if (i < (allcodes.length - 1)) {
         next_id = i + 1;
       }
       target_id = i;
@@ -64,11 +65,11 @@ findUrl = function() {
   prev_uri = menu_uri = next_uri = '';
   if (prev_id !== -1) {
     prev_uri = location.href + '';
-    prev_uri = prev_uri.substring(0, prev_uri.indexOf('=') + 1) + codes[prev_id].split(' ')[0];
+    prev_uri = prev_uri.substring(0, prev_uri.indexOf('=') + 1) + allcodes[prev_id].split(' ')[0];
   }
   if (next_id !== -1) {
     next_uri = location.href + '';
-    next_uri = next_uri.substring(0, next_uri.indexOf('=') + 1) + codes[next_id].split(' ')[0];
+    next_uri = next_uri.substring(0, next_uri.indexOf('=') + 1) + allcodes[next_id].split(' ')[0];
   }
   menu_uri = "http://www.8comic.com/html/" + itemid + ".html";
   setNavButton(prev_uri, menu_uri, next_uri);
