@@ -153,9 +153,10 @@ startRequest = function(params) {
 
 find99770OtherData = function(menuUrl) {
   return $.get(menuUrl, function(response) {
-    var comicName, edge, edgeNumber, edgeUrl, newBundle;
+    var comicName, edge, edgeNumber, edgeUrl, newBundle, r;
     edge = $(response).find(".cVol a[href*='http']").first();
-    edgeNumber = edge.text();
+    r = /\d.*$/;
+    edgeNumber = r.exec(edge.text());
     edgeUrl = edge.attr('href');
     comicName = $(response).find("a[href*='" + menuUrl + "']").last().text().trim();
     newBundle = {

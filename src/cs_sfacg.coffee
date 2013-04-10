@@ -24,6 +24,7 @@ findUrl = ->
       edgeNumber = edge.text()
       edgeUrl = edge.find('a').attr('href')
       pic = $(response).find('.comic_cover img').attr('src')
+      $('title').text("#{comicName} - #{episodeNumber}")
 
       likeBundle = {
         edgeNumber: edgeNumber,
@@ -41,7 +42,7 @@ findUrl = ->
 
 
 setImage = (imageList) ->
-  $('html').html('<body></body>')
+  $('html').html('<head><title></title></head><body></body>')
   $('body').css('background', "url(#{chrome.extension.getURL('img/texture.png')}) repeat, #FCFAF2")
   $('body').css('overflow', 'auto')
   

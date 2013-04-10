@@ -27,6 +27,7 @@ findUrl = function() {
       edgeNumber = edge.text();
       edgeUrl = edge.find('a').attr('href');
       pic = $(response).find('.comic_cover img').attr('src');
+      $('title').text("" + comicName + " - " + episodeNumber);
       likeBundle = {
         edgeNumber: edgeNumber,
         edgeUrl: edgeUrl,
@@ -45,7 +46,7 @@ findUrl = function() {
 
 setImage = function(imageList) {
   var ele, _i, _len;
-  $('html').html('<body></body>');
+  $('html').html('<head><title></title></head><body></body>');
   $('body').css('background', "url(" + (chrome.extension.getURL('img/texture.png')) + ") repeat, #FCFAF2");
   $('body').css('overflow', 'auto');
   for (_i = 0, _len = imageList.length; _i < _len; _i++) {

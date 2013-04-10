@@ -38,12 +38,14 @@ findUrl = function() {
     };
     episodeUrl = location.href;
     episodeNumber = $(response).find(".cVol a[href*='" + location.href + "']").text();
-    $('title').text(episodeNumber);
+    r = /\d.*$/;
+    episodeNumber = r.exec(episodeNumber);
     edge = $(response).find(".cVol a[href*='http']").first();
-    edgeNumber = edge.text();
+    edgeNumber = r.exec(edge.text());
     edgeUrl = edge.attr('href');
     pic = $(response).find('.cDefaultImg img').attr('src');
     comicName = $(response).find("a[href*='" + menuUrl + "']").last().text().trim();
+    $('title').text("" + comicName + " - " + episodeNumber);
     likeBundle = {
       edgeNumber: edgeNumber,
       edgeUrl: edgeUrl,

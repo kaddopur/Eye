@@ -78,6 +78,7 @@ findEachUrl = function(i, cid, imageList) {
       setImage(imageList);
       setNavButton();
       setHotkeyPanel();
+      $('title').text("" + title + " - " + episodeNumber);
       likeBundle = {
         site: 'dm5',
         menuUrl: menuUri,
@@ -96,7 +97,7 @@ findEachUrl = function(i, cid, imageList) {
 
 setImage = function(imageList) {
   var ele, _i, _len;
-  $('html').html('<body></body>');
+  $('html').html('<head><title></title></head><body></body>');
   $('body').css('background', "url(" + (chrome.extension.getURL('img/texture.png')) + ") repeat, #FCFAF2");
   imageList.shift();
   for (_i = 0, _len = imageList.length; _i < _len; _i++) {
