@@ -40,7 +40,7 @@ findUrl = function() {
   title = $('font#lastchapter').parent().html().match(re_title)[1].trim();
   edgeId = $('#lastvol b').text().match(/(\S*)\s*]$/)[1];
   edgeUrl = location.origin + location.pathname + '?ch=' + edgeId;
-  $('html').html('<body></body>');
+  $('html').html('<head><title></title></head><body></body>');
   $('body').css('background', "url(" + (chrome.extension.getURL('img/texture.png')) + ") repeat, #FCFAF2");
   code_info = target_code.split(' ');
   num = code_info[0];
@@ -80,6 +80,7 @@ findUrl = function() {
     chapter = $(res).find('.Vol, .Ch');
     edgeNumber = chapter[chapter.length - 1].text.trim();
     episodeNumber = $(res).find("#c" + episodeId).text();
+    $('title').text("" + title + " - " + episodeNumber);
     likeBundle = {
       site: '8comic',
       menuUrl: menu_uri,

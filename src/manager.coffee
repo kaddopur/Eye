@@ -94,7 +94,8 @@ startRequest = (params) ->
 find99770OtherData = (menuUrl) ->
   $.get menuUrl, (response) ->
     edge = $(response).find(".cVol a[href*='http']").first()
-    edgeNumber = edge.text()
+    r = /\d.*$/
+    edgeNumber = r.exec(edge.text())
     edgeUrl = edge.attr('href')
     comicName = $(response).find("a[href*='#{menuUrl}']").last().text().trim()
 

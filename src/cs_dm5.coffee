@@ -49,6 +49,7 @@ findEachUrl = (i, cid, imageList) ->
       setImage(imageList)
       setNavButton()
       setHotkeyPanel()
+      $('title').text("#{title} - #{episodeNumber}")
 
       likeBundle = {
         site: 'dm5',
@@ -65,7 +66,7 @@ findEachUrl = (i, cid, imageList) ->
 
 
 setImage = (imageList) ->
-  $('html').html('<body></body>')
+  $('html').html('<head><title></title></head><body></body>')
   $('body').css('background', "url(#{chrome.extension.getURL('img/texture.png')}) repeat, #FCFAF2")
   
   imageList.shift()

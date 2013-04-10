@@ -40,7 +40,7 @@ findUrl = ->
   edgeUrl = location.origin + location.pathname + '?ch=' + edgeId
 
   # get uri of all pictures
-  $('html').html('<body></body>')
+  $('html').html('<head><title></title></head><body></body>')
   $('body').css('background', "url(#{chrome.extension.getURL('img/texture.png')}) repeat, #FCFAF2")
   
   code_info = target_code.split(' ')
@@ -85,6 +85,7 @@ findUrl = ->
     chapter = $(res).find('.Vol, .Ch')
     edgeNumber = chapter[chapter.length-1].text.trim()
     episodeNumber = $(res).find("#c#{episodeId}").text()
+    $('title').text("#{title} - #{episodeNumber}")
 
     likeBundle = {
       site: '8comic',
