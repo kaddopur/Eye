@@ -39,9 +39,9 @@ findUrl = function() {
     episodeUrl = location.href;
     episodeNumber = $(response).find(".cVol a[href*='" + location.href + "']").text();
     r = /\d*[^\d]*$/;
-    episodeNumber = r.exec(episodeNumber);
+    episodeNumber = r.exec(episodeNumber)[0];
     edge = $(response).find(".cVol a[href*='http']").first();
-    edgeNumber = r.exec(edge.text());
+    edgeNumber = r.exec(edge.text())[0];
     edgeUrl = edge.attr('href');
     pic = $(response).find('.cDefaultImg img').attr('src');
     comicName = $(response).find("a[href*='" + menuUrl + "']").last().text().trim();

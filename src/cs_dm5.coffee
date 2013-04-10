@@ -33,8 +33,8 @@ findUrl = ->
           nextUri = tg[i-1].href if i isnt 0
           prevUri = tg[i+1].href if i+1 < tg.length
           break
-      edgeUrl = location.origin + $(res).find('#chapter_1 tr:first-child a').attr('href')
-      edgeNumber = $(res).find('#chapter_1 tr:first-child a').attr('title').match(/.*[ \)x](\S*)$/)[1]
+      edgeUrl = location.origin + $(res).find('#chapter_1 tr a').first().attr('href')
+      edgeNumber = $(res).find('#chapter_1 tr a').first().text().match(/( - )(\S*)/)[2]
 
       imageList = (' ' for i in [0..max])
       imageList[0] = 'head'

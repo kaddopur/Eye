@@ -44,8 +44,8 @@ findUrl = function() {
           break;
         }
       }
-      edgeUrl = location.origin + $(res).find('#chapter_1 tr:first-child a').attr('href');
-      edgeNumber = $(res).find('#chapter_1 tr:first-child a').attr('title').match(/.*[ \)x](\S*)$/)[1];
+      edgeUrl = location.origin + $(res).find('#chapter_1 tr a').first().attr('href');
+      edgeNumber = $(res).find('#chapter_1 tr a').first().text().match(/( - )(\S*)/)[2];
       imageList = (function() {
         var _j, _results;
         _results = [];
