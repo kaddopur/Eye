@@ -37,7 +37,7 @@ refreshBadge = function() {
 };
 
 loadEpisode = function() {
-  var ele, i, priorityList, user8comicList, userDm5List, userSfacgList, _i, _j, _k, _len, _len1, _len2, _results;
+  var ele, i, priorityList, user8comicList, user99770List, userDm5List, userSfacgList, _i, _j, _k, _l, _len, _len1, _len2, _len3, _results;
   priorityList = (function() {
     var _i, _len, _results;
     _results = [];
@@ -104,6 +104,17 @@ loadEpisode = function() {
     }
     return _results;
   })()) || [];
+  user99770List = ((function() {
+    var _i, _len, _results;
+    _results = [];
+    for (_i = 0, _len = priorityList.length; _i < _len; _i++) {
+      ele = priorityList[_i];
+      if (ele.site === '99770') {
+        _results.push(ele);
+      }
+    }
+    return _results;
+  })()) || [];
   if (user8comicList != null) {
     for (i = _i = 0, _len = user8comicList.length; _i < _len; i = ++_i) {
       ele = user8comicList[i];
@@ -131,7 +142,6 @@ loadEpisode = function() {
     }
   }
   if (userSfacgList != null) {
-    _results = [];
     for (i = _k = 0, _len2 = userSfacgList.length; _k < _len2; i = ++_k) {
       ele = userSfacgList[i];
       $('#sfacg ul').append("        <li id='sfacg-" + i + "'>          <div class='new'>NEW</div>          <div class='read'>READ</div>          <div class='cover'>            <img src='" + ele.pic + "'>          </div>          <div class='info'>            <div class='title'>" + ele.title + "</div>            <div class='episode'>看到 " + ele.episodeNumber + "</div>            <div class='edge'>更新到 " + ele.edgeNumber + "</div>          </div>          <input type='button' value='續看'>        </li>");
@@ -141,7 +151,21 @@ loadEpisode = function() {
       if (!(ele.episodeUrl !== ele.edgeUrl && !ele.isNew)) {
         $("#sfacg-" + i + " .read").css('display', 'none');
       }
-      _results.push(bind("#sfacg-" + i, ele));
+      bind("#sfacg-" + i, ele);
+    }
+  }
+  if (user99770List != null) {
+    _results = [];
+    for (i = _l = 0, _len3 = user99770List.length; _l < _len3; i = ++_l) {
+      ele = user99770List[i];
+      $('#ninety-nine ul').append("        <li id='ninety-nine-" + i + "'>          <div class='new'>NEW</div>          <div class='read'>READ</div>          <div class='cover'>            <img src='" + ele.pic + "'>          </div>          <div class='info'>            <div class='title'>" + ele.title + "</div>            <div class='episode'>看到 " + ele.episodeNumber + "</div>            <div class='edge'>更新到 " + ele.edgeNumber + "</div>          </div>          <input type='button' value='續看'>        </li>");
+      if (!ele.isNew) {
+        $("#ninety-nine-" + i + " .new").css('display', 'none');
+      }
+      if (!(ele.episodeUrl !== ele.edgeUrl && !ele.isNew)) {
+        $("#ninety-nine-" + i + " .read").css('display', 'none');
+      }
+      _results.push(bind("#ninety-nine-" + i, ele));
     }
     return _results;
   }
@@ -170,6 +194,11 @@ bindListener = function() {
   $('#sfacg header').click(function() {
     return chrome.tabs.create({
       url: 'http://comic.sfacg.com/'
+    });
+  });
+  $('#ninety-nine header').click(function() {
+    return chrome.tabs.create({
+      url: 'http://mh.99770.cc/'
     });
   });
   $('nav li').click(function() {

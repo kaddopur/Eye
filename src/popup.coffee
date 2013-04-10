@@ -18,6 +18,7 @@ loadEpisode = ->
   userDm5List = (ele for ele in priorityList when ele.site is 'dm5') || []
   user8comicList = (ele for ele in priorityList when ele.site is '8comic') || []
   userSfacgList = (ele for ele in priorityList when ele.site is 'sfacg') || []
+  user99770List = (ele for ele in priorityList when ele.site is '99770') || []
 
   if user8comicList?
     for ele, i in user8comicList
@@ -79,6 +80,26 @@ loadEpisode = ->
       $("#sfacg-#{i} .read").css('display', 'none') unless (ele.episodeUrl isnt ele.edgeUrl and not ele.isNew)
       bind("#sfacg-#{i}", ele)
 
+  if user99770List?
+    for ele, i in user99770List
+      $('#ninety-nine ul').append("
+        <li id='ninety-nine-#{i}'>
+          <div class='new'>NEW</div>
+          <div class='read'>READ</div>
+          <div class='cover'>
+            <img src='#{ele.pic}'>
+          </div>
+          <div class='info'>
+            <div class='title'>#{ele.title}</div>
+            <div class='episode'>看到 #{ele.episodeNumber}</div>
+            <div class='edge'>更新到 #{ele.edgeNumber}</div>
+          </div>
+          <input type='button' value='續看'>
+        </li>")
+      $("#ninety-nine-#{i} .new").css('display', 'none') unless ele.isNew
+      $("#ninety-nine-#{i} .read").css('display', 'none') unless (ele.episodeUrl isnt ele.edgeUrl and not ele.isNew)
+      bind("#ninety-nine-#{i}", ele)
+
 
 bind = (target, params) ->
   $("#{target} input").click ->
@@ -89,6 +110,7 @@ bindListener = ->
   $('#eightComic header').click -> chrome.tabs.create {url: 'http://www.8comic.com/comic/'}
   $('#dm5 header').click -> chrome.tabs.create {url: 'http://tel.dm5.com/'}
   $('#sfacg header').click -> chrome.tabs.create {url: 'http://comic.sfacg.com/'}
+  $('#ninety-nine header').click -> chrome.tabs.create {url: 'http://mh.99770.cc/'}
 
   $('nav li').click ->
     $('nav li.active').removeClass('active')

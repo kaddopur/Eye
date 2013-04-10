@@ -1,8 +1,8 @@
 ﻿{
   "name":"鄉民之眼",
-  "version":"2.1.4",
+  "version":"2.2.1",
   "manifest_version": 2,
-  "description": "看漫畫的擴充套件，支援8Comic, Dm5, SFACG",
+  "description": "看漫畫的擴充套件，支援8Comic, Dm5, SFACG, 99770",
   "icons":{
     "16":"icon16.png",
     "48":"icon48.png",
@@ -33,6 +33,11 @@
         "matches": ["http://*.sfacg.com/AllComic/*"],
         "css": ["css/reset.css", "css/viewer.css"],
         "js": ["js/jquery-1.7.1.min.js", "js/cs_sfacg.js"]
+    },
+    {
+        "matches": ["http://mh.99770.cc/comic/*"],
+        "css": ["css/reset.css", "css/viewer.css"],
+        "js": ["js/jquery-1.7.1.min.js", "js/cs_99770.js"]
     }
   ],
   "permissions":[

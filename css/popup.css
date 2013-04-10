@@ -52,12 +52,8 @@ nav li {
 .tab-show {
   display: inherit; }
 
-#eightComic header:hover {
-  background: rgba(51, 166, 184, 0.5); }
-#dm5 header:hover {
-  background: rgba(232, 48, 21, 0.5); }
-#sfacg header:hover {
-  background: rgba(255, 177, 27, 0.5); }
+#eightComic header:hover, #dm5 header:hover, #sfacg header:hover, #ninety-nine header:hover {
+  background: rgba(255, 255, 0, 0.15); }
 
 .new, .read {
   -webkit-transform: rotate(35deg);
