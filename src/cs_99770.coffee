@@ -33,7 +33,7 @@ findUrl = ->
 
     episodeUrl = location.href
     episodeNumber = $(response).find(".cVol a[href*='#{location.href}']").text()
-    r = /\d.*$/
+    r = /\d*[^\d]*$/
     episodeNumber = r.exec(episodeNumber)
     edge = $(response).find(".cVol a[href*='http']").first()
     edgeNumber = r.exec(edge.text())
