@@ -53,67 +53,37 @@ onInit = ->
 startRequest = (params) ->
   console.log 'startRequest'
   scheduleRequest() if params? and params.scheduleRequest
-  
-  # for dm5
-  $.get 'http://tel.dm5.com/manhua-new/', (res) ->
-    dm5Url = 'http://tel.dm5.com'
-    for target in $(res).find('.innr3 .red_lj')
-      menuUrl = dm5Url + $(target).find('a:first-child').attr('href')
-      title = $(target).find('a:first-child').attr('title').trim()
-      edgeUrl = dm5Url + $(target).find('a:last-child').attr('href')
-      edgeNumber = $(target).find('a:last-child').text().trim()
-      newBundle = {
-        edgeNumber: edgeNumber,
-        edgeUrl: edgeUrl,
-        menuUrl: menuUrl,
-        site: 'dm5',
-        title: title
-      }
-      checkList newBundle
 
-  # for 8Comic
-  $.get 'http://www.8comic.com/comic/u-1.html', (res) ->
-    baComicUrl = 'http://www.8comic.com'
-    for target in $(res).find('td[height=30][nowrap] a')
-      menuUrl = baComicUrl + $(target).attr('href');
-      find8comicOtherData(menuUrl)
-
-  # for SFACG
-  $.get 'http://comic.sfacg.com/WeeklyUpdate/', (response) ->
-    for target in $(response).find('#Day0 .gray_frame a, #Day1 .gray_frame a')
-      menuUrl = $(target).attr('href')
-      findSfacgOtherData menuUrl + '/'
-
-  # for 99770
-  $.get 'http://mh.99770.cc/comicupdate/', (res) ->
-    for target in $(res).find('.cpitem')
-      menuUrl = $(target).find('.t2 a').attr('href')
-      find99770OtherData menuUrl
+  userList = JSON.parse localStorage.userList || []
+  for targetComic in userList
+    switch targetComic.site
+      when 'dm5' then checkUpdateDm5(targetComic)
+      when '8comic' then checkUpdate8comic(targetComic)
+      when 'sfacg' then checkUpdateSfacg(targetComic)
+      when '99770' then checkUpdate99770(targetComic)
+      else console.log targetComic
 
 
-find99770OtherData = (menuUrl) ->
-  $.get menuUrl, (response) ->
+checkUpdate99770 = (targetComic) ->
+  $.get targetComic.menuUrl, (response) ->
     edge = $(response).find(".cVol a[href*='http']").first()
-    r = /\d.*$/
-    edgeNumber = r.exec(edge.text())
+    r = /\d*[^\d]*$/
+    edgeNumber = r.exec(edge.text())[0]
     edgeUrl = edge.attr('href')
-    comicName = $(response).find("a[href*='#{menuUrl}']").last().text().trim()
 
     newBundle = {
       edgeNumber: edgeNumber,
       edgeUrl: edgeUrl,
-      menuUrl: menuUrl,
-      site: '99770',
-      title: comicName
+      menuUrl: targetComic.menuUrl,
+      site: targetComic.site,
+      title: targetComic.title
     }
     checkList newBundle
 
 
-findSfacgOtherData = (menuUrl) ->
-  $.get menuUrl, (response) ->
-    episodeUrl = location.href
-    episodeNumber = $(response).find("a[href='#{episodeUrl}']").text()
-    edge = $(response).find('.serialise_list:last li:first-child')
+checkUpdateSfacg = (targetComic) ->
+  $.get targetComic.menuUrl, (response) ->
+    edge = $(response).find('.serialise_list').last().find('li').first()
     edgeNumber = edge.text()
     edgeUrl = edge.find('a').attr('href')
     title = $(response).find('b.F14PX').text()
@@ -121,21 +91,19 @@ findSfacgOtherData = (menuUrl) ->
     newBundle = {
       edgeNumber: edgeNumber,
       edgeUrl: edgeUrl,
-      menuUrl: menuUrl,
-      site: 'sfacg',
-      title: title
+      menuUrl: targetComic.menuUrl,
+      site: targetComic.site,
+      title: targetComic.title
     }
     checkList newBundle
 
 
-find8comicOtherData = (menuUrl) ->
-  $.get menuUrl, (res) ->
-    title = $(res).find('#Comic font')[0].firstChild.data.trim()
-    
-    chapter = $(res).find('.Vol, .Ch')
-    edgeNumber = chapter[chapter.length-1].text.trim()
-    
-    callback = $(chapter[chapter.length-1]).attr('onclick')
+checkUpdate8comic = (targetComic) ->
+  $.get targetComic.menuUrl, (response) ->
+    cell = $(response).find('a.Ch, a.Vol').last()
+    edgeNumber = cell.text().trim()
+
+    callback = cell.attr('onclick')
     re_callback = /'(.*)',(.*)\)/
     params = callback.match(re_callback)
     edgeUrl = cview(params[1], params[2])
@@ -143,11 +111,28 @@ find8comicOtherData = (menuUrl) ->
     newBundle = {
       edgeNumber: edgeNumber,
       edgeUrl: edgeUrl,
-      menuUrl: menuUrl,
-      site: '8comic',
-      title: title
+      menuUrl: targetComic.menuUrl,
+      site: targetComic.site,
+      title: targetComic.title
     }
     checkList newBundle
+
+
+checkUpdateDm5 = (targetComic) ->
+  $.get targetComic.menuUrl, (response) ->
+    r = /DM5_COMIC_MID=(\d+)/
+    mid = r.exec(response)[1]
+    $.get "http://tel.dm5.com/template-#{mid}/?language=1", (response) ->
+      edgeNumber = $(response).find('#chapter_1 tr a').first().text().match(/( - )(\S*)/)[2]
+      edgeUrl = 'http://tel.dm5.com' + $(response).find('#chapter_1 tr a').first().attr('href')
+      newBundle = {
+        edgeNumber: edgeNumber,
+        edgeUrl: edgeUrl,
+        menuUrl: targetComic.menuUrl,
+        site: targetComic.site,
+        title: targetComic.title
+      }
+      checkList newBundle
 
 
 scheduleRequest = ->
@@ -174,8 +159,8 @@ checkList = (params) ->
       break
     else if isSubscriber
       console.log 'already updated'
-    else
-      console.log 'not matched'
+    # else
+    #   console.log 'not matched'
 
   newCount = (ele for ele in userList when ele.isNew).length
   badgeText = if newCount isnt 0 then '' + newCount else '' 
