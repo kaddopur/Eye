@@ -193,8 +193,9 @@ cview = (url, catid) ->
 
 sync = ->
   if localStorage.isSync is 'true'
-    t = new Date()
-    timestamp = localStorage.timestamp = ''+Math.round(t.getTime() / 1000)
+    if localStorage.timestamp isnt '0'
+      t = new Date()
+      timestamp = localStorage.timestamp = ''+Math.round(t.getTime() / 1000)
 
     bundle = {
       account: localStorage.account,
