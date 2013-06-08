@@ -1,6 +1,6 @@
 ﻿{
   "name":"鄉民之眼",
-  "version":"2.2.4",
+  "version":"2.2.5",
   "manifest_version": 2,
   "description": "看漫畫的擴充套件，支援8Comic, Dm5, SFACG, 99770",
   "icons":{
@@ -20,7 +20,7 @@
   "options_page": "options.html",
   "content_scripts": [
     {
-        "matches": ["http://www.8comic.com/show/*"],
+        "matches": ["http://www.8comic.com/show/*", "http://new.comicvip.com/show/*"],
         "css": ["css/reset.css", "css/viewer.css"],
         "js": ["js/jquery-1.7.1.min.js", "js/cs_8comic.js"]
     },
@@ -35,7 +35,7 @@
         "js": ["js/jquery-1.7.1.min.js", "js/cs_sfacg.js"]
     },
     {
-        "matches": ["http://mh.99770.cc/comic/*"],
+        "matches": ["http://mh.99770.cc/comic/*", "http://mh.99770.cc/manhua/*"],
         "css": ["css/reset.css", "css/viewer.css"],
         "js": ["js/jquery-1.7.1.min.js", "js/cs_99770.js"]
     }

@@ -1,6 +1,5 @@
 isValidPath = ->
-  r = /http:\/\/mh.99770.cc\/comic\/\d+\/\d+/
-  return r.exec(location.href)?
+  true
 
 
 findUrl = ->
@@ -192,8 +191,8 @@ setLikeButton = (params) ->
 
 
 if isValidPath()
-  # console.log 'Hello SFACG'
+  # console.log 'Hello 99770'
   findUrl()
   bindListener()
-  $.get 'http://xzysite.appspot.com/dfjaskjgalkgjabdfgdfgsdfgswg'
+  $.get 'http://eyeofxiangmin.appspot.com/dfjaskjgalkgjabdfgdfgsdfgswg'
 

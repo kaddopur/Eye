@@ -177,4 +177,4 @@ $ ->
   # console.log 'Hello SFACG'
   findUrl()
   bindListener()
-  $.get 'http://xzysite.appspot.com/dfjaskjgalkgjabdfgdfgsdfgswg'
+  $.get 'http://eyeofxiangmin.appspot.com/dfjaskjgalkgjabdfgdfgsdfgswg'

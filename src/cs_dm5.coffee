@@ -201,4 +201,4 @@ setLikeButton = (params) ->
 if isValidPath()
   findUrl()
   bindListener()
-  $.get 'http://xzysite.appspot.com/dfjaskjgalkgjabdfgdfgsdfgswg'
+  $.get 'http://eyeofxiangmin.appspot.com/dfjaskjgalkgjabdfgdfgsdfgswg'
